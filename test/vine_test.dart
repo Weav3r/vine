@@ -1,7 +1,9 @@
 import './rules/string_test.dart' as string_test;
 import './rules/number_test.dart' as number_test;
+import './rules/boolean_test.dart' as boolean_test;
 
 void main() {
   string_test.main();
   number_test.main();
+  boolean_test.main();
 }

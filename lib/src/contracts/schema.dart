@@ -3,6 +3,7 @@ import 'package:vine/src/contracts/vine.dart';
 abstract interface class ValidatorRule {
   VineString string({String? message});
   VineNumber number({String? message});
+  VineBoolean boolean({String? message});
 }
 
 abstract interface class VineSchema<T extends ErrorReporter> {
@@ -90,4 +91,11 @@ abstract interface class VineNumber implements VineSchema {
   VineNumber nullable();
 
   VineNumber optional();
+}
+
+abstract interface class VineBoolean implements VineSchema {
+
+  VineBoolean nullable();
+
+  VineBoolean optional();
 }

@@ -4,8 +4,6 @@ import 'package:vine/src/exceptions/validation_exception.dart';
 import 'package:vine/src/vine.dart';
 
 void main() {
-  final vine = Vine();
-
   group('VineNumber - range', () {
     test('valid: value within range [10, 20, 30]', () {
       final validator = vine.compile({
@@ -43,9 +41,6 @@ void main() {
     });
   });
 
-  // --------------------------------
-  // Groupe de tests pour `min`
-  // --------------------------------
   group('VineNumber - min', () {
     test('valid: value equals min (10)', () {
       final validator = vine.compile({
@@ -83,9 +78,6 @@ void main() {
     });
   });
 
-  // --------------------------------
-  // Groupe de tests pour `max`
-  // --------------------------------
   group('VineNumber - max', () {
     test('valid: value equals max (100)', () {
       final validator = vine.compile({
@@ -123,9 +115,6 @@ void main() {
     });
   });
 
-  // --------------------------------
-  // Groupe de tests pour `negative`
-  // --------------------------------
   group('VineNumber - negative', () {
     test('valid: negative value (-10)', () {
       final validator = vine.compile({
@@ -163,9 +152,6 @@ void main() {
     });
   });
 
-  // --------------------------------
-  // Groupe de tests pour `positive`
-  // --------------------------------
   group('VineNumber - positive', () {
     test('valid: positive value (10)', () {
       final validator = vine.compile({
@@ -203,9 +189,6 @@ void main() {
     });
   });
 
-  // --------------------------------
-  // Groupe de tests pour `double`
-  // --------------------------------
   group('VineNumber - double', () {
     test('valid: double value (10.5)', () {
       final validator = vine.compile({
@@ -243,9 +226,6 @@ void main() {
     });
   });
 
-  // --------------------------------
-  // Groupe de tests pour `integer`
-  // --------------------------------
   group('VineNumber - integer', () {
     test('valid: integer value (10)', () {
       final validator = vine.compile({
@@ -283,9 +263,6 @@ void main() {
     });
   });
 
-  // --------------------------------
-  // Groupe de tests pour `nullable`
-  // --------------------------------
   group('VineNumber - nullable', () {
     test('valid: null value', () {
       final validator = vine.compile({
@@ -309,9 +286,6 @@ void main() {
     });
   });
 
-  // --------------------------------
-  // Groupe de tests pour `optional`
-  // --------------------------------
   group('VineNumber - optional', () {
     test('valid: absent value', () {
       final validator = vine.compile({

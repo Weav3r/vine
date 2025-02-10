@@ -25,4 +25,5 @@ final mappedErrors = {
   'max': 'The field {name} must be at most {max}.',
   'double': 'The field {name} must be a double.',
   'integer': 'The field {name} must be an integer.',
+  'boolean': 'The field {name} must be a boolean.',
 };

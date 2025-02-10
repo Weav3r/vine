@@ -1,5 +1,3 @@
-
-
 abstract interface class ErrorReporter {
   Map<String, Map<String, String>> get errors;
 
@@ -14,18 +12,24 @@ abstract interface class ErrorReporter {
 
 abstract interface class ValidatorContract {
   Map<String, dynamic> get data;
+
   void validate(Map<String, dynamic> data);
 }
 
 abstract interface class FieldContext<T extends ErrorReporter> {
   String get name;
+
   dynamic get value;
+
   T get errorReporter;
+
   ValidatorContract get validator;
+
   Function get next;
 
   void mutate(dynamic value);
 }
 
 typedef ParseHandler = void Function(FieldContext);
+
 final class MissingValue {}
