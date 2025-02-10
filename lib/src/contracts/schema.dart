@@ -98,3 +98,13 @@ abstract interface class VineAny implements VineSchema {
 
   VineAny optional();
 }
+
+abstract interface class VineEnumerable<T> {
+  T get value;
+}
+
+abstract interface class VineEnum implements VineSchema {
+  VineEnum nullable();
+
+  VineEnum optional();
+}

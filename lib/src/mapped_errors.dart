@@ -26,4 +26,5 @@ final mappedErrors = {
   'double': 'The field {name} must be a double.',
   'integer': 'The field {name} must be an integer.',
   'boolean': 'The field {name} must be a boolean.',
+  'enum': 'The field {name} must be one of {values}.',
 };

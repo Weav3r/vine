@@ -3,10 +3,12 @@ import 'package:vine/src/contracts/vine.dart';
 import 'package:vine/src/error_reporter.dart';
 import 'package:vine/src/rules/any_rule.dart';
 import 'package:vine/src/rules/boolean_rule.dart';
+import 'package:vine/src/rules/enum_rule.dart';
 import 'package:vine/src/rules/number_rule.dart';
 import 'package:vine/src/rules/string_rule.dart';
 import 'package:vine/src/schema/any_schema.dart';
 import 'package:vine/src/schema/boolean_schema.dart';
+import 'package:vine/src/schema/enum_schema.dart';
 import 'package:vine/src/schema/number_schema.dart';
 import 'package:vine/src/schema/string_schema.dart';
 
@@ -39,6 +41,13 @@ final class Vine {
 
     rules.add(anyRuleHandler);
     return VineAnySchema(rules);
+  }
+
+  VineEnum enumerate<T extends VineEnumerable>(List<T> source) {
+    final List<ParseHandler> rules = [];
+
+    rules.add((field) => enumRuleHandler<T>(field, source));
+    return VineEnumSchema(rules);
   }
 
   Validator compile(Map<String, VineSchema> properties, {Map<String, String> errors = const {}}) {
