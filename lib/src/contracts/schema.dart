@@ -4,33 +4,41 @@ abstract interface class VineSchema<T extends ErrorReporter> {
   FieldContext parse(T errorReporter, ValidatorContract validator, String key, dynamic value);
 }
 
-enum IpAddressVersion { all, v4, v6 }
+enum IpAddressVersion {
+  v4(4),
+  v6(6);
 
-abstract interface class StringSchemaContract implements VineSchema {
-  StringSchemaContract minLength(int value, {String? message});
+  final int value;
 
-  StringSchemaContract maxLength(int value, {String? message});
-
-  StringSchemaContract email({String? message});
-
-  StringSchemaContract phone({String? message});
-
-  StringSchemaContract ipAddress(
-      {IpAddressVersion version = IpAddressVersion.all, String? message});
-
-  StringSchemaContract url({String? message});
-
-  StringSchemaContract alpha(
-      {bool allowSpaces = false,
-        bool allowDashes = false,
-        bool allowUnderscores = false,
-        String? message});
-
-  StringSchemaContract nullable();
-
-  StringSchemaContract optional();
+  const IpAddressVersion(this.value);
 }
 
-abstract interface class NumberSchemaContract implements VineSchema {
-  NumberSchemaContract range(List<int> values, {String? message});
+abstract interface class VineString implements VineSchema {
+  VineString minLength(int value, {String? message});
+
+  VineString maxLength(int value, {String? message});
+
+  VineString email({String? message});
+
+  VineString phone({String? message});
+
+  VineString ipAddress({IpAddressVersion? version, String? message});
+
+  VineString url({String? message});
+
+  VineString alpha({String? message});
+
+  VineString alphanumeric({String? message});
+
+  VineString nullable();
+
+  VineString optional();
+}
+
+abstract interface class VineNumber implements VineSchema {
+  VineNumber range(List<int> values, {String? message});
+
+  VineNumber nullable();
+
+  VineNumber optional();
 }

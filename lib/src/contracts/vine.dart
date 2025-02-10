@@ -22,6 +22,8 @@ abstract interface class FieldContext<T extends ErrorReporter> {
   T get errorReporter;
   ValidatorContract get validator;
   Function get next;
+
+  void overrideValue(dynamic value);
 }
 
 typedef ParseHandler = void Function(FieldContext);

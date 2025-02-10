@@ -10,4 +10,5 @@ final mappedErrors = {
   'alpha': 'The field {name} must contain only alphabetic characters.',
   'minLength': 'The field {name} must be at least {min} characters long.',
   'maxLength': 'The field {name} must be at most {max} characters long.',
+  'range': 'The field {name} must be between {values}.',
 };
