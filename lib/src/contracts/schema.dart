@@ -73,7 +73,19 @@ abstract interface class VineString implements VineSchema {
 }
 
 abstract interface class VineNumber implements VineSchema {
-  VineNumber range(List<int> values, {String? message});
+  VineNumber range(List<num> values, {String? message});
+
+  VineNumber min(num value, {String? message});
+
+  VineNumber max(num value, {String? message});
+
+  VineNumber negative({String? message});
+
+  VineNumber positive({String? message});
+
+  VineNumber double({String? message});
+
+  VineNumber integer({String? message});
 
   VineNumber nullable();
 

@@ -7,8 +7,44 @@ final class VineNumberSchema extends RuleParser implements VineNumber {
   VineNumberSchema(super._rules);
 
   @override
-  VineNumber range(List<int> values, {String? message}) {
+  VineNumber range(List<num> values, {String? message}) {
     super.addRule((field) => rangeRuleHandler(field, values, message));
+    return this;
+  }
+
+  @override
+  VineNumber min(num value, {String? message}) {
+    super.addRule((field) => minRuleHandler(field, value, message));
+    return this;
+  }
+
+  @override
+  VineNumber max(num value, {String? message}) {
+    super.addRule((field) => maxRuleHandler(field, value, message));
+    return this;
+  }
+
+  @override
+  VineNumber negative({String? message}) {
+    super.addRule((field) => negativeRuleHandler(field, message));
+    return this;
+  }
+
+  @override
+  VineNumber positive({String? message}) {
+    super.addRule((field) => positiveRuleHandler(field, message));
+    return this;
+  }
+
+  @override
+  VineNumber double({String? message}) {
+    super.addRule((field) => doubleRuleHandler(field, message));
+    return this;
+  }
+
+  @override
+  VineNumber integer({String? message}) {
+    super.addRule((field) => isIntegerRuleHandler(field, message));
     return this;
   }
 
