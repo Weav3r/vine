@@ -1,11 +1,5 @@
 import 'package:vine/src/contracts/vine.dart';
 
-abstract interface class ValidatorRule {
-  VineString string({String? message});
-  VineNumber number({String? message});
-  VineBoolean boolean({String? message});
-}
-
 abstract interface class VineSchema<T extends ErrorReporter> {
   FieldContext parse(T errorReporter, ValidatorContract validator, String key, dynamic value);
 }
@@ -94,8 +88,13 @@ abstract interface class VineNumber implements VineSchema {
 }
 
 abstract interface class VineBoolean implements VineSchema {
-
   VineBoolean nullable();
 
   VineBoolean optional();
+}
+
+abstract interface class VineAny implements VineSchema {
+  VineAny nullable();
+
+  VineAny optional();
 }

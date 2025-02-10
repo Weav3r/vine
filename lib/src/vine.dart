@@ -1,9 +1,11 @@
 import 'package:vine/src/contracts/schema.dart';
 import 'package:vine/src/contracts/vine.dart';
 import 'package:vine/src/error_reporter.dart';
+import 'package:vine/src/rules/any_rule.dart';
 import 'package:vine/src/rules/boolean_rule.dart';
 import 'package:vine/src/rules/number_rule.dart';
 import 'package:vine/src/rules/string_rule.dart';
+import 'package:vine/src/schema/any_schema.dart';
 import 'package:vine/src/schema/boolean_schema.dart';
 import 'package:vine/src/schema/number_schema.dart';
 import 'package:vine/src/schema/string_schema.dart';
@@ -30,6 +32,13 @@ final class Vine {
 
     rules.add((metadata) => booleanRuleHandler(metadata, message));
     return VineBooleanSchema(rules);
+  }
+
+  VineAny any() {
+    final List<ParseHandler> rules = [];
+
+    rules.add(anyRuleHandler);
+    return VineAnySchema(rules);
   }
 
   Validator compile(Map<String, VineSchema> properties, {Map<String, String> errors = const {}}) {
