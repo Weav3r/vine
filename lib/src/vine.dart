@@ -29,23 +29,25 @@ final class Vine {
 
   Map<String, dynamic> validate(Map<String, dynamic> data, Validator validator) {
     final reporter = errorReporter(validator.errors);
-    final List<FieldContext> fields = [];
+
+    validator.data.clear();
+    validator.data.addAll(data);
 
     for (final property in validator._properties.entries) {
       final value = data.containsKey(property.key) ? data[property.key] : MissingValue();
       final schema = property.value;
 
       final FieldContext field = schema.parse(reporter, validator, property.key, value);
-      fields.add(field);
+      validator.data[property.key] = field.value;
     }
 
     if (reporter.hasError) {
       throw reporter.createError({'errors': reporter.errors});
     }
 
-    return fields.fold({}, (acc, field) {
+    return validator.data.entries.fold({}, (acc, field) {
       if (field.value is! MissingValue) {
-        acc[field.name] = field.value;
+        acc[field.key] = field.value;
       }
       return acc;
     });
@@ -54,8 +56,12 @@ final class Vine {
 
 final class Validator implements ValidatorContract {
   final Vine _vine;
+
   final Map<String, VineSchema> _properties;
   final Map<String, String> errors;
+
+  @override
+  final Map<String, dynamic> data = {};
 
   Validator(this._vine, this._properties, this.errors);
 

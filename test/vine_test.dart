@@ -26,4 +26,21 @@ void main() {
 
     expect(data, {...payload, 'age': 20});
   });
+
+  test('confirmed rule', () {
+    final validator = vine.compile({
+      'password': vine.string().minLength(3).maxLength(255).confirmed(),
+    });
+
+    const payload = {
+      'password': '123456789',
+    };
+
+    final data = vine.validate({
+      ...payload,
+      'password_confirmation': '123456789',
+    }, validator);
+
+    expect(data, payload);
+  });
 }

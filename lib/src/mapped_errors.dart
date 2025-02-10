@@ -11,4 +11,8 @@ final mappedErrors = {
   'minLength': 'The field {name} must be at least {min} characters long.',
   'maxLength': 'The field {name} must be at most {max} characters long.',
   'range': 'The field {name} must be between {values}.',
+  'missingProperty': 'The field {name} is required.',
+  'confirmed': 'The field {name} and {attemptedName}.',
+  'uuid': 'The field {name} must be a valid UUID.',
+  'creditCard': 'The field {name} must be a valid credit card number.',
 };

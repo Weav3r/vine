@@ -19,6 +19,12 @@ final class VineStringSchema extends RuleParser implements VineString {
   }
 
   @override
+  VineString fixedLength(int value, {String? message}) {
+    super.addRule((field) => fixedLengthRuleHandler(field, value, message));
+    return this;
+  }
+
+  @override
   VineString email({String? message}) {
     super.addRule((field) => emailRuleHandler(field, message));
     return this;
@@ -49,20 +55,74 @@ final class VineStringSchema extends RuleParser implements VineString {
   }
 
   @override
-  VineString alpha(
-      {String? message}) {
-    super.addRule(
-        (field) => alphaRuleHandler(field, message),
-        position: 0);
+  VineString alpha({String? message}) {
+    super.addRule((field) => alphaRuleHandler(field, message), position: 0);
     return this;
   }
 
   @override
-  VineString alphanumeric(
-      {String? message}) {
-    super.addRule(
-            (field) => alphanumericRuleHandler(field, message),
-        position: 0);
+  VineString alphaNumeric({String? message}) {
+    super.addRule((field) => alphaNumericRuleHandler(field, message), position: 0);
+    return this;
+  }
+
+  @override
+  VineString startWith(String value, {String? message}) {
+    super.addRule((field) => startWithRuleHandler(field, value, message));
+    return this;
+  }
+
+  @override
+  VineString endWith(String value, {String? message}) {
+    super.addRule((field) => endWithRuleHandler(field, value, message));
+    return this;
+  }
+
+  @override
+  VineString confirmed({String? property, bool include = false, String? message}) {
+    super.addRule((field) => confirmedRuleHandler(field, property, include, message));
+    return this;
+  }
+
+  @override
+  VineString trim() {
+    super.addRule(trimRuleHandler);
+    return this;
+  }
+
+  @override
+  VineString normalizeEmail({bool lowercase = true}) {
+    super.addRule((field) => normalizeEmailRuleHandler(field, lowercase));
+    return this;
+  }
+
+  @override
+  VineString toUpperCase() {
+    super.addRule(toUpperCaseRuleHandler);
+    return this;
+  }
+
+  @override
+  VineString toLowerCase() {
+    super.addRule(toUpperCaseRuleHandler);
+    return this;
+  }
+
+  @override
+  VineString toCamelCase() {
+    super.addRule(toCamelCaseRuleHandler);
+    return this;
+  }
+
+  @override
+  VineString uuid({UuidVersion? version, String? message}) {
+    super.addRule((field) => uuidRuleHandler(field, version, message));
+    return this;
+  }
+
+  @override
+  VineString isCreditCard({String? message}) {
+    super.addRule((field) => isCreditCodeRuleHandler(field, message));
     return this;
   }
 

@@ -35,6 +35,17 @@ void maxLengthRuleHandler(FieldContext field, int maxValue, String? message) {
   field.next();
 }
 
+void fixedLengthRuleHandler(FieldContext field, int count, String? message) {
+  if (field.value case String value when value.length != count) {
+    final error = field.errorReporter.format('fixedLength', field, message, {
+      'length': count,
+    });
+    field.errorReporter.report('fixedLength', field.name, error);
+  }
+
+  field.next();
+}
+
 void emailRuleHandler(FieldContext field, String? message) {
   if (field.value case String value when !value.isEmail) {
     final error = field.errorReporter.format('email', field, message, {});
@@ -111,10 +122,117 @@ void alphaRuleHandler(FieldContext field, String? message) {
   field.next();
 }
 
-void alphanumericRuleHandler(FieldContext field, String? message) {
+void alphaNumericRuleHandler(FieldContext field, String? message) {
   if (field.value case String value when !value.isAlphanumeric) {
     final error = field.errorReporter.format('alphaNumeric', field, message, {});
     field.errorReporter.report('alphaNumeric', field.name, error);
+  }
+
+  field.next();
+}
+
+void startWithRuleHandler(FieldContext field, String attemptedValue, String? message) {
+  if (field.value case String value when value.startsWith(attemptedValue)) {
+    final error =
+        field.errorReporter.format('startWith', field, message, {'value': attemptedValue});
+    field.errorReporter.report('startWith', field.name, error);
+  }
+
+  field.next();
+}
+
+void endWithRuleHandler(FieldContext field, String attemptedValue, String? message) {
+  if (field.value case String value when value.endsWith(attemptedValue)) {
+    final error = field.errorReporter.format('endWith', field, message, {'value': attemptedValue});
+    field.errorReporter.report('endWith', field.name, error);
+  }
+
+  field.next();
+}
+
+void confirmedRuleHandler(FieldContext field, String? targetField, bool include, String? message) {
+  final confirmedKey = targetField ?? '${field.name}_confirmation';
+  final hasKey = field.validator.data.containsKey(confirmedKey);
+
+  if (!hasKey) {
+    final error =
+        field.errorReporter.format('missingProperty', field, message, {'field': confirmedKey});
+    field.errorReporter.report('missingProperty', field.name, error);
+  }
+
+  final currentValue = field.validator.data[confirmedKey];
+  if (field.value case String value when value != currentValue) {
+    final error =
+        field.errorReporter.format('confirmed', field, message, {'attemptedName': confirmedKey});
+    field.errorReporter.report('confirmed', field.name, error);
+  }
+
+  if (!include) {
+    field.validator.data.remove(confirmedKey);
+  }
+
+  field.next();
+}
+
+void trimRuleHandler(FieldContext field) {
+  if (field.value case String value) {
+    field.mutate(value.trim());
+  }
+
+  field.next();
+}
+
+void normalizeEmailRuleHandler(FieldContext field, bool lowerCase) {
+  if (field.value case String value) {
+    field.mutate(value.normalizeEmail({
+      'lowercase': lowerCase,
+    }));
+  }
+
+  field.next();
+}
+
+void toUpperCaseRuleHandler(FieldContext field) {
+  if (field.value case String value) {
+    field.mutate(value.toUpperCase());
+  }
+
+  field.next();
+}
+
+void toLowerCaseRuleHandler(FieldContext field) {
+  if (field.value case String value) {
+    field.mutate(value.toLowerCase());
+  }
+
+  field.next();
+}
+
+void toCamelCaseRuleHandler(FieldContext field) {
+  if (field.value case String value) {
+    field.mutate(value.escape());
+  }
+
+  field.next();
+}
+
+void uuidRuleHandler(FieldContext field, UuidVersion? version, String? message) {
+  if (field.value case String value when value.isUUID()) {
+    final error = field.errorReporter.format('uuid', field, message, {
+      'version': version ?? UuidVersion.values.toList(),
+    });
+
+    field.errorReporter.report('uuid', field.name, error);
+  }
+
+  field.next();
+}
+
+void isCreditCodeRuleHandler(FieldContext field, String? message) {
+  if (field.value case String value when !value.isCreditCard) {
+    final error = field.errorReporter.format('creditCard', field, message, {});
+
+    field.errorReporter.report('creditCard', field.name, error);
   }
 
   field.next();

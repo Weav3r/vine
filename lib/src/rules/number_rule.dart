@@ -11,7 +11,7 @@ void numberRuleHandler(FieldContext field, String? message) {
     final error = field.errorReporter.format('number', field, message, {});
     field.errorReporter.report('number', field.name, error);
   } else {
-    field.overrideValue(value);
+    field.mutate(value);
   }
 
   field.next();
