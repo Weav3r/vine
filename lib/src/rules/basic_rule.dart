@@ -7,7 +7,7 @@ void nullableRuleHandler(FieldContext field) {
 }
 
 void optionalRuleHandler(FieldContext field) {
-  if (field.value == null && field.value is! MissingValue) {
+  if (field.value is! MissingValue) {
     field.next();
   }
 }
