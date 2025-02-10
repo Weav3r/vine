@@ -104,7 +104,7 @@ final class VineStringSchema extends RuleParser implements VineString {
 
   @override
   VineString toLowerCase() {
-    super.addRule(toUpperCaseRuleHandler);
+    super.addRule(toLowerCaseRuleHandler);
     return this;
   }
 

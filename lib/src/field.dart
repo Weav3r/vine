@@ -20,6 +20,7 @@ final class Field<T extends ErrorReporter> implements FieldContext<T> {
 
   @override
   void mutate(dynamic value) {
+    validator.data[name] = value;
     this.value = value;
   }
 }

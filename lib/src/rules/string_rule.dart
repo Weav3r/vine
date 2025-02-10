@@ -132,7 +132,7 @@ void alphaNumericRuleHandler(FieldContext field, String? message) {
 }
 
 void startWithRuleHandler(FieldContext field, String attemptedValue, String? message) {
-  if (field.value case String value when value.startsWith(attemptedValue)) {
+  if (field.value case String value when !value.startsWith(attemptedValue)) {
     final error =
         field.errorReporter.format('startWith', field, message, {'value': attemptedValue});
     field.errorReporter.report('startWith', field.name, error);
@@ -142,7 +142,7 @@ void startWithRuleHandler(FieldContext field, String attemptedValue, String? mes
 }
 
 void endWithRuleHandler(FieldContext field, String attemptedValue, String? message) {
-  if (field.value case String value when value.endsWith(attemptedValue)) {
+  if (field.value case String value when !value.endsWith(attemptedValue)) {
     final error = field.errorReporter.format('endWith', field, message, {'value': attemptedValue});
     field.errorReporter.report('endWith', field.name, error);
   }
@@ -210,14 +210,21 @@ void toLowerCaseRuleHandler(FieldContext field) {
 
 void toCamelCaseRuleHandler(FieldContext field) {
   if (field.value case String value) {
-    field.mutate(value.escape());
+    final parts = value.replaceAll('_', ' ').replaceAll('-', ' ').split(' ');
+
+    final content = [
+      parts.first.toLowerCase(),
+      ...parts.skip(1).map((part) => '${part[0].toUpperCase()}${part.substring(1).toLowerCase()}')
+    ].join('');
+
+    field.mutate(content);
   }
 
   field.next();
 }
 
 void uuidRuleHandler(FieldContext field, UuidVersion? version, String? message) {
-  if (field.value case String value when value.isUUID()) {
+  if (field.value case String value when !value.isUUID()) {
     final error = field.errorReporter.format('uuid', field, message, {
       'version': version ?? UuidVersion.values.toList(),
     });
