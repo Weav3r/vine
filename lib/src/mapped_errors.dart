@@ -24,5 +24,5 @@ final mappedErrors = {
   'min': 'The field {name} must be at least {min}.',
   'max': 'The field {name} must be at most {max}.',
   'double': 'The field {name} must be a double.',
-  'int': 'The field {name} must be an integer.',
+  'integer': 'The field {name} must be an integer.',
 };

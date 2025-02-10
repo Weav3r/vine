@@ -44,7 +44,7 @@ final class VineNumberSchema extends RuleParser implements VineNumber {
 
   @override
   VineNumber integer({String? message}) {
-    super.addRule((field) => isIntegerRuleHandler(field, message));
+    super.addRule((field) => integerRuleHandler(field, message));
     return this;
   }
 

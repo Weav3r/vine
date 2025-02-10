@@ -4,6 +4,7 @@ void numberRuleHandler(FieldContext field, String? message) {
   final value = switch (field.value) {
     String() => num.tryParse(field.value),
     int() => field.value,
+    double() => field.value,
     _ => null,
   };
 
@@ -18,7 +19,7 @@ void numberRuleHandler(FieldContext field, String? message) {
 }
 
 void minRuleHandler(FieldContext field, num minValue, String? message) {
-  if (field.value < minValue) {
+  if (field.value case num value when value.isNegative || value < minValue) {
     final error = field.errorReporter.format('min', field, message, {
       'min': minValue,
     });
@@ -30,7 +31,7 @@ void minRuleHandler(FieldContext field, num minValue, String? message) {
 }
 
 void maxRuleHandler(FieldContext field, num maxValue, String? message) {
-  if (field.value > maxValue) {
+  if (field.value case num value when value.isNegative || value > maxValue) {
     final error = field.errorReporter.format('max', field, message, {
       'max': maxValue,
     });
@@ -42,7 +43,7 @@ void maxRuleHandler(FieldContext field, num maxValue, String? message) {
 }
 
 void rangeRuleHandler(FieldContext field, List<num> values, String? message) {
-  if (!values.contains(field.value)) {
+  if (field.value case num value when !values.contains(value)) {
     final error = field.errorReporter.format('range', field, message, {
       'values': values,
     });
@@ -54,7 +55,7 @@ void rangeRuleHandler(FieldContext field, List<num> values, String? message) {
 }
 
 void negativeRuleHandler(FieldContext field, String? message) {
-  if (field.value >= 0) {
+  if (field.value case num value when !value.isNegative) {
     final error = field.errorReporter.format('negative', field, message, {});
     field.errorReporter.report('negative', field.name, error);
   }
@@ -63,7 +64,7 @@ void negativeRuleHandler(FieldContext field, String? message) {
 }
 
 void positiveRuleHandler(FieldContext field, String? message) {
-  if (field.value < 0) {
+  if (field.value case num value when value.isNegative) {
     final error = field.errorReporter.format('positive', field, message, {});
     field.errorReporter.report('positive', field.name, error);
   }
@@ -72,18 +73,19 @@ void positiveRuleHandler(FieldContext field, String? message) {
 }
 
 void doubleRuleHandler(FieldContext field, String? message) {
+
   if (field.value case num value when value is! double) {
     final error = field.errorReporter.format('double', field, message, {});
-    field.errorReporter.report('float', field.name, error);
+    field.errorReporter.report('double', field.name, error);
   }
 
   field.next();
 }
 
-void isIntegerRuleHandler(FieldContext field, String? message) {
+void integerRuleHandler(FieldContext field, String? message) {
   if (field.value case num value when value is! int) {
-    final error = field.errorReporter.format('int', field, message, {});
-    field.errorReporter.report('int', field.name, error);
+    final error = field.errorReporter.format('integer', field, message, {});
+    field.errorReporter.report('integer', field.name, error);
   }
 
   field.next();
