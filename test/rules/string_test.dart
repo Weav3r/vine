@@ -1,8 +1,6 @@
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
-import 'package:vine/src/contracts/schema.dart';
-import 'package:vine/src/exceptions/validation_exception.dart';
-import 'package:vine/src/vine.dart';
+import 'package:vine/vine.dart';
 
 void main() {
   group('String validation', () {
