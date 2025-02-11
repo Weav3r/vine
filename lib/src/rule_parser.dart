@@ -1,30 +1,31 @@
 import 'package:vine/src/contracts/vine.dart';
 import 'package:vine/src/field.dart';
 
-class RuleParser {
-  final List<ParseHandler> _rules;
+abstract interface class RuleParserContract {
+  void addRule(ParseHandler rule, {int? position});
+}
 
-  RuleParser(this._rules);
+class RuleParser implements RuleParserContract {
+  final List<ParseHandler> rules;
 
+  RuleParser(this.rules);
+
+  @override
   void addRule(ParseHandler rule, {int? position}) {
     if (position != null) {
-      addRuleAt(position, rule);
+      rules.insert(position, rule);
       return;
     }
 
-    _rules.add(rule);
-  }
-
-  void addRuleAt(int index, ParseHandler rule) {
-    _rules.insert(index, rule);
+    rules.add(rule);
   }
 
   FieldContext parse(ErrorReporter errorReporter, ValidatorContract validator, String key, dynamic value) {
     final context = Field(key, value, errorReporter, validator);
     void next(int index) {
-      if (index < _rules.length) {
+      if (index < rules.length) {
         context.next = () => next(index + 1);
-        _rules[index](context);
+        rules[index](context);
       }
     }
 

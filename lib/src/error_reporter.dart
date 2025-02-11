@@ -6,7 +6,7 @@ class SimpleErrorReporter implements ErrorReporter {
   final Map<String, String> _errorMessages;
 
   @override
-  final Map<String, Map<String, String>> errors = {};
+  final Map<String, Map<String, Object>> errors = {};
 
   SimpleErrorReporter(this._errorMessages);
 
@@ -27,7 +27,11 @@ class SimpleErrorReporter implements ErrorReporter {
   @override
   void report(String rule, String field, String message) {
     hasError = true;
-    errors.putIfAbsent(field, () => {}).putIfAbsent(rule, () => message);
+    errors.putIfAbsent(field, () => {
+      'key': field,
+      'rule': rule,
+      'message': message
+    });
   }
 
   @override

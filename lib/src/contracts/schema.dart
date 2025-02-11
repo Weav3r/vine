@@ -108,3 +108,9 @@ abstract interface class VineEnum implements VineSchema {
 
   VineEnum optional();
 }
+
+abstract interface class VineArray implements VineSchema {
+  VineArray nullable();
+
+  VineArray optional();
+}

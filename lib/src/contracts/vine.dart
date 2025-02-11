@@ -1,5 +1,5 @@
 abstract interface class ErrorReporter {
-  Map<String, Map<String, String>> get errors;
+  Map<String, Map<String, Object>> get errors;
 
   bool get hasError;
 

@@ -2,11 +2,13 @@ import 'package:vine/src/contracts/schema.dart';
 import 'package:vine/src/contracts/vine.dart';
 import 'package:vine/src/error_reporter.dart';
 import 'package:vine/src/rules/any_rule.dart';
+import 'package:vine/src/rules/array_rule.dart';
 import 'package:vine/src/rules/boolean_rule.dart';
 import 'package:vine/src/rules/enum_rule.dart';
 import 'package:vine/src/rules/number_rule.dart';
 import 'package:vine/src/rules/string_rule.dart';
 import 'package:vine/src/schema/any_schema.dart';
+import 'package:vine/src/schema/array_schema.dart';
 import 'package:vine/src/schema/boolean_schema.dart';
 import 'package:vine/src/schema/enum_schema.dart';
 import 'package:vine/src/schema/number_schema.dart';
@@ -50,6 +52,13 @@ final class Vine {
     return VineEnumSchema(rules);
   }
 
+  VineArray array(VineSchema schema) {
+    final List<ParseHandler> rules = [];
+
+    rules.add((field) => arrayRuleHandler(field, rules, schema));
+    return VineArraySchema(rules);
+  }
+
   Validator compile(Map<String, VineSchema> properties, {Map<String, String> errors = const {}}) {
     return Validator(this, properties, errors);
   }
@@ -65,7 +74,11 @@ final class Vine {
       final schema = property.value;
 
       final FieldContext field = schema.parse(reporter, validator, property.key, value);
-      validator.data[property.key] = field.value;
+
+      if (field.value case List<FieldContext> values) {
+        field.mutate(values.map((ctx) => ctx.value).toList());
+        validator.data[property.key] = field.value;
+      }
     }
 
     if (reporter.hasError) {

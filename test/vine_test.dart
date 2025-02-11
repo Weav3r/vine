@@ -3,6 +3,7 @@ import './rules/number_test.dart' as number_test;
 import './rules/boolean_test.dart' as boolean_test;
 import './rules/any_test.dart' as any_test;
 import './rules/enum_test.dart' as enum_test;
+import './rules/array_test.dart' as array_test;
 
 void main() {
   string_test.main();
@@ -10,4 +11,5 @@ void main() {
   boolean_test.main();
   any_test.main();
   enum_test.main();
+  array_test.main();
 }

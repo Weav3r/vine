@@ -27,4 +27,5 @@ final mappedErrors = {
   'integer': 'The field {name} must be an integer.',
   'boolean': 'The field {name} must be a boolean.',
   'enum': 'The field {name} must be one of {values}.',
+  'array': 'The field {name} must be an array.',
 };
