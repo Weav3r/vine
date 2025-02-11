@@ -77,7 +77,6 @@ final class Vine {
 
       if (field.value case List<FieldContext> values) {
         field.mutate(values.map((ctx) => ctx.value).toList());
-        validator.data[property.key] = field.value;
       }
     }
 
