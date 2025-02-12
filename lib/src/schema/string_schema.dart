@@ -1,6 +1,5 @@
 import 'package:vine/src/contracts/schema.dart';
 import 'package:vine/src/rule_parser.dart';
-import 'package:vine/src/rules/basic_rule.dart';
 import 'package:vine/src/rules/string_rule.dart';
 
 final class VineStringSchema extends RuleParser implements VineString {
@@ -56,13 +55,13 @@ final class VineStringSchema extends RuleParser implements VineString {
 
   @override
   VineString alpha({String? message}) {
-    super.addRule((field) => alphaRuleHandler(field, message), position: 0);
+    super.addRule((field) => alphaRuleHandler(field, message));
     return this;
   }
 
   @override
   VineString alphaNumeric({String? message}) {
-    super.addRule((field) => alphaNumericRuleHandler(field, message), position: 0);
+    super.addRule((field) => alphaNumericRuleHandler(field, message));
     return this;
   }
 
@@ -128,13 +127,13 @@ final class VineStringSchema extends RuleParser implements VineString {
 
   @override
   VineString nullable() {
-    super.addRule(nullableRuleHandler, position: 0);
+    super.isNullable = true;
     return this;
   }
 
   @override
   VineString optional() {
-    super.addRule(optionalRuleHandler, position: 0);
+    super.isOptional = true;
     return this;
   }
 }

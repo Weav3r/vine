@@ -6,12 +6,15 @@ class SimpleErrorReporter implements ErrorReporter {
   final Map<String, String> _errorMessages;
 
   @override
-  final Map<String, Map<String, Object>> errors = {};
+  final List<Map<String, Object>> errors = [];
 
   SimpleErrorReporter(this._errorMessages);
 
   @override
   bool hasError = false;
+
+  @override
+  bool hasErrorForField(String fieldName) => errors.any((element) => element['field'] == fieldName);
 
   @override
   String format(String rule, FieldContext field, String? message, Map<String, dynamic> options) {
@@ -21,17 +24,15 @@ class SimpleErrorReporter implements ErrorReporter {
       content = content.replaceAll('{${element.key}}', element.value.toString());
     }
 
-    return content.replaceAll('{name}', field.name).replaceAll('{value}', field.value.toString());
+    return content
+        .replaceAll('{name}', field.name)
+        .replaceAll('{value}', field.value.toString());
   }
 
   @override
-  void report(String rule, String field, String message) {
+  void report(String rule, List<String> keys, String message) {
     hasError = true;
-    errors.putIfAbsent(field, () => {
-      'key': field,
-      'rule': rule,
-      'message': message
-    });
+    errors.add({'message': message, 'rule': rule, 'field': keys.join('.')});
   }
 
   @override

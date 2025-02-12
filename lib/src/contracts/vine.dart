@@ -1,31 +1,33 @@
 abstract interface class ErrorReporter {
-  Map<String, Map<String, Object>> get errors;
+  List<Map<String, Object>> get errors;
 
   bool get hasError;
 
+  bool hasErrorForField(String fieldName);
+
   String format(String rule, FieldContext field, String? message, Map<String, dynamic> options);
 
-  void report(String rule, String field, String message);
+  void report(String rule, List<String> keys, String message);
 
   Exception createError(Object message);
 }
 
 abstract interface class ValidatorContract {
-  Map<String, dynamic> get data;
-
   void validate(Map<String, dynamic> data);
 }
 
 abstract interface class FieldContext<T extends ErrorReporter> {
-  String get name;
+  abstract String name;
 
-  dynamic get value;
+  dynamic value;
+
+  final List<String> customKeys = [];
 
   T get errorReporter;
 
-  ValidatorContract get validator;
+  Map<String, dynamic> get data;
 
-  Function get next;
+  abstract bool canBeContinue;
 
   void mutate(dynamic value);
 }

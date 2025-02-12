@@ -1,108 +1,100 @@
+import 'dart:collection';
+
 import 'package:vine/src/contracts/schema.dart';
 import 'package:vine/src/contracts/vine.dart';
 import 'package:vine/src/error_reporter.dart';
+import 'package:vine/src/field.dart';
 import 'package:vine/src/rules/any_rule.dart';
 import 'package:vine/src/rules/array_rule.dart';
 import 'package:vine/src/rules/boolean_rule.dart';
 import 'package:vine/src/rules/enum_rule.dart';
 import 'package:vine/src/rules/number_rule.dart';
+import 'package:vine/src/rules/object_rule.dart';
 import 'package:vine/src/rules/string_rule.dart';
 import 'package:vine/src/schema/any_schema.dart';
 import 'package:vine/src/schema/array_schema.dart';
 import 'package:vine/src/schema/boolean_schema.dart';
 import 'package:vine/src/schema/enum_schema.dart';
 import 'package:vine/src/schema/number_schema.dart';
+import 'package:vine/src/schema/object_schema.dart';
 import 'package:vine/src/schema/string_schema.dart';
 
 final class Vine {
   ErrorReporter Function(Map<String, String> errors) errorReporter = SimpleErrorReporter.new;
 
-  VineString string({String? message}) {
-    final List<ParseHandler> rules = [];
+  VineObject object(Map<String, VineSchema> payload, {String? message}) {
+    final Queue<ParseHandler> rules = Queue();
+    rules.add((field) => objectRuleHandler(field, payload, message));
+    return VineObjectSchema(rules);
+  }
 
-    rules.add((metadata) => stringRuleHandler(metadata, message));
+  VineString string({String? message}) {
+    final Queue<ParseHandler> rules = Queue();
+    rules.add((field) => stringRuleHandler(field, message));
     return VineStringSchema(rules);
   }
 
   VineNumber number({String? message}) {
-    final List<ParseHandler> rules = [];
+    final Queue<ParseHandler> rules = Queue();
 
     rules.add((metadata) => numberRuleHandler(metadata, message));
     return VineNumberSchema(rules);
   }
 
   VineBoolean boolean({String? message}) {
-    final List<ParseHandler> rules = [];
+    final Queue<ParseHandler> rules = Queue();
 
     rules.add((metadata) => booleanRuleHandler(metadata, message));
     return VineBooleanSchema(rules);
   }
 
   VineAny any() {
-    final List<ParseHandler> rules = [];
+    final Queue<ParseHandler> rules = Queue();
 
     rules.add(anyRuleHandler);
     return VineAnySchema(rules);
   }
 
   VineEnum enumerate<T extends VineEnumerable>(List<T> source) {
-    final List<ParseHandler> rules = [];
+    final Queue<ParseHandler> rules = Queue();
 
     rules.add((field) => enumRuleHandler<T>(field, source));
     return VineEnumSchema(rules);
   }
 
   VineArray array(VineSchema schema) {
-    final List<ParseHandler> rules = [];
+    final Queue<ParseHandler> rules = Queue();
 
-    rules.add((field) => arrayRuleHandler(field, rules, schema));
+    rules.add((field) => arrayRuleHandler(field, schema));
     return VineArraySchema(rules);
   }
 
-  Validator compile(Map<String, VineSchema> properties, {Map<String, String> errors = const {}}) {
-    return Validator(this, properties, errors);
+  Validator compile(VineSchema schema, {Map<String, String> errors = const {}}) {
+    return Validator(this, schema, errors);
   }
+
 
   Map<String, dynamic> validate(Map<String, dynamic> data, Validator validator) {
     final reporter = errorReporter(validator.errors);
 
-    validator.data.clear();
-    validator.data.addAll(data);
-
-    for (final property in validator._properties.entries) {
-      final value = data.containsKey(property.key) ? data[property.key] : MissingValue();
-      final schema = property.value;
-
-      final FieldContext field = schema.parse(reporter, validator, property.key, value);
-
-      if (field.value case List<FieldContext> values) {
-        field.mutate(values.map((ctx) => ctx.value).toList());
-      }
-    }
+    final fieldContext = Field('', data, reporter, data);
+    validator._schema.parse(reporter, fieldContext);
 
     if (reporter.hasError) {
       throw reporter.createError({'errors': reporter.errors});
     }
 
-    return validator.data.entries.fold({}, (acc, field) {
-      if (field.value is! MissingValue) {
-        acc[field.key] = field.value;
-      }
-      return acc;
-    });
+    return data;
   }
 }
 
 final class Validator implements ValidatorContract {
   final Vine _vine;
 
-  final Map<String, VineSchema> _properties;
+  final VineSchema _schema;
   final Map<String, String> errors;
 
-  @override
-  final Map<String, dynamic> data = {};
-
-  Validator(this._vine, this._properties, this.errors);
+  Validator(this._vine, this._schema, this.errors);
 
   @override
   void validate(Map<String, dynamic> data) {

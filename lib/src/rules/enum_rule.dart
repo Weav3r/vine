@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:vine/src/contracts/schema.dart';
 import 'package:vine/src/contracts/vine.dart';
 
@@ -12,8 +14,6 @@ void enumRuleHandler<T extends VineEnumerable>(FieldContext field, List<T> sourc
       'values': source.map((e) => e.value).toList(),
     });
 
-    field.errorReporter.report('enum', field.name, error);
+    field.errorReporter.report('enum', [...field.customKeys, field.name], error);
   }
-
-  field.next();
 }

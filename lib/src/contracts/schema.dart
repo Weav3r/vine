@@ -1,7 +1,7 @@
 import 'package:vine/src/contracts/vine.dart';
 
 abstract interface class VineSchema<T extends ErrorReporter> {
-  FieldContext parse(T errorReporter, ValidatorContract validator, String key, dynamic value);
+  FieldContext parse(T errorReporter, FieldContext field);
 }
 
 enum IpAddressVersion {
@@ -107,6 +107,12 @@ abstract interface class VineEnum implements VineSchema {
   VineEnum nullable();
 
   VineEnum optional();
+}
+
+abstract interface class VineObject implements VineSchema {
+  VineObject nullable();
+
+  VineObject optional();
 }
 
 abstract interface class VineArray implements VineSchema {

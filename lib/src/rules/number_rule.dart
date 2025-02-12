@@ -1,21 +1,27 @@
 import 'package:vine/src/contracts/vine.dart';
 
-void numberRuleHandler(FieldContext field, String? message) {
-  final value = switch (field.value) {
-    String() => num.tryParse(field.value),
-    int() => field.value,
-    double() => field.value,
-    _ => null,
-  };
+void handleNumberConversionError (FieldContext field, String? message) {
+  final error = field.errorReporter.format('number', field, message, {});
+  field.errorReporter.report('number', [...field.customKeys, field.name], error);
+}
 
-  if (value == null) {
-    final error = field.errorReporter.format('number', field, message, {});
-    field.errorReporter.report('number', field.name, error);
-  } else {
-    field.mutate(value);
+void numberRuleHandler(FieldContext field, String? message) {
+  final value = field.value;
+  if (value is num) {
+    return;
   }
 
-  field.next();
+  if (value is String) {
+    final parsed = num.tryParse(value);
+    if (parsed == null) {
+      handleNumberConversionError(field, message);
+      return;
+    }
+    field.mutate(parsed);
+    return;
+  }
+
+  handleNumberConversionError(field, message);
 }
 
 void minRuleHandler(FieldContext field, num minValue, String? message) {
@@ -24,10 +30,8 @@ void minRuleHandler(FieldContext field, num minValue, String? message) {
       'min': minValue,
     });
 
-    field.errorReporter.report('min', field.name, error);
+    field.errorReporter.report('min', [...field.customKeys, field.name], error);
   }
-
-  field.next();
 }
 
 void maxRuleHandler(FieldContext field, num maxValue, String? message) {
@@ -36,57 +40,45 @@ void maxRuleHandler(FieldContext field, num maxValue, String? message) {
       'max': maxValue,
     });
 
-    field.errorReporter.report('max', field.name, error);
+    field.errorReporter.report('max', [...field.customKeys, field.name], error);
   }
-
-  field.next();
 }
 
 void rangeRuleHandler(FieldContext field, List<num> values, String? message) {
-  if (field.value case num value when !values.contains(value)) {
+  if (!values.contains((field.value as num))) {
     final error = field.errorReporter.format('range', field, message, {
       'values': values,
     });
 
-    field.errorReporter.report('range', field.name, error);
+    field.errorReporter.report('range', [...field.customKeys, field.name], error);
   }
-
-  field.next();
 }
 
 void negativeRuleHandler(FieldContext field, String? message) {
   if (field.value case num value when !value.isNegative) {
     final error = field.errorReporter.format('negative', field, message, {});
-    field.errorReporter.report('negative', field.name, error);
+    field.errorReporter.report('negative', [...field.customKeys, field.name], error);
   }
-
-  field.next();
 }
 
 void positiveRuleHandler(FieldContext field, String? message) {
   if (field.value case num value when value.isNegative) {
     final error = field.errorReporter.format('positive', field, message, {});
-    field.errorReporter.report('positive', field.name, error);
+    field.errorReporter.report('positive', [...field.customKeys, field.name], error);
   }
-
-  field.next();
 }
 
 void doubleRuleHandler(FieldContext field, String? message) {
 
   if (field.value case num value when value is! double) {
     final error = field.errorReporter.format('double', field, message, {});
-    field.errorReporter.report('double', field.name, error);
+    field.errorReporter.report('double', [...field.customKeys, field.name], error);
   }
-
-  field.next();
 }
 
 void integerRuleHandler(FieldContext field, String? message) {
   if (field.value case num value when value is! int) {
     final error = field.errorReporter.format('integer', field, message, {});
-    field.errorReporter.report('integer', field.name, error);
+    field.errorReporter.report('integer', [...field.customKeys, field.name], error);
   }
-
-  field.next();
 }
