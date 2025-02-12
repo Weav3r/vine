@@ -23,8 +23,6 @@ void arrayRuleHandler(FieldContext field, VineSchema schema) {
 
       validatedValues.add(ctx.value);
     }
-
-    field.mutate(validatedValues);
     return;
   }
 

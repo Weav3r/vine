@@ -25,7 +25,7 @@ abstract interface class FieldContext<T extends ErrorReporter> {
 
   T get errorReporter;
 
-  Map<String, dynamic> get data;
+  Map get data;
 
   abstract bool canBeContinue;
 
