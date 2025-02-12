@@ -1,17 +1,13 @@
 name: vine
-description: A sample command-line application.
+description: Vine is a robust, typed validation library for Dart/Flutter, designed to simplify and secure data management in applications
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/LeadcodeDev/vine
 
 environment:
   sdk: ^3.5.3
 
-# Add regular dependencies here.
 dependencies:
   string_validator: ^1.1.0
-  benchmark_harness: ^2.3.1
-  benchmarking: ^0.6.1
-  # path: ^1.8.0
 
 dev_dependencies:
   lints: ^4.0.0
