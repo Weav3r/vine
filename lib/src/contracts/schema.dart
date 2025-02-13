@@ -1,7 +1,7 @@
 import 'package:vine/src/contracts/vine.dart';
 
 abstract interface class VineSchema<T extends ErrorReporter> {
-  FieldContext parse(T errorReporter, FieldContext field);
+  void parse(VineValidationContext ctx, FieldContext field);
 }
 
 enum IpAddressVersion {

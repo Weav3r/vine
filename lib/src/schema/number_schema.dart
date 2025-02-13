@@ -7,43 +7,43 @@ final class VineNumberSchema extends RuleParser implements VineNumber {
 
   @override
   VineNumber range(List<num> values, {String? message}) {
-    super.addRule((field) => rangeRuleHandler(field, values, message));
+    super.addRule((ctx, field) => rangeRuleHandler(ctx, field, values, message));
     return this;
   }
 
   @override
   VineNumber min(num value, {String? message}) {
-    super.addRule((field) => minRuleHandler(field, value, message));
+    super.addRule((ctx, field) => minRuleHandler(ctx, field, value, message));
     return this;
   }
 
   @override
   VineNumber max(num value, {String? message}) {
-    super.addRule((field) => maxRuleHandler(field, value, message));
+    super.addRule((ctx, field) => maxRuleHandler(ctx, field, value, message));
     return this;
   }
 
   @override
   VineNumber negative({String? message}) {
-    super.addRule((field) => negativeRuleHandler(field, message));
+    super.addRule((ctx, field) => negativeRuleHandler(ctx, field, message));
     return this;
   }
 
   @override
   VineNumber positive({String? message}) {
-    super.addRule((field) => positiveRuleHandler(field, message));
+    super.addRule((ctx, field) => positiveRuleHandler(ctx, field, message));
     return this;
   }
 
   @override
   VineNumber double({String? message}) {
-    super.addRule((field) => doubleRuleHandler(field, message));
+    super.addRule((ctx, field) => doubleRuleHandler(ctx, field, message));
     return this;
   }
 
   @override
   VineNumber integer({String? message}) {
-    super.addRule((field) => integerRuleHandler(field, message));
+    super.addRule((ctx, field) => integerRuleHandler(ctx, field, message));
     return this;
   }
 

@@ -16,22 +16,23 @@ abstract interface class ValidatorContract {
   void validate(Map<String, dynamic> data);
 }
 
-abstract interface class FieldContext<T extends ErrorReporter> {
-  abstract String name;
-
-  dynamic value;
-
-  final List<String> customKeys = [];
-
+abstract interface class VineValidationContext<T extends ErrorReporter> {
   T get errorReporter;
 
   Map get data;
+}
 
+abstract interface class FieldContext {
+  List<String> get customKeys;
+
+  abstract String name;
   abstract bool canBeContinue;
+
+  dynamic value;
 
   void mutate(dynamic value);
 }
 
-typedef ParseHandler = void Function(FieldContext);
+typedef ParseHandler = void Function(VineValidationContext, FieldContext);
 
 final class MissingValue {}

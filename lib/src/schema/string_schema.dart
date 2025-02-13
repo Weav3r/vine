@@ -7,37 +7,37 @@ final class VineStringSchema extends RuleParser implements VineString {
 
   @override
   VineString minLength(int value, {String? message}) {
-    super.addRule((field) => minLengthRuleHandler(field, value, message));
+    super.addRule((ctx, field) => minLengthRuleHandler(ctx, field, value, message));
     return this;
   }
 
   @override
   VineString maxLength(int value, {String? message}) {
-    super.addRule((field) => maxLengthRuleHandler(field, value, message));
+    super.addRule((ctx, field) => maxLengthRuleHandler(ctx, field, value, message));
     return this;
   }
 
   @override
   VineString fixedLength(int value, {String? message}) {
-    super.addRule((field) => fixedLengthRuleHandler(field, value, message));
+    super.addRule((ctx, field) => fixedLengthRuleHandler(ctx, field, value, message));
     return this;
   }
 
   @override
   VineString email({String? message}) {
-    super.addRule((field) => emailRuleHandler(field, message));
+    super.addRule((ctx, field) => emailRuleHandler(ctx, field, message));
     return this;
   }
 
   @override
   VineString phone({String? message}) {
-    super.addRule((field) => phoneRuleHandler(field, message));
+    super.addRule((ctx, field) => phoneRuleHandler(ctx, field, message));
     return this;
   }
 
   @override
   VineString ipAddress({IpAddressVersion? version, String? message}) {
-    super.addRule((field) => ipAddressRuleHandler(field, version, message));
+    super.addRule((ctx, field) => ipAddressRuleHandler(ctx, field, version, message));
     return this;
   }
 
@@ -48,38 +48,38 @@ final class VineStringSchema extends RuleParser implements VineString {
       bool requireProtocol = false,
       bool allowUnderscores = false,
       String? message}) {
-    super.addRule((field) =>
-        urlRuleHandler(field, protocols, requireTld, requireProtocol, allowUnderscores, message));
+    super.addRule((ctx, field) =>
+        urlRuleHandler(ctx, field, protocols, requireTld, requireProtocol, allowUnderscores, message));
     return this;
   }
 
   @override
   VineString alpha({String? message}) {
-    super.addRule((field) => alphaRuleHandler(field, message));
+    super.addRule((ctx, field) => alphaRuleHandler(ctx, field, message));
     return this;
   }
 
   @override
   VineString alphaNumeric({String? message}) {
-    super.addRule((field) => alphaNumericRuleHandler(field, message));
+    super.addRule((ctx, field) => alphaNumericRuleHandler(ctx, field, message));
     return this;
   }
 
   @override
   VineString startWith(String value, {String? message}) {
-    super.addRule((field) => startWithRuleHandler(field, value, message));
+    super.addRule((ctx, field) => startWithRuleHandler(ctx, field, value, message));
     return this;
   }
 
   @override
   VineString endWith(String value, {String? message}) {
-    super.addRule((field) => endWithRuleHandler(field, value, message));
+    super.addRule((ctx, field) => endWithRuleHandler(ctx, field, value, message));
     return this;
   }
 
   @override
   VineString confirmed({String? property, bool include = false, String? message}) {
-    super.addRule((field) => confirmedRuleHandler(field, property, include, message));
+    super.addRule((ctx, field) => confirmedRuleHandler(ctx, field, property, include, message));
     return this;
   }
 
@@ -91,7 +91,7 @@ final class VineStringSchema extends RuleParser implements VineString {
 
   @override
   VineString normalizeEmail({bool lowercase = true}) {
-    super.addRule((field) => normalizeEmailRuleHandler(field, lowercase));
+    super.addRule((ctx, field) => normalizeEmailRuleHandler(ctx, field, lowercase));
     return this;
   }
 
@@ -115,13 +115,13 @@ final class VineStringSchema extends RuleParser implements VineString {
 
   @override
   VineString uuid({UuidVersion? version, String? message}) {
-    super.addRule((field) => uuidRuleHandler(field, version, message));
+    super.addRule((ctx, field) => uuidRuleHandler(ctx, field, version, message));
     return this;
   }
 
   @override
   VineString isCreditCard({String? message}) {
-    super.addRule((field) => isCreditCodeRuleHandler(field, message));
+    super.addRule((ctx, field) => isCreditCodeRuleHandler(ctx, field, message));
     return this;
   }
 

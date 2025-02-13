@@ -12,6 +12,48 @@ void main() {
       expect(() => vine.validate({'obj': { 'foo': 'bar'}}, validator), returnsNormally);
     });
 
+    test('is valid when value is object and non validated values are deletes', () {
+      final payload = {
+        'firstname': 'John',
+        'lastname': 'Doe',
+        'age': 25,
+      };
+
+      final validator = vine.compile(vine.object({
+        'firstname': vine.string().minLength(2).maxLength(255),
+        'lastname': vine.string().minLength(2).maxLength(255),
+      }));
+
+      expect(() => vine.validate(payload, validator), returnsNormally);
+
+      final data = vine.validate(payload, validator);
+      payload.remove('age');
+
+      expect(data, payload);
+    });
+
+    test('is valid when value is object and non validated values are deletes', () {
+      final payload = {
+        'obj': {
+          'firstname': 'John',
+          'lastname': 'Doe',
+          'age': 25,
+        }
+      };
+
+      final validator = vine.compile(vine.object({
+        'obj': vine.object({
+          'firstname': vine.string().minLength(2).maxLength(255),
+          'lastname': vine.string().minLength(2).maxLength(255),
+        }),
+      }));
+
+      final data = vine.validate(payload, validator);
+
+      (payload['obj'] as Map<String, dynamic>).remove('age');
+      expect(data, payload);
+    });
+
     test('can be composable', () {
       final payload = {
         'user': {

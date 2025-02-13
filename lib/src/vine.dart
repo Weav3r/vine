@@ -24,27 +24,27 @@ final class Vine {
 
   VineObject object(Map<String, VineSchema> payload, {String? message}) {
     final Queue<ParseHandler> rules = Queue();
-    rules.add((field) => objectRuleHandler(field, payload, message));
+    rules.add((ctx, field) => objectRuleHandler(ctx, field, payload, message));
     return VineObjectSchema(payload, rules);
   }
 
   VineString string({String? message}) {
     final Queue<ParseHandler> rules = Queue();
-    rules.add((field) => stringRuleHandler(field, message));
+    rules.add((ctx, field) => stringRuleHandler(ctx, field, message));
     return VineStringSchema(rules);
   }
 
   VineNumber number({String? message}) {
     final Queue<ParseHandler> rules = Queue();
 
-    rules.add((metadata) => numberRuleHandler(metadata, message));
+    rules.add((ctx, field) => numberRuleHandler(ctx, field, message));
     return VineNumberSchema(rules);
   }
 
   VineBoolean boolean({String? message}) {
     final Queue<ParseHandler> rules = Queue();
 
-    rules.add((metadata) => booleanRuleHandler(metadata, message));
+    rules.add((ctx, field) => booleanRuleHandler(ctx, field, message));
     return VineBooleanSchema(rules);
   }
 
@@ -58,14 +58,14 @@ final class Vine {
   VineEnum enumerate<T extends VineEnumerable>(List<T> source) {
     final Queue<ParseHandler> rules = Queue();
 
-    rules.add((field) => enumRuleHandler<T>(field, source));
+    rules.add((ctx, field) => enumRuleHandler<T>(ctx, field, source));
     return VineEnumSchema(rules);
   }
 
   VineArray array(VineSchema schema) {
     final Queue<ParseHandler> rules = Queue();
 
-    rules.add((field) => arrayRuleHandler(field, schema));
+    rules.add((ctx, field) => arrayRuleHandler(ctx, field, schema));
     return VineArraySchema(rules);
   }
 
@@ -77,14 +77,15 @@ final class Vine {
   Map<String, dynamic> validate(Map<String, dynamic> data, Validator validator) {
     final reporter = errorReporter(validator.errors);
 
-    final fieldContext = Field('', data, reporter, data);
-    validator._schema.parse(reporter, fieldContext);
+    final validatorContext = ValidatorContext(reporter, data);
+    final field = Field('', data);
+    validator._schema.parse(validatorContext, field);
 
     if (reporter.hasError) {
       throw reporter.createError({'errors': reporter.errors});
     }
 
-    return data;
+    return field.value;
   }
 }
 

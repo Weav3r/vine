@@ -27,7 +27,7 @@ class RuleParser implements RuleParserContract {
     rules.add(rule);
   }
 
-  FieldContext parse(ErrorReporter errorReporter, FieldContext field) {
+  FieldContext parse(VineValidationContext ctx, FieldContext field) {
     if (isNullable) {
       addRule(nullableRuleHandler, positioned: true);
     }
@@ -38,10 +38,10 @@ class RuleParser implements RuleParserContract {
 
     while(rules.isNotEmpty) {
       final rule = rules.removeFirst();
-      rule(field);
+      rule(ctx, field);
 
       if (!field.canBeContinue) break;
-      if (errorReporter.hasErrorForField(field.name)) break;
+      if (ctx.errorReporter.hasErrorForField(field.name)) break;
     }
 
     return field;

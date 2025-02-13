@@ -1,5 +1,5 @@
 import 'package:vine/src/contracts/vine.dart';
 
-void anyRuleHandler(FieldContext field) {
+void anyRuleHandler(VineValidationContext ctx, FieldContext field) {
 
 }
