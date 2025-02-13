@@ -110,6 +110,8 @@ abstract interface class VineEnum implements VineSchema {
 }
 
 abstract interface class VineObject implements VineSchema {
+  Map<String, VineSchema> get properties;
+
   VineObject nullable();
 
   VineObject optional();

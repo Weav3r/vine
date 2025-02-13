@@ -5,15 +5,32 @@ import 'package:vine/src/contracts/vine.dart';
 import 'package:vine/src/rule_parser.dart';
 
 void objectRuleHandler(FieldContext field, Map<String, VineSchema> payload, String? message) {
+  if (field.value is! Map) {
+    final error = field.errorReporter.format('object', field, message, {});
+    return field.errorReporter.report('object', field.customKeys, error);
+  }
+
   for (final property in payload.entries) {
     final copy = field.value;
     final copyRules = Queue.of((property.value as RuleParser).rules);
+
+    void restoreDefaultStates() {
+      field.value = copy;
+      field.customKeys.clear();
+    }
 
     if (property.value is VineArray) {
       field.customKeys.add(property.key);
     }
 
     if (property.value is VineObject) {
+      if (field.value case Map values when !values.containsKey(property.key)) {
+        final error = field.errorReporter.format('object', field, message, {});
+        field.errorReporter.report('object', field.customKeys, error);
+
+        return restoreDefaultStates();
+      }
+
       field.customKeys.add(property.key);
     }
 
@@ -28,8 +45,7 @@ void objectRuleHandler(FieldContext field, Map<String, VineSchema> payload, Stri
     }
 
     (property.value as RuleParser).rules.addAll(copyRules);
-    field.value = copy;
-    field.customKeys.clear();
+    restoreDefaultStates();
 
     if (!field.canBeContinue) break;
     if (field.errorReporter.hasError) break;

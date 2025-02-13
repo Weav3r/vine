@@ -25,7 +25,7 @@ final class Vine {
   VineObject object(Map<String, VineSchema> payload, {String? message}) {
     final Queue<ParseHandler> rules = Queue();
     rules.add((field) => objectRuleHandler(field, payload, message));
-    return VineObjectSchema(rules);
+    return VineObjectSchema(payload, rules);
   }
 
   VineString string({String? message}) {
