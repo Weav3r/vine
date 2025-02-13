@@ -29,4 +29,5 @@ const mappedErrors = {
   'enum': 'The field {name} must be one of {values}',
   'array': 'The field {name} must be an array',
   'object': 'The field {name} must be an object',
+  'union': 'The field {name} must be one of the specified types {types}',
 };

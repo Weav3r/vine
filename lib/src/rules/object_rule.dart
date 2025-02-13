@@ -49,11 +49,12 @@ void objectRuleHandler(VineValidationContext ctx, FieldContext field,
   }
 
   final copy = {...field.value as Map<String, dynamic>};
-  field.value = <String, dynamic>{};
-  for (final property in payload.entries) {
-    field.mutate({
-      ...field.value as Map<String, dynamic>,
-      property.key: copy[property.key]
-    });
+  for (final value in (field.value as Map<String, dynamic>).entries) {
+    if (payload.containsKey(value.key)) {
+      field.mutate({
+        ...field.value as Map<String, dynamic>,
+        value.key: copy[value.key]
+      });
+    }
   }
 }

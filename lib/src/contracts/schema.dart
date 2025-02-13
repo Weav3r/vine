@@ -127,3 +127,10 @@ abstract interface class VineArray implements VineSchema {
 
   VineArray optional();
 }
+
+
+abstract interface class VineUnion implements VineSchema {
+  VineUnion nullable();
+
+  VineUnion optional();
+}

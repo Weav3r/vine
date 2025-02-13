@@ -24,6 +24,9 @@ final class Field implements FieldContext {
   @override
   bool canBeContinue = true;
 
+  @override
+  bool isUnion = false;
+
   Field(this.name, this.value);
 
   @override

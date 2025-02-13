@@ -1,7 +1,7 @@
 abstract interface class ErrorReporter {
   List<Map<String, Object>> get errors;
 
-  bool get hasError;
+  abstract bool hasError;
 
   bool hasErrorForField(String fieldName);
 
@@ -27,6 +27,7 @@ abstract interface class FieldContext {
 
   abstract String name;
   abstract bool canBeContinue;
+  abstract bool isUnion;
 
   dynamic value;
 

@@ -7,6 +7,10 @@ final regex = RegExp(r'^\+?[0-9]{1,4}[-.\s]?[0-9]{1,4}[-.\s]?[0-9]{4,10}$');
 
 void stringRuleHandler(VineValidationContext ctx, FieldContext field, String? message) {
   if (field.value is! String) {
+    if (field.isUnion) {
+      throw Exception('Union type is not supported for string type');
+    }
+
     final error = ctx.errorReporter.format('string', field, message, {});
     ctx.errorReporter.report('string', [...field.customKeys, field.name], error);
   }

@@ -11,6 +11,7 @@ import 'package:vine/src/rules/enum_rule.dart';
 import 'package:vine/src/rules/number_rule.dart';
 import 'package:vine/src/rules/object_rule.dart';
 import 'package:vine/src/rules/string_rule.dart';
+import 'package:vine/src/rules/union_rule.dart';
 import 'package:vine/src/schema/any_schema.dart';
 import 'package:vine/src/schema/array_schema.dart';
 import 'package:vine/src/schema/boolean_schema.dart';
@@ -18,6 +19,7 @@ import 'package:vine/src/schema/enum_schema.dart';
 import 'package:vine/src/schema/number_schema.dart';
 import 'package:vine/src/schema/object_schema.dart';
 import 'package:vine/src/schema/string_schema.dart';
+import 'package:vine/src/schema/union_schema.dart';
 
 final class Vine {
   ErrorReporter Function(Map<String, String> errors) errorReporter = SimpleErrorReporter.new;
@@ -41,10 +43,10 @@ final class Vine {
     return VineNumberSchema(rules);
   }
 
-  VineBoolean boolean({String? message}) {
+  VineBoolean boolean({bool includeLiteral = false, String? message}) {
     final Queue<ParseHandler> rules = Queue();
 
-    rules.add((ctx, field) => booleanRuleHandler(ctx, field, message));
+    rules.add((ctx, field) => booleanRuleHandler(ctx, field, includeLiteral, message));
     return VineBooleanSchema(rules);
   }
 
@@ -67,6 +69,13 @@ final class Vine {
 
     rules.add((ctx, field) => arrayRuleHandler(ctx, field, schema));
     return VineArraySchema(rules);
+  }
+
+  VineUnion union(List<VineSchema> schemas) {
+    final Queue<ParseHandler> rules = Queue();
+
+    rules.add((ctx, field) => unionRuleHandler(ctx, field, rules, schemas));
+    return VineUnionSchema(rules);
   }
 
   Validator compile(VineSchema schema, {Map<String, String> errors = const {}}) {

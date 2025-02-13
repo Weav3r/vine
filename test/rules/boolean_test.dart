@@ -38,7 +38,7 @@ void main() {
 
     test('is valid when value is "0"', () {
       final validator = vine.compile(vine.object({
-        'value': vine.boolean()
+        'value': vine.boolean(includeLiteral: true)
       }));
 
       expect(() => vine.validate({'value': '0'}, validator), returnsNormally);
@@ -46,7 +46,7 @@ void main() {
 
     test('is valid when value is "1"', () {
       final validator = vine.compile(vine.object({
-        'value': vine.boolean()
+        'value': vine.boolean(includeLiteral: true)
       }));
 
       expect(() => vine.validate({'value': '1'}, validator), returnsNormally);
