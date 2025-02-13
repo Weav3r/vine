@@ -1,4 +1,5 @@
 import 'package:vine/src/contracts/vine.dart';
+import 'package:vine/src/schema/object_schema.dart';
 
 abstract interface class VineSchema<T extends ErrorReporter> {
   void parse(VineValidationContext ctx, FieldContext field);
@@ -111,6 +112,10 @@ abstract interface class VineEnum implements VineSchema {
 
 abstract interface class VineObject implements VineSchema {
   Map<String, VineSchema> get properties;
+
+  VineObjectSchema merge(VineObjectSchema schema);
+
+  VineObjectSchema clone();
 
   VineObject nullable();
 

@@ -10,6 +10,17 @@ final class VineObjectSchema extends RuleParser implements VineObject {
   Map<String, VineSchema> get properties => {..._properties};
 
   @override
+  VineObjectSchema merge(VineObjectSchema schema) {
+    _properties.addAll(schema.properties);
+    return this;
+  }
+
+  @override
+  VineObjectSchema clone() {
+    return VineObjectSchema(_properties, rules);
+  }
+
+  @override
   VineObject nullable() {
     super.isNullable = true;
     return this;
