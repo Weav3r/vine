@@ -2,7 +2,6 @@ import 'dart:collection';
 
 import 'package:vine/src/contracts/schema.dart';
 import 'package:vine/src/contracts/vine.dart';
-import 'package:vine/src/field.dart';
 import 'package:vine/src/field_pool.dart';
 
 void unionRuleHandler(VineValidationContext ctx, FieldContext field, Queue<ParseHandler> rules,

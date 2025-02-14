@@ -19,7 +19,7 @@ final class VineObjectSchema extends RuleParser implements VineObject {
 
   @override
   VineObjectSchema clone() {
-    return VineObjectSchema(Map.of(_properties), Queue.of(rules));
+    return VineObjectSchema({..._properties}, Queue.of(rules));
   }
 
   @override
