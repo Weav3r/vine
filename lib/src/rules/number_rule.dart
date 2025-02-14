@@ -11,21 +11,18 @@ void handleNumberConversionError (VineValidationContext ctx, FieldContext field,
 
 void numberRuleHandler(VineValidationContext ctx, FieldContext field, String? message) {
   final value = field.value;
-  if (value is num) {
+  if (value is num) return;
+  if (value is! String) {
+    handleNumberConversionError(ctx, field, message);
     return;
   }
 
-  if (value is String) {
-    final parsed = num.tryParse(value);
-    if (parsed == null) {
-      handleNumberConversionError(ctx, field, message);
-      return;
-    }
-    field.mutate(parsed);
+  final parsed = num.tryParse(value);
+  if (parsed == null) {
+    handleNumberConversionError(ctx, field, message);
     return;
   }
-
-  handleNumberConversionError(ctx, field, message);
+  field.mutate(parsed);
 }
 
 void minRuleHandler(VineValidationContext ctx, FieldContext field, num minValue, String? message) {
