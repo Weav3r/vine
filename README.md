@@ -18,11 +18,10 @@ ensuring that data complies with an expected format before it is used, which red
 | ✅ Type-Safe Validation    | Define schemas with a fluent API and ensure data integrity   |
 | 🧱 Rich Set of Validators | Strings, numbers, booleans, arrays, enums, objects, and more |
 | 🔄 Data Transformation    | Trim, normalize, and transform values during validation      |
-| 📝 Extendable             | Build your own rules                                         |
 | 🚧 Null Safety            | Full support for nullable and optional fields                |
-| ⚙️ Modular                | Compiled and reusable schemas                                |
-| ⚡ Fast Performance        | ~ 27 000 000 ops/s                                           |
-| 📦 Extremely small size   | Package size `< 11kb`                                        |
+| ⚙️ Composable             | Compiled and reusable schemas                                |
+| ⚡ Fast Performance        | ~ 25 000 000 ops/s                                           |
+| 📦 Extremely small size   | Package size `< 14kb`                                        |
 
 ## 🚀 Usage
 
