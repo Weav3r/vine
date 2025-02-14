@@ -11,6 +11,11 @@ platforms:
   web:
   windows:
 
+topics:
+  - validator
+  - data
+
+
 environment:
   sdk: ^3.5.3
 
