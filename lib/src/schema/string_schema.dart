@@ -66,13 +66,13 @@ final class VineStringSchema extends RuleParser implements VineString {
   }
 
   @override
-  VineString startWith(String value, {String? message}) {
+  VineString startsWith(String value, {String? message}) {
     super.addRule((ctx, field) => startWithRuleHandler(ctx, field, value, message));
     return this;
   }
 
   @override
-  VineString endWith(String value, {String? message}) {
+  VineString endsWith(String value, {String? message}) {
     super.addRule((ctx, field) => endWithRuleHandler(ctx, field, value, message));
     return this;
   }

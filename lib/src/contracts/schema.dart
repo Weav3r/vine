@@ -43,9 +43,9 @@ abstract interface class VineString implements VineSchema {
 
   VineString alphaNumeric({String? message});
 
-  VineString startWith(String value, {String? message});
+  VineString startsWith(String value, {String? message});
 
-  VineString endWith(String value, {String? message});
+  VineString endsWith(String value, {String? message});
 
   VineString confirmed({String? property, bool include = false, String? message});
 
