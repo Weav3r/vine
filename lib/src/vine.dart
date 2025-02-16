@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:vine/src/contracts/schema.dart';
 import 'package:vine/src/contracts/vine.dart';
 import 'package:vine/src/error_reporter.dart';
+import 'package:vine/src/exceptions/validation_exception.dart';
 import 'package:vine/src/field.dart';
 import 'package:vine/src/rules/any_rule.dart';
 import 'package:vine/src/rules/array_rule.dart';
@@ -104,6 +105,15 @@ final class Validator implements ValidatorContract {
   final reporter = vine.errorReporter({});
 
   Validator(this._schema, this.errors);
+
+  (ValidationException?, Map<String, dynamic>?) tryValidate(Map<String, dynamic> data) {
+    try {
+      final result = validate(data);
+      return (null, result);
+    } on ValidationException catch (exception) {
+      return (exception, null);
+    }
+  }
 
   Map<String, dynamic> validate(Map<String, dynamic> data) {
     final validatorContext = ValidatorContext(reporter, data);
