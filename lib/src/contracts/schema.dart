@@ -74,6 +74,8 @@ abstract interface class VineString implements VineSchema {
 
   VineSchema requiredIfExist(List<String> values);
 
+  VineSchema requiredIfExistAny(List<String> values);
+
   VineString nullable();
 
   VineString optional();

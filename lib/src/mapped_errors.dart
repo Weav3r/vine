@@ -35,5 +35,6 @@ const mappedErrors = {
   'inList': 'The field {name} must be one of the specified values {values}',
   'notInList': 'The field {name} must not be one of the specified values {values}',
   'requiredIfExists': 'The field {name} is required',
+  'requiredIfExistsAny': 'The field {name} is required',
 };
 

@@ -15,6 +15,22 @@ void optionalRuleHandler(VineValidationContext ctx, FieldContext field) {
 
 void requiredIfExistsRuleHandler(VineValidationContext ctx, FieldContext field, List<String> values) {
   final currentContext = ctx.getFieldContext(field.customKeys);
+  List<bool> matchs = [];
+
+  for (final value in values) {
+    matchs.add(currentContext.containsKey(value));
+  }
+
+  if (!matchs.contains(false) && field.value == null) {
+    final error = ctx.errorReporter.format('requiredIfExists', field, null, {});
+    ctx.errorReporter.report('requiredIfExists', field.customKeys, error);
+
+    field.canBeContinue = false;
+  }
+}
+
+void requiredIfExistsAnyRuleHandler(VineValidationContext ctx, FieldContext field, List<String> values) {
+  final currentContext = ctx.getFieldContext(field.customKeys);
   bool hasMatch = false;
 
   for (final value in values) {
@@ -25,8 +41,8 @@ void requiredIfExistsRuleHandler(VineValidationContext ctx, FieldContext field, 
   }
 
   if (hasMatch && field.value == null) {
-    final error = ctx.errorReporter.format('requiredIfExists', field, null, {});
-    ctx.errorReporter.report('requiredIfExists', field.customKeys, error);
+    final error = ctx.errorReporter.format('requiredIfExistsAny', field, null, {});
+    ctx.errorReporter.report('requiredIfExistsAny', field.customKeys, error);
 
     field.canBeContinue = false;
   }
