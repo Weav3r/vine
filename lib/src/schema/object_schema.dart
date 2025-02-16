@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:vine/src/contracts/schema.dart';
 import 'package:vine/src/rule_parser.dart';
+import 'package:vine/src/rules/basic_rule.dart';
 
 final class VineObjectSchema extends RuleParser implements VineObject {
   final Map<String, VineSchema> _properties;
@@ -14,6 +15,30 @@ final class VineObjectSchema extends RuleParser implements VineObject {
   @override
   VineObjectSchema merge(VineObjectSchema schema) {
     _properties.addAll(schema.properties);
+    return this;
+  }
+
+  @override
+  VineObject requiredIfExist(List<String> values) {
+    super.addRule((ctx, field) => requiredIfExistsRuleHandler(ctx, field, values), positioned: true);
+    return this;
+  }
+
+  @override
+  VineObject requiredIfAnyExist(List<String> values) {
+    super.addRule((ctx, field) => requiredIfAnyExistsRuleHandler(ctx, field, values), positioned: true);
+    return this;
+  }
+
+  @override
+  VineObject requiredIfMissing(List<String> values) {
+    super.addRule((ctx, field) => requiredIfMissingRuleHandler(ctx, field, values), positioned: true);
+    return this;
+  }
+
+  @override
+  VineObject requiredIfAnyMissing(List<String> values) {
+    super.addRule((ctx, field) => requiredIfAnyMissingRuleHandler(ctx, field, values), positioned: true);
     return this;
   }
 

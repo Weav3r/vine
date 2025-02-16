@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:vine/src/contracts/schema.dart';
 import 'package:vine/src/rule_parser.dart';
+import 'package:vine/src/rules/basic_rule.dart';
 import 'package:vine/src/rules/number_rule.dart';
 
 final class VineNumberSchema extends RuleParser implements VineNumber {
@@ -46,6 +47,30 @@ final class VineNumberSchema extends RuleParser implements VineNumber {
   @override
   VineNumber integer({String? message}) {
     super.addRule((ctx, field) => integerRuleHandler(ctx, field, message));
+    return this;
+  }
+
+  @override
+  VineNumber requiredIfExist(List<String> values) {
+    super.addRule((ctx, field) => requiredIfExistsRuleHandler(ctx, field, values), positioned: true);
+    return this;
+  }
+
+  @override
+  VineNumber requiredIfAnyExist(List<String> values) {
+    super.addRule((ctx, field) => requiredIfAnyExistsRuleHandler(ctx, field, values), positioned: true);
+    return this;
+  }
+
+  @override
+  VineNumber requiredIfMissing(List<String> values) {
+    super.addRule((ctx, field) => requiredIfMissingRuleHandler(ctx, field, values), positioned: true);
+    return this;
+  }
+
+  @override
+  VineNumber requiredIfAnyMissing(List<String> values) {
+    super.addRule((ctx, field) => requiredIfAnyMissingRuleHandler(ctx, field, values), positioned: true);
     return this;
   }
 

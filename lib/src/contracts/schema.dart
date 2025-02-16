@@ -100,18 +100,42 @@ abstract interface class VineNumber implements VineSchema {
 
   VineNumber integer({String? message});
 
+  VineNumber requiredIfExist(List<String> values);
+
+  VineNumber requiredIfAnyExist(List<String> values);
+
+  VineNumber requiredIfMissing(List<String> values);
+
+  VineNumber requiredIfAnyMissing(List<String> values);
+
   VineNumber nullable();
 
   VineNumber optional();
 }
 
 abstract interface class VineBoolean implements VineSchema {
+  VineBoolean requiredIfExist(List<String> values);
+
+  VineBoolean requiredIfAnyExist(List<String> values);
+
+  VineBoolean requiredIfMissing(List<String> values);
+
+  VineBoolean requiredIfAnyMissing(List<String> values);
+
   VineBoolean nullable();
 
   VineBoolean optional();
 }
 
 abstract interface class VineAny implements VineSchema {
+  VineAny requiredIfExist(List<String> values);
+
+  VineAny requiredIfAnyExist(List<String> values);
+
+  VineAny requiredIfMissing(List<String> values);
+
+  VineAny requiredIfAnyMissing(List<String> values);
+
   VineAny nullable();
 
   VineAny optional();
@@ -122,6 +146,14 @@ abstract interface class VineEnumerable<T> {
 }
 
 abstract interface class VineEnum implements VineSchema {
+  VineEnum requiredIfExist(List<String> values);
+
+  VineEnum requiredIfAnyExist(List<String> values);
+
+  VineEnum requiredIfMissing(List<String> values);
+
+  VineEnum requiredIfAnyMissing(List<String> values);
+
   VineEnum nullable();
 
   VineEnum optional();
@@ -132,12 +164,28 @@ abstract interface class VineObject implements VineSchema {
 
   VineObjectSchema merge(VineObjectSchema schema);
 
+  VineObject requiredIfExist(List<String> values);
+
+  VineObject requiredIfAnyExist(List<String> values);
+
+  VineObject requiredIfMissing(List<String> values);
+
+  VineObject requiredIfAnyMissing(List<String> values);
+
   VineObject nullable();
 
   VineObject optional();
 }
 
 abstract interface class VineArray implements VineSchema {
+  VineArray requiredIfExist(List<String> values);
+
+  VineArray requiredIfAnyExist(List<String> values);
+
+  VineArray requiredIfMissing(List<String> values);
+
+  VineArray requiredIfAnyMissing(List<String> values);
+
   VineArray nullable();
 
   VineArray optional();
@@ -145,6 +193,14 @@ abstract interface class VineArray implements VineSchema {
 
 
 abstract interface class VineUnion implements VineSchema {
+  VineUnion requiredIfExist(List<String> values);
+
+  VineUnion requiredIfAnyExist(List<String> values);
+
+  VineUnion requiredIfMissing(List<String> values);
+
+  VineUnion requiredIfAnyMissing(List<String> values);
+
   VineUnion nullable();
 
   VineUnion optional();
