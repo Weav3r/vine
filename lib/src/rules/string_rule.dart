@@ -223,3 +223,17 @@ void notSameAsRuleHandler(VineValidationContext ctx, FieldContext field, String 
     ctx.errorReporter.report('notSameAs', [...field.customKeys, field.name], error);
   }
 }
+
+void inListRuleHandler(VineValidationContext ctx, FieldContext field, List<String> values, String? message) {
+  if (!values.contains(field.value)) {
+    final error = ctx.errorReporter.format('inList', field, message, {'values': values});
+    ctx.errorReporter.report('inList', [...field.customKeys, field.name], error);
+  }
+}
+
+void notInListRuleHandler(VineValidationContext ctx, FieldContext field, List<String> values, String? message) {
+  if (values.contains(field.value)) {
+    final error = ctx.errorReporter.format('notInList', field, message, {'values': values});
+    ctx.errorReporter.report('notInList', [...field.customKeys, field.name], error);
+  }
+}

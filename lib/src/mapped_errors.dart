@@ -32,4 +32,6 @@ const mappedErrors = {
   'union': 'The field {name} must be one of the specified types {types}',
   'sameAs': 'The field {name} must be the same as {field}',
   'notSameAs': 'The field {name} must not be the same as {field}',
+  'inList': 'The field {name} must be one of the specified values {values}',
+  'notInList': 'The field {name} must not be one of the specified values {values}',
 };

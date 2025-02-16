@@ -139,13 +139,13 @@ final class VineStringSchema extends RuleParser implements VineString {
 
   @override
   VineString inList(List<String> values, {String? message}) {
-
+    super.addRule((ctx, field) => inListRuleHandler(ctx, field, values, message));
     return this;
   }
 
   @override
   VineString notInList(List<String> values, {String? message}) {
-
+    super.addRule((ctx, field) => notInListRuleHandler(ctx, field, values, message));
     return this;
   }
 

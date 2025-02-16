@@ -596,5 +596,31 @@ void main() {
         expect(() => vine.validate(payload, validator), throwsA(isA<ValidationException>()));
       });
     });
+
+    group('inList', () {
+      test('should be valid when value is include in values', () {
+        final payload = {
+          'field': 'foo',
+        };
+
+        final validator = vine.compile(vine.object({
+          'field': vine.string().inList(['foo', 'bar', 'baz']),
+        }));
+
+        expect(() => vine.validate(payload, validator), returnsNormally);
+      });
+
+      test('cannot be valid when values are different', () {
+        final payload = {
+          'field': 'hello'
+        };
+
+        final validator = vine.compile(vine.object({
+          'field': vine.string().inList(['foo', 'bar', 'baz']),
+        }));
+
+        expect(() => vine.validate(payload, validator), throwsA(isA<ValidationException>()));
+      });
+    });
   });
 }
