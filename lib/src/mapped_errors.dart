@@ -28,6 +28,9 @@ const mappedErrors = {
   'boolean': 'The field {name} must be a boolean',
   'enum': 'The field {name} must be one of {values}',
   'array': 'The field {name} must be an array',
+  'array.minLength': 'The field {name} must have at least {min} items',
+  'array.maxLength': 'The field {name} must have at most {max} items',
+  'array.fixedLength': 'The field {name} must have exactly {length} items',
   'object': 'The field {name} must be an object',
   'union': 'The field {name} must be one of the specified types {types}',
   'sameAs': 'The field {name} must be the same as {field}',
@@ -37,4 +40,3 @@ const mappedErrors = {
   'requiredIfExists': 'The field {name} is required',
   'requiredIfExistsAny': 'The field {name} is required',
 };
-

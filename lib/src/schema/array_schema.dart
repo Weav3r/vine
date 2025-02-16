@@ -2,10 +2,29 @@ import 'dart:collection';
 
 import 'package:vine/src/contracts/schema.dart';
 import 'package:vine/src/rule_parser.dart';
+import 'package:vine/src/rules/array_rule.dart';
 import 'package:vine/src/rules/basic_rule.dart';
 
 final class VineArraySchema extends RuleParser implements VineArray {
   VineArraySchema(super._rules);
+
+  @override
+  VineArray minLength(int value, {String? message}) {
+    super.addRule((ctx, field) => arrayMinLengthRuleHandler(ctx, field, value, message));
+    return this;
+  }
+
+  @override
+  VineArray maxLength(int value, {String? message}) {
+    super.addRule((ctx, field) => arrayMaxLengthRuleHandler(ctx, field, value, message));
+    return this;
+  }
+
+  @override
+  VineArray fixedLength(int value, {String? message}) {
+    super.addRule((ctx, field) => arrayFixedLengthRuleHandler(ctx, field, value, message));
+    return this;
+  }
 
   @override
   VineArray requiredIfExist(List<String> values) {

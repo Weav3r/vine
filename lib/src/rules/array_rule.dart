@@ -33,3 +33,32 @@ void arrayRuleHandler(VineValidationContext ctx, FieldContext field, VineSchema 
   final error = ctx.errorReporter.format('array', field, null, {});
   ctx.errorReporter.report('array', [...field.customKeys, field.name], error);
 }
+
+void arrayMinLengthRuleHandler(VineValidationContext ctx, FieldContext field, int minValue, String? message) {
+  if ((field.value as String).length < minValue) {
+    final error = ctx.errorReporter.format('array.minLength', field, message, {
+      'min': minValue,
+    });
+
+    ctx.errorReporter.report('array.minLength', [...field.customKeys, field.name], error);
+  }
+}
+
+void arrayMaxLengthRuleHandler(VineValidationContext ctx, FieldContext field, int maxValue, String? message) {
+  if ((field.value as String).length > maxValue) {
+    final error = ctx.errorReporter.format('array.maxLength', field, message, {
+      'max': maxValue,
+    });
+
+    ctx.errorReporter.report('array.maxLength', [...field.customKeys, field.name], error);
+  }
+}
+
+void arrayFixedLengthRuleHandler(VineValidationContext ctx, FieldContext field, int count, String? message) {
+  if ((field.value as String).length != count) {
+    final error = ctx.errorReporter.format('array.fixedLength', field, message, {
+      'length': count,
+    });
+    ctx.errorReporter.report('array.fixedLength', [...field.customKeys, field.name], error);
+  }
+}

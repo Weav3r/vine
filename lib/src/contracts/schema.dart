@@ -121,7 +121,13 @@ abstract interface class VineObject implements VineSchema, BasicSchema<VineObjec
   VineObjectSchema merge(VineObjectSchema schema);
 }
 
-abstract interface class VineArray implements VineSchema, BasicSchema<VineArray> {}
+abstract interface class VineArray implements VineSchema, BasicSchema<VineArray> {
+  VineArray minLength(int value, {String? message});
+
+  VineArray maxLength(int value, {String? message});
+
+  VineArray fixedLength(int value, {String? message});
+}
 
 
 abstract interface class VineUnion implements VineSchema, BasicSchema<VineUnion> {}
