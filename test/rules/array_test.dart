@@ -68,4 +68,30 @@ void main() {
       expect(() => validator.validate({'value': 'foo'}), throwsA(isA<ValidationException>()));
     });
   });
+
+  group('VineArray.minLength', () {
+    test('is valid when value is greater than min length', () {
+      final validator = vine.compile(vine.object({
+        'array': vine.array(vine.string()).minLength(2)
+      }));
+
+      expect(() => validator.validate({'array': ['foo', 'bar']}), returnsNormally);
+    });
+
+    test('is valid when value is equal to min length', () {
+      final validator = vine.compile(vine.object({
+        'array': vine.array(vine.string()).minLength(2)
+      }));
+
+      expect(() => validator.validate({'array': ['foo', 'bar']}), returnsNormally);
+    });
+
+    test('is invalid when value is less than min length', () {
+      final validator = vine.compile(vine.object({
+        'array': vine.array(vine.string()).minLength(2)
+      }));
+
+      expect(() => validator.validate({'array': ['foo']}), throwsA(isA<ValidationException>()));
+    });
+  });
 }

@@ -35,7 +35,7 @@ void arrayRuleHandler(VineValidationContext ctx, FieldContext field, VineSchema 
 }
 
 void arrayMinLengthRuleHandler(VineValidationContext ctx, FieldContext field, int minValue, String? message) {
-  if ((field.value as String).length < minValue) {
+  if ((field.value as List).length < minValue) {
     final error = ctx.errorReporter.format('array.minLength', field, message, {
       'min': minValue,
     });
@@ -45,7 +45,7 @@ void arrayMinLengthRuleHandler(VineValidationContext ctx, FieldContext field, in
 }
 
 void arrayMaxLengthRuleHandler(VineValidationContext ctx, FieldContext field, int maxValue, String? message) {
-  if ((field.value as String).length > maxValue) {
+  if ((field.value as List).length > maxValue) {
     final error = ctx.errorReporter.format('array.maxLength', field, message, {
       'max': maxValue,
     });
@@ -55,7 +55,7 @@ void arrayMaxLengthRuleHandler(VineValidationContext ctx, FieldContext field, in
 }
 
 void arrayFixedLengthRuleHandler(VineValidationContext ctx, FieldContext field, int count, String? message) {
-  if ((field.value as String).length != count) {
+  if ((field.value as List).length != count) {
     final error = ctx.errorReporter.format('array.fixedLength', field, message, {
       'length': count,
     });
