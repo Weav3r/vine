@@ -153,25 +153,25 @@ final class VineStringSchema extends RuleParser implements VineString {
   }
 
   @override
-  VineSchema requiredIfExist(List<String> values) {
+  VineString requiredIfExist(List<String> values) {
     super.addRule((ctx, field) => requiredIfExistsRuleHandler(ctx, field, values), positioned: true);
     return this;
   }
 
   @override
-  VineSchema requiredIfAnyExist(List<String> values) {
+  VineString requiredIfAnyExist(List<String> values) {
     super.addRule((ctx, field) => requiredIfAnyExistsRuleHandler(ctx, field, values), positioned: true);
     return this;
   }
 
   @override
-  VineSchema requiredIfMissing(List<String> values) {
+  VineString requiredIfMissing(List<String> values) {
     super.addRule((ctx, field) => requiredIfMissingRuleHandler(ctx, field, values), positioned: true);
     return this;
   }
 
   @override
-  VineSchema requiredIfAnyMissing(List<String> values) {
+  VineString requiredIfAnyMissing(List<String> values) {
     super.addRule((ctx, field) => requiredIfAnyMissingRuleHandler(ctx, field, values), positioned: true);
     return this;
   }
