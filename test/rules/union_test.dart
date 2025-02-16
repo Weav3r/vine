@@ -13,7 +13,7 @@ void main() {
         ]),
       }));
 
-      expect(() => vine.validate(payload, validator), returnsNormally);
+      expect(() => validator.validate(payload), returnsNormally);
     });
   });
 
@@ -26,7 +26,7 @@ void main() {
       ]),
     }));
 
-    expect(() => vine.validate(payload, validator), returnsNormally);
+    expect(() => validator.validate(payload), returnsNormally);
   });
 
   test('is valid when value is boolean', () {
@@ -38,6 +38,6 @@ void main() {
       ]),
     }));
 
-    expect(() => vine.validate(payload, validator), throwsA(isA<ValidationException>()));
+    expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
   });
 }

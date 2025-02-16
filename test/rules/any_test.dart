@@ -9,7 +9,7 @@ void main() {
         'value': vine.boolean()
       }));
 
-      expect(() => vine.validate({'value': true}, validator), returnsNormally);
+      expect(() => validator.validate({'value': true}), returnsNormally);
     });
 
     test('is valid when value is number', () {
@@ -17,7 +17,7 @@ void main() {
         'value': vine.number()
       }));
 
-      expect(() => vine.validate({'value': 1}, validator), returnsNormally);
+      expect(() => validator.validate({'value': 1}), returnsNormally);
     });
 
     test('is valid when value is string', () {
@@ -25,7 +25,7 @@ void main() {
         'value': vine.string()
       }));
 
-      expect(() => vine.validate({'value': 'foo'}, validator), returnsNormally);
+      expect(() => validator.validate({'value': 'foo'}), returnsNormally);
     });
   });
 }

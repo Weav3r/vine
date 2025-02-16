@@ -10,10 +10,11 @@ abstract interface class ErrorReporter {
   void report(String rule, List<String> keys, String message);
 
   Exception createError(Object message);
+
+  void clear();
 }
 
 abstract interface class ValidatorContract {
-  void validate(Map<String, dynamic> data);
 }
 
 abstract interface class VineValidationContext<T extends ErrorReporter> {

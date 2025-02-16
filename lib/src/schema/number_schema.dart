@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:vine/src/contracts/schema.dart';
 import 'package:vine/src/rule_parser.dart';
 import 'package:vine/src/rules/number_rule.dart';
@@ -57,5 +59,10 @@ final class VineNumberSchema extends RuleParser implements VineNumber {
   VineNumber optional() {
     super.isOptional = true;
     return this;
+  }
+
+  @override
+  VineNumber clone() {
+    return VineNumberSchema(Queue.of(rules));
   }
 }

@@ -9,7 +9,7 @@ void main() {
         'value': vine.array(vine.string().minLength(2))
       }));
 
-      expect(() => vine.validate({'value': ['foo']}, validator), returnsNormally);
+      expect(() => validator.validate({'value': ['foo']}), returnsNormally);
     });
 
     test('is valid when value is number', () {
@@ -17,7 +17,7 @@ void main() {
         'value': vine.array(vine.number())
       }));
 
-      expect(() => vine.validate({'value': [1, 1.1]}, validator), returnsNormally);
+      expect(() => validator.validate({'value': [1, 1.1]}), returnsNormally);
     });
 
     test('is valid when value is double', () {
@@ -25,7 +25,7 @@ void main() {
         'value': vine.array(vine.number().double())
       }));
 
-      expect(() => vine.validate({'value': [1.1, 1.2]}, validator), returnsNormally);
+      expect(() => validator.validate({'value': [1.1, 1.2]}), returnsNormally);
     });
 
     test('is valid when value is integer', () {
@@ -33,7 +33,7 @@ void main() {
         'value': vine.array(vine.number().integer())
       }));
 
-      expect(() => vine.validate({'value': [1, 2]}, validator), returnsNormally);
+      expect(() => validator.validate({'value': [1, 2]}), returnsNormally);
     });
 
     test('is valid when value is boolean', () {
@@ -41,7 +41,7 @@ void main() {
         'value': vine.array(vine.boolean())
       }));
 
-      expect(() => vine.validate({'value': [true, false]}, validator), returnsNormally);
+      expect(() => validator.validate({'value': [true, false]}), returnsNormally);
     });
 
     test('is valid when value is dynamic', () {
@@ -49,7 +49,7 @@ void main() {
         'value': vine.array(vine.any())
       }));
 
-      expect(() => vine.validate({'value': ['str', 1, true]}, validator), returnsNormally);
+      expect(() => validator.validate({'value': ['str', 1, true]}), returnsNormally);
     });
 
     test('is invalid when value is many type', () {
@@ -57,7 +57,7 @@ void main() {
         'value': vine.array(vine.string())
       }));
 
-      expect(() => vine.validate({'value': ['foo', 1, true]}, validator), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate({'value': ['foo', 1, true]}), throwsA(isA<ValidationException>()));
     });
 
     test('is invalid when value is not array', () {
@@ -65,7 +65,7 @@ void main() {
         'value': vine.array(vine.string())
       }));
 
-      expect(() => vine.validate({'value': 'foo'}, validator), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate({'value': 'foo'}), throwsA(isA<ValidationException>()));
     });
   });
 }

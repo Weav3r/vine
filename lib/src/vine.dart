@@ -79,16 +79,16 @@ final class Vine {
   }
 
   Validator compile(VineSchema schema, {Map<String, String> errors = const {}}) {
-    return Validator(this, schema, errors);
+    return Validator(schema.clone(), errors);
   }
 
 
-  Map<String, dynamic> validate(Map<String, dynamic> data, Validator validator) {
-    final reporter = errorReporter(validator.errors);
+  Map<String, dynamic> validate(Map<String, dynamic> data, VineSchema schema) {
+    final reporter = errorReporter({});
 
     final validatorContext = ValidatorContext(reporter, data);
     final field = Field('', data);
-    validator._schema.parse(validatorContext, field);
+    schema.parse(validatorContext, field);
 
     if (reporter.hasError) {
       throw reporter.createError({'errors': reporter.errors});
@@ -99,16 +99,23 @@ final class Vine {
 }
 
 final class Validator implements ValidatorContract {
-  final Vine _vine;
-
   final VineSchema _schema;
   final Map<String, String> errors;
+  final reporter = vine.errorReporter({});
 
-  Validator(this._vine, this._schema, this.errors);
+  Validator(this._schema, this.errors);
 
-  @override
-  void validate(Map<String, dynamic> data) {
-    _vine.validate(data, this);
+  Map<String, dynamic> validate(Map<String, dynamic> data) {
+    final validatorContext = ValidatorContext(reporter, data);
+    final field = Field('', data);
+    _schema.parse(validatorContext, field);
+
+    if (reporter.hasError) {
+      throw reporter.createError({'errors': reporter.errors});
+    }
+
+    reporter.clear();
+    return field.value;
   }
 }
 

@@ -9,7 +9,7 @@ void main() {
         'obj': vine.object({}),
       }));
 
-      expect(() => vine.validate({'obj': { 'foo': 'bar'}}, validator), returnsNormally);
+      expect(() => validator.validate({'obj': { 'foo': 'bar'}}), returnsNormally);
     });
 
     test('is valid when value is object and non validated values are deletes', () {
@@ -24,9 +24,9 @@ void main() {
         'lastname': vine.string().minLength(2).maxLength(255),
       }));
 
-      expect(() => vine.validate(payload, validator), returnsNormally);
+      expect(() => validator.validate(payload), returnsNormally);
 
-      final data = vine.validate(payload, validator);
+      final data = validator.validate(payload);
       payload.remove('age');
 
       expect(data, payload);
@@ -48,7 +48,7 @@ void main() {
         }),
       }));
 
-      final data = vine.validate(payload, validator);
+      final data = validator.validate(payload);
 
       (payload['obj'] as Map<String, dynamic>).remove('age');
       expect(data, payload);
@@ -89,7 +89,7 @@ void main() {
         'roles': vine.array(roleSchema),
       }));
 
-      expect(() => vine.validate(payload, validator), returnsNormally);
+      expect(() => validator.validate(payload), returnsNormally);
     });
 
     test('cannot be composable with bad data structure', () {
@@ -125,7 +125,7 @@ void main() {
         'roles': vine.array(roleSchema),
       }));
 
-      expect(() => vine.validate(payload, validator), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
     });
   });
 }

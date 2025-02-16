@@ -19,7 +19,7 @@ void main() {
         'value': vine.enumerate(MyEnum.values)
       }));
 
-      expect(() => vine.validate({'value': MyEnum.value1.value}, validator), returnsNormally);
+      expect(() => validator.validate({'value': MyEnum.value1.value}), returnsNormally);
     });
 
     test('is invalid when value is not includes in enum', () {
@@ -27,7 +27,7 @@ void main() {
         'value': vine.enumerate(MyEnum.values)
       }));
 
-      expect(() => vine.validate({'value': 'value4'}, validator), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate({'value': 'value4'}), throwsA(isA<ValidationException>()));
     });
 
     test('is valid when value is nullable', () {
@@ -35,7 +35,7 @@ void main() {
         'value': vine.enumerate(MyEnum.values).nullable()
       }));
 
-      expect(() => vine.validate({'value': null}, validator), returnsNormally);
+      expect(() => validator.validate({'value': null}), returnsNormally);
     });
 
     test('is valid when value is optional', () {
@@ -43,7 +43,7 @@ void main() {
         'value': vine.enumerate(MyEnum.values).optional()
       }));
 
-      expect(() => vine.validate({}, validator), returnsNormally);
+      expect(() => validator.validate({}), returnsNormally);
     });
   });
 }

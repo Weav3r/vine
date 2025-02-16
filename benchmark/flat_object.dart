@@ -16,7 +16,7 @@ void main() {
   final stopwatch = Stopwatch()..start();
 
   while (stopwatch.elapsed < duration) {
-    vine.validate(payload, validator);
+    validator.validate(payload);
     iterationCount++;
   }
 

@@ -18,11 +18,6 @@ final class VineObjectSchema extends RuleParser implements VineObject {
   }
 
   @override
-  VineObjectSchema clone() {
-    return VineObjectSchema({..._properties}, Queue.of(rules));
-  }
-
-  @override
   VineObject nullable() {
     super.isNullable = true;
     return this;
@@ -32,5 +27,10 @@ final class VineObjectSchema extends RuleParser implements VineObject {
   VineObject optional() {
     super.isOptional = true;
     return this;
+  }
+
+  @override
+  VineObject clone() {
+    return VineObjectSchema({..._properties}, Queue.of(rules));
   }
 }

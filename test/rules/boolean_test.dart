@@ -9,7 +9,7 @@ void main() {
         'value': vine.boolean()
       }));
 
-      expect(() => vine.validate({'value': 'true'}, validator), returnsNormally);
+      expect(() => validator.validate({'value': 'true'}), returnsNormally);
     });
 
     test('is valid when value is "false"', () {
@@ -17,7 +17,7 @@ void main() {
         'value': vine.boolean()
       }));
 
-      expect(() => vine.validate({'value': 'false'}, validator), returnsNormally);
+      expect(() => validator.validate({'value': 'false'}), returnsNormally);
     });
 
     test('is valid when value is true', () {
@@ -25,7 +25,7 @@ void main() {
         'value': vine.boolean()
       }));
 
-      expect(() => vine.validate({'value': true}, validator), returnsNormally);
+      expect(() => validator.validate({'value': true}), returnsNormally);
     });
 
     test('is valid when value is false', () {
@@ -33,7 +33,7 @@ void main() {
         'value': vine.boolean()
       }));
 
-      expect(() => vine.validate({'value': false}, validator), returnsNormally);
+      expect(() => validator.validate({'value': false}), returnsNormally);
     });
 
     test('is valid when value is "0"', () {
@@ -41,7 +41,7 @@ void main() {
         'value': vine.boolean(includeLiteral: true)
       }));
 
-      expect(() => vine.validate({'value': '0'}, validator), returnsNormally);
+      expect(() => validator.validate({'value': '0'}), returnsNormally);
     });
 
     test('is valid when value is "1"', () {
@@ -49,7 +49,7 @@ void main() {
         'value': vine.boolean(includeLiteral: true)
       }));
 
-      expect(() => vine.validate({'value': '1'}, validator), returnsNormally);
+      expect(() => validator.validate({'value': '1'}), returnsNormally);
     });
 
     test('is invalid when value is not a boolean', () {
@@ -57,7 +57,7 @@ void main() {
         'value': vine.boolean()
       }));
 
-      expect(() => vine.validate({'value': 'foo'}, validator), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate({'value': 'foo'}), throwsA(isA<ValidationException>()));
     });
   });
 }

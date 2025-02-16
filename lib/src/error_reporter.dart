@@ -39,4 +39,12 @@ class SimpleErrorReporter implements ErrorReporter {
   Exception createError(Object message) {
     return ValidationException(message.toString());
   }
+
+  @override
+  void clear() {
+    if (hasError) {
+      errors.clear();
+      hasError = false;
+    }
+  }
 }

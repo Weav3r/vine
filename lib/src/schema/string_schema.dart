@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:vine/src/contracts/schema.dart';
 import 'package:vine/src/rule_parser.dart';
 import 'package:vine/src/rules/string_rule.dart';
@@ -159,5 +161,10 @@ final class VineStringSchema extends RuleParser implements VineString {
   VineString optional() {
     super.isOptional = true;
     return this;
+  }
+
+  @override
+  VineString clone() {
+    return VineStringSchema(Queue.of(rules));
   }
 }

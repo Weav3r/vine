@@ -1,7 +1,6 @@
 import 'package:vine/src/contracts/schema.dart';
 import 'package:vine/src/contracts/vine.dart';
 import 'package:vine/src/field_pool.dart';
-import 'package:vine/src/rule_parser.dart';
 
 void objectRuleHandler(VineValidationContext ctx, FieldContext field,
     Map<String, VineSchema> payload, String? message) {
@@ -14,9 +13,6 @@ void objectRuleHandler(VineValidationContext ctx, FieldContext field,
     final currentField = FieldPool.acquire(
         key, (field.value as Map).containsKey(key) ? field.value[key] : MissingValue())
       ..customKeys.addAll(field.customKeys);
-
-    final schema = value as RuleParser;
-    final copyRules = schema.rules.toList();
 
     if (value is VineArray) {
       field.customKeys.add(key);
@@ -33,7 +29,6 @@ void objectRuleHandler(VineValidationContext ctx, FieldContext field,
     }
 
     value.parse(ctx, currentField);
-    schema.rules.addAll(copyRules);
 
     field.mutate({...field.value as Map<String, dynamic>, currentField.name: currentField.value});
     FieldPool.release(currentField);
