@@ -126,6 +126,30 @@ final class VineStringSchema extends RuleParser implements VineString {
   }
 
   @override
+  VineString sameAs(String value, {String? message}) {
+    super.addRule((ctx, field) => sameAsRuleHandler(ctx, field, value, message));
+    return this;
+  }
+
+  @override
+  VineString notSameAs(String value, {String? message}) {
+
+    return this;
+  }
+
+  @override
+  VineString inList(List<String> values, {String? message}) {
+
+    return this;
+  }
+
+  @override
+  VineString notInList(List<String> values, {String? message}) {
+
+    return this;
+  }
+
+  @override
   VineString nullable() {
     super.isNullable = true;
     return this;

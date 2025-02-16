@@ -20,6 +20,8 @@ abstract interface class VineValidationContext<T extends ErrorReporter> {
   T get errorReporter;
 
   Map get data;
+
+  Map<String, dynamic> getFieldContext(List<String> keys);
 }
 
 abstract interface class FieldContext {

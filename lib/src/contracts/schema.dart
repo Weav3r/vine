@@ -63,6 +63,14 @@ abstract interface class VineString implements VineSchema {
 
   VineString isCreditCard({String? message});
 
+  VineString sameAs(String value, {String? message});
+
+  VineString notSameAs(String value, {String? message});
+
+  VineString inList(List<String> values, {String? message});
+
+  VineString notInList(List<String> values, {String? message});
+
   VineString nullable();
 
   VineString optional();

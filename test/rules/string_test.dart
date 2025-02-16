@@ -166,18 +166,18 @@ void main() {
       expect(() => vine.validate(payload, validator), throwsA(isA<ValidationException>()));
     });
 
-    test('valid startWith', () {
+    test('valid startsWith', () {
       final payload = {'code': 'ABC123'};
       final validator = vine.compile(vine.object({
-        'code': vine.string().startWith('ABC'),
+        'code': vine.string().startsWith('ABC'),
       }));
 
       expect(() => vine.validate(payload, validator), returnsNormally);
     });
 
-    test('invalid startWith', () {
+    test('invalid startsWith', () {
       final validator = vine.compile(vine.object({
-        'code': vine.string().startWith('ABC'),
+        'code': vine.string().startsWith('ABC'),
       }));
 
       final payload = {
@@ -187,9 +187,9 @@ void main() {
       expect(() => vine.validate(payload, validator), throwsA(isA<ValidationException>()));
     });
 
-    test('valid endWith', () {
+    test('valid endsWith', () {
       final validator = vine.compile(vine.object({
-        'code': vine.string().endWith('XYZ'),
+        'code': vine.string().endsWith('XYZ'),
       }));
 
       final payload = {
@@ -199,10 +199,10 @@ void main() {
       expect(() => vine.validate(payload, validator), returnsNormally);
     });
 
-    test('invalid endWith', () {
+    test('invalid endsWith', () {
       final payload = {'code': 'XYZ123'};
       final validator = vine.compile(vine.object({
-        'code': vine.string().endWith('XYZ'),
+        'code': vine.string().endsWith('XYZ'),
       }));
 
       expect(() => vine.validate(payload, validator), throwsA(isA<ValidationException>()));
@@ -410,28 +410,28 @@ void main() {
     });
 
     group('alphaNumeric', () {
-      test('can be valid with [alphaNumeric, startWith, endWith] rules', () {
+      test('can be valid with [alphaNumeric, startsWith, endsWith] rules', () {
         final payload = {'code': 'ABC123XYZ'};
         final validator = vine.compile(vine.object({
-          'code': vine.string().alphaNumeric().startWith('ABC').endWith('XYZ'),
+          'code': vine.string().alphaNumeric().startsWith('ABC').endsWith('XYZ'),
         }));
 
         expect(() => vine.validate(payload, validator), returnsNormally);
       });
 
-      test('cannot have a wrong start with [alphaNumeric, startWith, endWith] rules', () {
+      test('cannot have a wrong start with [alphaNumeric, startsWith, endsWith] rules', () {
         final payload = {'code': '123ABCXYZ'};
         final validator = vine.compile(vine.object({
-          'code': vine.string().alphaNumeric().startWith('ABC').endWith('XYZ'),
+          'code': vine.string().alphaNumeric().startsWith('ABC').endsWith('XYZ'),
         }));
 
         expect(() => vine.validate(payload, validator), throwsA(isA<ValidationException>()));
       });
 
-      test('cannot have a wrong end with [alphaNumeric, startWith, endWith] rules', () {
+      test('cannot have a wrong end with [alphaNumeric, startsWith, endsWith] rules', () {
         final payload = {'code': 'ABC123123'};
         final validator = vine.compile(vine.object({
-          'code': vine.string().alphaNumeric().startWith('ABC').endWith('XYZ'),
+          'code': vine.string().alphaNumeric().startsWith('ABC').endsWith('XYZ'),
         }));
 
         expect(() => vine.validate(payload, validator), throwsA(isA<ValidationException>()));
@@ -542,6 +542,58 @@ void main() {
 
         final data = vine.validate(payload, validator);
         expect(data['password'], 'password123');
+      });
+    });
+
+    group('sameAs', () {
+      test('can be valid', () {
+        final payload = {
+          'first_field': 'foo',
+          'second_field': 'foo',
+        };
+
+        final validator = vine.compile(vine.object({
+          'first_field': vine.string(),
+          'second_field': vine.string().sameAs('first_field'),
+        }));
+
+        expect(() => vine.validate(payload, validator), returnsNormally);
+      });
+
+      test('should be valid in nested object when values are identiques', () {
+        final payload = {
+          'obj': {
+            'first_field': 'foo',
+            'second_field': 'foo',
+          },
+        };
+
+        final validator = vine.compile(vine.object({
+          'obj': vine.object({
+            'first_field': vine.string(),
+            'second_field': vine.string().sameAs('first_field'),
+          }),
+        }));
+
+        expect(() => vine.validate(payload, validator), returnsNormally);
+      });
+
+      test('cannot be valid in nested object when values are different', () {
+        final payload = {
+          'obj': {
+            'first_field': 'foo',
+            'second_field': 'bar',
+          },
+        };
+
+        final validator = vine.compile(vine.object({
+          'obj': vine.object({
+            'first_field': vine.string(),
+            'second_field': vine.string().sameAs('first_field'),
+          }),
+        }));
+
+        expect(() => vine.validate(payload, validator), throwsA(isA<ValidationException>()));
       });
     });
   });

@@ -7,6 +7,19 @@ final class ValidatorContext<T extends ErrorReporter> implements VineValidationC
   @override
   final Map<String, dynamic> data;
 
+  @override
+  Map<String, dynamic> getFieldContext(List<String> keys) {
+    Map<String, dynamic> data = this.data;
+    for (final key in keys) {
+      if (!data.containsKey(key)) {
+        data[key] = {};
+      }
+      data = data[key];
+    }
+
+    return data;
+  }
+
 
   ValidatorContext(this.errorReporter, this.data);
 }

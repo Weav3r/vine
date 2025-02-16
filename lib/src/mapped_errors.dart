@@ -30,4 +30,6 @@ const mappedErrors = {
   'array': 'The field {name} must be an array',
   'object': 'The field {name} must be an object',
   'union': 'The field {name} must be one of the specified types {types}',
+  'sameAs': 'The field {name} must be the same as {field}',
+  'notSameAs': 'The field {name} must not be the same as {field}',
 };

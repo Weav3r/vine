@@ -205,3 +205,21 @@ void isCreditCodeRuleHandler(VineValidationContext ctx, FieldContext field, Stri
     ctx.errorReporter.report('creditCard', [...field.customKeys, field.name], error);
   }
 }
+
+void sameAsRuleHandler(VineValidationContext ctx, FieldContext field, String value, String? message) {
+  final currentContext = ctx.getFieldContext(field.customKeys);
+
+  if (currentContext[value] != field.value) {
+    final error = ctx.errorReporter.format('sameAs', field, message, {'field': value});
+    ctx.errorReporter.report('sameAs', [...field.customKeys, field.name], error);
+  }
+}
+
+void notSameAsRuleHandler(VineValidationContext ctx, FieldContext field, String value, String? message) {
+  final currentContext = ctx.getFieldContext(field.customKeys);
+
+  if (currentContext[value] == field.value) {
+    final error = ctx.errorReporter.format('notSameAs', field, message, {'field': value});
+    ctx.errorReporter.report('notSameAs', [...field.customKeys, field.name], error);
+  }
+}

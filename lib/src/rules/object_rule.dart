@@ -12,7 +12,8 @@ void objectRuleHandler(VineValidationContext ctx, FieldContext field,
 
   for (final MapEntry(:key, :value) in payload.entries) {
     final currentField = FieldPool.acquire(
-        key, (field.value as Map).containsKey(key) ? field.value[key] : MissingValue());
+        key, (field.value as Map).containsKey(key) ? field.value[key] : MissingValue())
+      ..customKeys.addAll(field.customKeys);
 
     final schema = value as RuleParser;
     final copyRules = schema.rules.toList();
@@ -28,11 +29,12 @@ void objectRuleHandler(VineValidationContext ctx, FieldContext field,
       }
 
       currentField.customKeys.add(key);
+      field.customKeys.add(key);
     }
 
     value.parse(ctx, currentField);
-
     schema.rules.addAll(copyRules);
+
     field.mutate({...field.value as Map<String, dynamic>, currentField.name: currentField.value});
     FieldPool.release(currentField);
 
