@@ -620,5 +620,58 @@ void main() {
         expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
       });
     });
+
+    group('required if exists', () {
+      test('should be valid when field exists', () {
+        final payload = {
+          'field': 'foo',
+          'other_field': 'bar',
+        };
+
+        final validator = vine.compile(vine.object({
+          'field': vine.string(),
+          'other_field': vine.string().requiredIfExist(['field']),
+        }));
+
+        expect(() => validator.validate(payload), returnsNormally);
+      });
+
+      test('cannot be valid when field does not exist', () {
+        final payload = {
+          'field': 'foo',
+        };
+
+        final validator = vine.compile(vine.object({
+          'field': vine.string().optional(),
+          'other_field': vine.string().requiredIfExist(['field']),
+        }));
+
+        expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      });
+
+      test('should be valid when field does not exist but value is provided', () {
+        final payload = <String, dynamic> {
+          'other_field': 'bar',
+        };
+
+        final validator = vine.compile(vine.object({
+          'other_field': vine.string().minLength(1).requiredIfExist(['field']),
+        }));
+
+        expect(() => validator.validate(payload), returnsNormally);
+      });
+
+      test('cannot be valid when field does not exist', () {
+        final payload = <String, dynamic> {
+          'field': 'foo',
+        };
+
+        final validator = vine.compile(vine.object({
+          'other_field': vine.string().minLength(1).requiredIfExist(['field']),
+        }));
+
+        expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      });
+    });
   });
 }
