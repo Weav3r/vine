@@ -20,8 +20,8 @@ ensuring that data complies with an expected format before it is used, which red
 | 🔄 Data Transformation    | Trim, normalize, and transform values during validation      |
 | 🚧 Null Safety            | Full support for nullable and optional fields                |
 | ⚙️ Composable             | Compiled and reusable schemas                                |
-| ⚡ Fast Performance        | ~ 25 000 000 ops/s                                           |
-| 📦 Extremely small size   | Package size `< 14kb`                                        |
+| ⚡ Fast Performance        | ~ 29 000 000 ops/s                                           |
+| 📦 Extremely small size   | Package size `< 20kb`                                        |
 
 ## 🚀 Usage
 
@@ -74,7 +74,7 @@ void main() {
       'features': ['MANAGE'],
     };
 
-    final data = vine.validate(payload, validator);
+    final data = validator.validate(payload);
     print('Valid data: $data');
   } on ValidationException catch (e) {
     print('Validation error: ${e.message}');
