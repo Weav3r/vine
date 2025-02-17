@@ -2,11 +2,19 @@ import 'package:vine/src/contracts/vine.dart';
 import 'package:vine/src/schema/object/object_schema.dart';
 
 abstract interface class VineSchema<T extends ErrorReporter> {
+  /// Validate the field [field] the field to validate
   void parse(VineValidationContext ctx, FieldContext field);
 
+  /// Clone the schema
   VineSchema clone();
 }
 
+/// The IP address version
+/// - [v4] IPv4
+/// - [v6] IPv6
+/// ```dart
+/// vine.string().ipAddress(version: IpAddressVersion.v4);
+/// ```
 enum IpAddressVersion {
   v4(4),
   v6(6);
@@ -16,6 +24,13 @@ enum IpAddressVersion {
   const IpAddressVersion(this.value);
 }
 
+/// The UUID version
+/// - [v3] Version 3
+/// - [v4] Version 4
+/// - [v5] Version 5
+/// ```dart
+/// vine.string().uuid(version: UuidVersion.v4);
+/// ```
 enum UuidVersion {
   v3(3),
   v4(4),
@@ -26,6 +41,7 @@ enum UuidVersion {
   const UuidVersion(this.value);
 }
 
+/// Enum contract to use your enum in the [VineEnum] schema
 abstract interface class VineEnumerable<T> {
   T get value;
 }
@@ -296,18 +312,73 @@ abstract interface class VineString implements VineSchema, BasicSchema<VineStrin
 }
 
 abstract interface class VineNumber implements VineSchema, BasicSchema<VineNumber> {
+  /// Check if the number is in a range of values [values] the range of values [message] the error message to display
+  /// ```dart
+  /// vine.number().range([1, 10]);
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.number().range([1, 10],
+  ///   message: 'The value must be between 1 and 10');
+  /// ```
   VineNumber range(List<num> values, {String? message});
 
+  /// Check if the number is at least [value] the minimum value [message] the error message to display
+  /// ```dart
+  /// vine.number().min(5);
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.number().min(5, message: 'The value must be at least 5');
+  /// ```
   VineNumber min(num value, {String? message});
 
+  /// Check if the number is at most [value] the maximum value [message] the error message to display
+  /// ```dart
+  /// vine.number().max(10);
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.number().max(10, message: 'The value must be at most 10');
+  /// ```
   VineNumber max(num value, {String? message});
 
+  /// Check if the number is negative [message] the error message to display
+  /// ```dart
+  /// vine.number().negative();
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.number().negative(message: 'The value must be a negative number');
+  /// ```
   VineNumber negative({String? message});
 
+  /// Check if the number is positive [message] the error message to display
+  /// ```dart
+  /// vine.number().positive();
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.number().positive(message: 'The value must be a positive number');
+  /// ```
   VineNumber positive({String? message});
 
+  /// Check if the number is a double [message] the error message to display
+  /// ```dart
+  /// vine.number().double();
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.number().double(message: 'The value must be a double');
+  /// ```
   VineNumber double({String? message});
 
+  /// Check if the number is an integer [message] the error message to display
+  /// ```dart
+  /// vine.number().integer();
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
   VineNumber integer({String? message});
 }
 
