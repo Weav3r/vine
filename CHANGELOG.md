@@ -1,3 +1,10 @@
+## 1.1.0
+- Implement `VineBasics` validation rules
+- Implement `VineGroup` validation rules
+- Implement `VineDate` validation rules
+- Optimize validation algorithm
+- Enhance performance of the library, `~22 000 000` -> `~29 500 000` ops/sec (`+34%`)
+
 ## 1.0.0
 **Initial release**
 

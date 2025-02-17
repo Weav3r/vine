@@ -1,6 +1,6 @@
 name: vine
 description: Vine is a robust, typed validation library for Dart/Flutter, designed to simplify and secure data management in applications
-version: 1.0.0
+version: 1.1.0
 repository: https://github.com/LeadcodeDev/vine
 
 platforms:
@@ -14,7 +14,6 @@ platforms:
 topics:
   - validator
   - data
-
 
 environment:
   sdk: ^3.5.3
