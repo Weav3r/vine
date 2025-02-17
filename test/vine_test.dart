@@ -6,6 +6,7 @@ import './rules/number_test.dart' as number_test;
 import './rules/string_test.dart' as string_test;
 import './rules/object_test.dart' as object_test;
 import './rules/union_test.dart' as union_test;
+import './rules/date_test.dart' as date_test;
 
 void main() async {
   string_test.main();
@@ -16,4 +17,5 @@ void main() async {
   array_test.main();
   object_test.main();
   union_test.main();
+  date_test.main();
 }

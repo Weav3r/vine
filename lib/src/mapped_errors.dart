@@ -39,4 +39,12 @@ const mappedErrors = {
   'notInList': 'The field {name} must not be one of the specified values {values}',
   'requiredIfExists': 'The field {name} is required',
   'requiredIfExistsAny': 'The field {name} is required',
+  'date': 'The field {name} must be a valid date',
+  'date.required': 'The field {name} is required',
+  'date.before': 'The field {name} must be before {date}',
+  'date.after': 'The field {name} must be after {date}',
+  'date.between': 'The field {name} must be between {start} and {end}',
+  'date.beforeField': 'The field {name} must be before {field}',
+  'date.afterField': 'The field {name} must be after {field}',
+  'date.betweenFields': 'The field {name} must be between {start} and {end}',
 };

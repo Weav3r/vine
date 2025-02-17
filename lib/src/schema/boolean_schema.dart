@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:vine/src/contracts/schema.dart';
+import 'package:vine/src/contracts/vine.dart';
 import 'package:vine/src/rule_parser.dart';
 import 'package:vine/src/rules/basic_rule.dart';
 
@@ -28,6 +29,12 @@ final class VineBooleanSchema extends RuleParser implements VineBoolean {
   @override
   VineBoolean requiredIfAnyMissing(List<String> values) {
     super.addRule((ctx, field) => requiredIfAnyMissingRuleHandler(ctx, field, values), positioned: true);
+    return this;
+  }
+
+  @override
+  VineBoolean transform(Function(VineValidationContext, FieldContext) fn) {
+    super.addRule((ctx, field) => transformRuleHandler(ctx, field, fn));
     return this;
   }
 

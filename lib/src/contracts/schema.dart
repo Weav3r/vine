@@ -38,6 +38,8 @@ abstract interface class BasicSchema<T extends VineSchema> {
 
   T requiredIfAnyMissing(List<String> values);
 
+  T transform(Function(VineValidationContext ctx, FieldContext field) fn);
+
   T nullable();
 
   T optional();
@@ -136,3 +138,17 @@ abstract interface class VineArray implements VineSchema, BasicSchema<VineArray>
 
 
 abstract interface class VineUnion implements VineSchema, BasicSchema<VineUnion> {}
+
+abstract interface class VineDate implements VineSchema, BasicSchema<VineDate> {
+  VineDate before(DateTime value, {String? message});
+
+  VineDate after(DateTime value, {String? message});
+
+  VineDate between(DateTime min, DateTime max, {String? message});
+
+  VineDate beforeField(String value, {String? message});
+
+  VineDate afterField(String value, {String? message});
+
+  VineDate betweenFields(String start, String end, {String? message});
+}

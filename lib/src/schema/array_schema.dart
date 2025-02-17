@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:vine/src/contracts/schema.dart';
+import 'package:vine/src/contracts/vine.dart';
 import 'package:vine/src/rule_parser.dart';
 import 'package:vine/src/rules/array_rule.dart';
 import 'package:vine/src/rules/basic_rule.dart';
@@ -47,6 +48,12 @@ final class VineArraySchema extends RuleParser implements VineArray {
   @override
   VineArray requiredIfAnyMissing(List<String> values) {
     super.addRule((ctx, field) => requiredIfAnyMissingRuleHandler(ctx, field, values), positioned: true);
+    return this;
+  }
+
+  @override
+  VineArray transform(Function(VineValidationContext, FieldContext) fn) {
+    super.addRule((ctx, field) => transformRuleHandler(ctx, field, fn));
     return this;
   }
 

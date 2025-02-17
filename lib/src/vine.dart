@@ -8,6 +8,7 @@ import 'package:vine/src/field.dart';
 import 'package:vine/src/rules/any_rule.dart';
 import 'package:vine/src/rules/array_rule.dart';
 import 'package:vine/src/rules/boolean_rule.dart';
+import 'package:vine/src/rules/date_rule.dart';
 import 'package:vine/src/rules/enum_rule.dart';
 import 'package:vine/src/rules/number_rule.dart';
 import 'package:vine/src/rules/object_rule.dart';
@@ -16,6 +17,7 @@ import 'package:vine/src/rules/union_rule.dart';
 import 'package:vine/src/schema/any_schema.dart';
 import 'package:vine/src/schema/array_schema.dart';
 import 'package:vine/src/schema/boolean_schema.dart';
+import 'package:vine/src/schema/date_schema.dart';
 import 'package:vine/src/schema/enum_schema.dart';
 import 'package:vine/src/schema/number_schema.dart';
 import 'package:vine/src/schema/object/group_schema.dart';
@@ -86,6 +88,13 @@ final class Vine {
 
     rules.add((ctx, field) => unionRuleHandler(ctx, field, rules, schemas));
     return VineUnionSchema(rules);
+  }
+
+  VineDate date({String? message}) {
+    final Queue<ParseHandler> rules = Queue();
+
+    rules.add((ctx, field) => dateRuleHandler(ctx, field, message));
+    return VineDateSchema(rules);
   }
 
   Validator compile(VineSchema schema, {Map<String, String> errors = const {}}) {

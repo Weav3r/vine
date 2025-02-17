@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:vine/src/contracts/schema.dart';
 import 'package:vine/src/rule_parser.dart';
 import 'package:vine/src/rules/basic_rule.dart';
+import 'package:vine/vine.dart';
 
 final class VineEnumSchema extends RuleParser implements VineEnum {
   VineEnumSchema(super._rules);
@@ -28,6 +29,12 @@ final class VineEnumSchema extends RuleParser implements VineEnum {
   @override
   VineEnum requiredIfAnyMissing(List<String> values) {
     super.addRule((ctx, field) => requiredIfAnyMissingRuleHandler(ctx, field, values), positioned: true);
+    return this;
+  }
+
+  @override
+  VineEnum transform(Function(VineValidationContext, FieldContext) fn) {
+    super.addRule((ctx, field) => transformRuleHandler(ctx, field, fn));
     return this;
   }
 

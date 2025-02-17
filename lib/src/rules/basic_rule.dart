@@ -13,7 +13,8 @@ void optionalRuleHandler(VineValidationContext ctx, FieldContext field) {
   }
 }
 
-void requiredIfExistsRuleHandler(VineValidationContext ctx, FieldContext field, List<String> values) {
+void requiredIfExistsRuleHandler(
+    VineValidationContext ctx, FieldContext field, List<String> values) {
   final currentContext = ctx.getFieldContext(field.customKeys);
   List<bool> matchs = [];
 
@@ -29,7 +30,8 @@ void requiredIfExistsRuleHandler(VineValidationContext ctx, FieldContext field, 
   }
 }
 
-void requiredIfAnyExistsRuleHandler(VineValidationContext ctx, FieldContext field, List<String> values) {
+void requiredIfAnyExistsRuleHandler(
+    VineValidationContext ctx, FieldContext field, List<String> values) {
   final currentContext = ctx.getFieldContext(field.customKeys);
   bool hasMatch = false;
 
@@ -48,7 +50,8 @@ void requiredIfAnyExistsRuleHandler(VineValidationContext ctx, FieldContext fiel
   }
 }
 
-void requiredIfMissingRuleHandler(VineValidationContext ctx, FieldContext field, List<String> values) {
+void requiredIfMissingRuleHandler(
+    VineValidationContext ctx, FieldContext field, List<String> values) {
   final currentContext = ctx.getFieldContext(field.customKeys);
   List<bool> matchs = [];
 
@@ -64,7 +67,8 @@ void requiredIfMissingRuleHandler(VineValidationContext ctx, FieldContext field,
   }
 }
 
-void requiredIfAnyMissingRuleHandler(VineValidationContext ctx, FieldContext field, List<String> values) {
+void requiredIfAnyMissingRuleHandler(
+    VineValidationContext ctx, FieldContext field, List<String> values) {
   final currentContext = ctx.getFieldContext(field.customKeys);
   bool hasMatch = false;
 
@@ -81,4 +85,10 @@ void requiredIfAnyMissingRuleHandler(VineValidationContext ctx, FieldContext fie
 
     field.canBeContinue = false;
   }
+}
+
+void transformRuleHandler(VineValidationContext ctx, FieldContext field,
+    Function(VineValidationContext, FieldContext) fn) {
+  final result = fn(ctx, field);
+  field.mutate(result);
 }
