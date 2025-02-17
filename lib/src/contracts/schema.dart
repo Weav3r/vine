@@ -421,10 +421,34 @@ abstract interface class VineGroup implements VineSchema {
 }
 
 abstract interface class VineArray implements VineSchema, BasicSchema<VineArray> {
+  /// Check if the array has a minimum length [value] the minimum length [message] the error message to display
+  /// ```dart
+  /// vine.array().minLength(5);
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.array().minLength(5, message: 'The value must have at least 5 items');
+  /// ```
   VineArray minLength(int value, {String? message});
 
+  /// Check if the array has a maximum length [value] the maximum length [message] the error message to display
+  /// ```dart
+  /// vine.array().maxLength(5);
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.array().maxLength(5, message: 'The value must have at most 5 items');
+  /// ```
   VineArray maxLength(int value, {String? message});
 
+  /// Check if the array has a fixed length [value] the fixed length [message] the error message to display
+  /// ```dart
+  /// vine.array().fixedLength(5);
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.array().fixedLength(5, message: 'The value must have exactly 5 items');
+  /// ```
   VineArray fixedLength(int value, {String? message});
 }
 
