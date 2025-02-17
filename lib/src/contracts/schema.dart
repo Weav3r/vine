@@ -455,15 +455,66 @@ abstract interface class VineArray implements VineSchema, BasicSchema<VineArray>
 abstract interface class VineUnion implements VineSchema, BasicSchema<VineUnion> {}
 
 abstract interface class VineDate implements VineSchema, BasicSchema<VineDate> {
+  /// Check if the date is before [value] the date to compare [message] the error message to display
+  /// ```dart
+  /// vine.date().before(DateTime.now());
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.date().before(DateTime.now(), message: 'The date must be before today');
+  /// ```
   VineDate before(DateTime value, {String? message});
 
+  /// Check if the date is after [value] the date to compare [message] the error message to display
+  /// ```dart
+  /// vine.date().after(DateTime.now());
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.date().after(DateTime.now(), message: 'The date must be after today');
+  /// ```
   VineDate after(DateTime value, {String? message});
 
+  /// Check if the date is between [min] the minimum date [max] the maximum date [message] the error message to display
+  /// ```dart
+  /// vine.date().between(DateTime(2021, 1, 1), DateTime(2021, 12, 31));
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.date().between(DateTime(2021, 1, 1), DateTime(2021, 12, 31),
+  ///   message: 'The date must be between 2021-01-01 and 2021-12-31');
+  /// ```
+  ///  You can specify a custom error message
   VineDate between(DateTime min, DateTime max, {String? message});
 
+  /// Check if the date is before another field [value] the field name [message] the error message to display
+  /// ```dart
+  /// vine.date().beforeField('end');
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.date().beforeField('end', message: 'The date must be before the end date');
+  /// ```
   VineDate beforeField(String value, {String? message});
 
+  /// Check if the date is after another field [value] the field name [message] the error message to display
+  /// ```dart
+  /// vine.date().afterField('start');
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.date().afterField('start', message: 'The date must be after the start date');
+  /// ```
   VineDate afterField(String value, {String? message});
 
+  /// Check if the date is between two fields [start] the start field [end] the end field [message] the error message to display
+  /// ```dart
+  /// vine.date().betweenFields('start', 'end');
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.date().betweenFields('start', 'end',
+  ///   message: 'The date must be between the start and end date');
+  /// ```
   VineDate betweenFields(String start, String end, {String? message});
 }
