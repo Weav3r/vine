@@ -1,5 +1,5 @@
 import 'package:vine/src/contracts/vine.dart';
-import 'package:vine/src/schema/object_schema.dart';
+import 'package:vine/src/schema/object/object_schema.dart';
 
 abstract interface class VineSchema<T extends ErrorReporter> {
   void parse(VineValidationContext ctx, FieldContext field);
@@ -118,7 +118,12 @@ abstract interface class VineEnum implements VineSchema, BasicSchema<VineEnum> {
 abstract interface class VineObject implements VineSchema, BasicSchema<VineObject> {
   Map<String, VineSchema> get properties;
 
-  VineObjectSchema merge(VineObjectSchema schema);
+  VineObject merge(VineObjectSchema schema);
+}
+
+abstract interface class VineGroup implements VineSchema {
+  VineGroup when(bool Function(Map<String, dynamic> data) fn, Map<String, VineSchema> object);
+  VineGroup otherwise(Function(VineValidationContext, FieldContext) fn);
 }
 
 abstract interface class VineArray implements VineSchema, BasicSchema<VineArray> {

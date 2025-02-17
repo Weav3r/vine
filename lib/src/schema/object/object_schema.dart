@@ -13,7 +13,7 @@ final class VineObjectSchema extends RuleParser implements VineObject {
   Map<String, VineSchema> get properties => {..._properties};
 
   @override
-  VineObjectSchema merge(VineObjectSchema schema) {
+  VineObject merge(VineObjectSchema schema) {
     _properties.addAll(schema.properties);
     return this;
   }

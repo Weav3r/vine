@@ -9,7 +9,11 @@ void main() {
         'obj': vine.object({}),
       }));
 
-      expect(() => validator.validate({'obj': { 'foo': 'bar'}}), returnsNormally);
+      expect(
+          () => validator.validate({
+                'obj': {'foo': 'bar'}
+              }),
+          returnsNormally);
     });
 
     test('is valid when value is object and non validated values are deletes', () {
@@ -123,6 +127,74 @@ void main() {
       final validator = vine.compile(vine.object({
         'user': userSchema.optional(),
         'roles': vine.array(roleSchema),
+      }));
+
+      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+    });
+  });
+
+  group('Group object validation', () {
+    test('cannot be valid when object schema is called and email field is missing', () {
+      final payload = {
+        'hasField': true,
+        'user': {
+          'firstname': 'John',
+          'lastname': 'Doe',
+        }
+      };
+
+      final validator = vine.compile(vine.object({
+        'user': vine.group((group) {
+          group.when((data) => data.containsKey('hasField'), {
+            'firstname': vine.string(),
+            'lastname': vine.string(),
+            'email': vine.string().email(),
+          });
+        }),
+      }));
+
+      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+    });
+
+    test('should be valid when object schema is called and email field is present', () {
+      final payload = {
+        'user': {
+          'firstname': 'John',
+          'lastname': 'Doe',
+        }
+      };
+
+      final validator = vine.compile(vine.object({
+        'user': vine.group((group) {
+          group.when((data) => data.containsKey('hasField'), {
+            'firstname': vine.string(),
+            'lastname': vine.string(),
+            'email': vine.string().email(),
+          });
+        }),
+      }));
+
+      expect(() => validator.validate(payload), returnsNormally);
+    });
+
+    test('cannot be valid when object schema is called and email field is missing', () {
+      final payload = {
+        'hasField': true,
+        'user': {
+          'firstname': 'John',
+          'lastname': 'Doe',
+        }
+      };
+
+      final validator = vine.compile(vine.object({
+        'user': vine.group((group) {
+          group.when((data) => data.containsKey('hasField'), {
+            'firstname': vine.string(),
+            'lastname': vine.string(),
+          }).otherwise((ctx, field) {
+            ctx.errorReporter.report('foo', field.customKeys, 'Unknown error');
+          });
+        }),
       }));
 
       expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));

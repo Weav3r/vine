@@ -17,7 +17,7 @@ void stringRuleHandler(VineValidationContext ctx, FieldContext field, String? me
 }
 
 void minLengthRuleHandler(VineValidationContext ctx, FieldContext field, int minValue, String? message) {
-  if ((field.value as String).length < minValue) {
+  if (field.value case String value when value.length < minValue) {
     final error = ctx.errorReporter.format('minLength', field, message, {
       'min': minValue,
     });
@@ -27,7 +27,7 @@ void minLengthRuleHandler(VineValidationContext ctx, FieldContext field, int min
 }
 
 void maxLengthRuleHandler(VineValidationContext ctx, FieldContext field, int maxValue, String? message) {
-  if ((field.value as String).length > maxValue) {
+  if (field.value case String value when value.length > maxValue) {
     final error = ctx.errorReporter.format('maxLength', field, message, {
       'max': maxValue,
     });
@@ -37,7 +37,7 @@ void maxLengthRuleHandler(VineValidationContext ctx, FieldContext field, int max
 }
 
 void fixedLengthRuleHandler(VineValidationContext ctx, FieldContext field, int count, String? message) {
-  if ((field.value as String).length != count) {
+  if (field.value case String value when value.length != count) {
     final error = ctx.errorReporter.format('fixedLength', field, message, {
       'length': count,
     });
@@ -46,21 +46,21 @@ void fixedLengthRuleHandler(VineValidationContext ctx, FieldContext field, int c
 }
 
 void emailRuleHandler(VineValidationContext ctx, FieldContext field, String? message) {
-  if (!isEmailSimd(field.value as String)) {
+  if (field.value case String value when !isEmailSimd(value)) {
     final error = ctx.errorReporter.format('email', field, message, {});
     ctx.errorReporter.report('email', [...field.customKeys, field.name], error);
   }
 }
 
 void phoneRuleHandler(VineValidationContext ctx, FieldContext field, String? message) {
-  if (!regex.hasMatch(field.value)) {
+  if (field.value case String value when !regex.hasMatch(value)) {
     final error = ctx.errorReporter.format('phone', field, message, {});
     ctx.errorReporter.report('phone', [...field.customKeys, field.name], error);
   }
 }
 
 void ipAddressRuleHandler(VineValidationContext ctx, FieldContext field, IpAddressVersion? version, String? message) {
-  if (!(field.value as String).isIP(version?.value)) {
+  if (field.value case String value when !value.isIP(version?.value)) {
     final error = ctx.errorReporter.format(
         'ipAddress', field, message, {'version': version ?? IpAddressVersion.values.toList()});
     ctx.errorReporter.report('ipAddress', [...field.customKeys, field.name], error);
@@ -68,7 +68,7 @@ void ipAddressRuleHandler(VineValidationContext ctx, FieldContext field, IpAddre
 }
 
 void regexRuleHandler(VineValidationContext ctx, FieldContext field, RegExp regex, String? message) {
-  if (!regex.hasMatch(field.value)) {
+  if (field.value case String value when !regex.hasMatch(value)) {
     final error = ctx.errorReporter.format('regex', field, message, {
       'pattern': regex.pattern,
     });
@@ -78,7 +78,7 @@ void regexRuleHandler(VineValidationContext ctx, FieldContext field, RegExp rege
 }
 
 void hexColorRuleHandler(VineValidationContext ctx, FieldContext field, String? message) {
-  if (!(field.value as String).isHexColor) {
+  if (field.value case String value when !value.isHexColor) {
     final error = ctx.errorReporter.format('hexColor', field, message, {});
     ctx.errorReporter.report('hexColor', [...field.customKeys, field.name], error);
   }
@@ -98,21 +98,21 @@ void urlRuleHandler(VineValidationContext ctx, FieldContext field, List<String> 
 }
 
 void alphaRuleHandler(VineValidationContext ctx, FieldContext field, String? message) {
-  if (!(field.value as String).isAlpha) {
+  if (field.value case String value when !value.isAlpha) {
     final error = ctx.errorReporter.format('alpha', field, message, {});
     ctx.errorReporter.report('alpha', [...field.customKeys, field.name], error);
   }
 }
 
 void alphaNumericRuleHandler(VineValidationContext ctx, FieldContext field, String? message) {
-  if (!(field.value as String).isAlphanumeric) {
+  if (field.value case String value when !value.isAlphanumeric) {
     final error = ctx.errorReporter.format('alphaNumeric', field, message, {});
     ctx.errorReporter.report('alphaNumeric', [...field.customKeys, field.name], error);
   }
 }
 
 void startWithRuleHandler(VineValidationContext ctx, FieldContext field, String attemptedValue, String? message) {
-  if (!(field.value as String).startsWith(attemptedValue)) {
+  if (field.value case String value when !value.startsWith(attemptedValue)) {
     final error =
         ctx.errorReporter.format('startWith', field, message, {'value': attemptedValue});
     ctx.errorReporter.report('startWith', [...field.customKeys, field.name], error);
@@ -120,7 +120,7 @@ void startWithRuleHandler(VineValidationContext ctx, FieldContext field, String 
 }
 
 void endWithRuleHandler(VineValidationContext ctx, FieldContext field, String attemptedValue, String? message) {
-  if (!(field.value as String).endsWith(attemptedValue)) {
+  if (field.value case String value when !value.endsWith(attemptedValue)) {
     final error = ctx.errorReporter.format('endWith', field, message, {'value': attemptedValue});
     ctx.errorReporter.report('endWith', [...field.customKeys, field.name], error);
   }
@@ -189,7 +189,7 @@ void toCamelCaseRuleHandler(VineValidationContext ctx, FieldContext field) {
 }
 
 void uuidRuleHandler(VineValidationContext ctx, FieldContext field, UuidVersion? version, String? message) {
-  if (!(field.value as String).isUUID()) {
+  if (field.value case String value when !value.isUUID()) {
     final error = ctx.errorReporter.format('uuid', field, message, {
       'version': version ?? UuidVersion.values.toList(),
     });
@@ -199,7 +199,7 @@ void uuidRuleHandler(VineValidationContext ctx, FieldContext field, UuidVersion?
 }
 
 void isCreditCodeRuleHandler(VineValidationContext ctx, FieldContext field, String? message) {
-  if (!(field.value as String).isCreditCard) {
+  if (field.value case String value when !value.isCreditCard) {
     final error = ctx.errorReporter.format('creditCard', field, message, {});
 
     ctx.errorReporter.report('creditCard', [...field.customKeys, field.name], error);

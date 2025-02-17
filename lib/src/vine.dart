@@ -18,7 +18,8 @@ import 'package:vine/src/schema/array_schema.dart';
 import 'package:vine/src/schema/boolean_schema.dart';
 import 'package:vine/src/schema/enum_schema.dart';
 import 'package:vine/src/schema/number_schema.dart';
-import 'package:vine/src/schema/object_schema.dart';
+import 'package:vine/src/schema/object/group_schema.dart';
+import 'package:vine/src/schema/object/object_schema.dart';
 import 'package:vine/src/schema/string_schema.dart';
 import 'package:vine/src/schema/union_schema.dart';
 
@@ -29,6 +30,14 @@ final class Vine {
     final Queue<ParseHandler> rules = Queue();
     rules.add((ctx, field) => objectRuleHandler(ctx, field, payload, message));
     return VineObjectSchema(payload, rules);
+  }
+
+  VineGroup group(Function(VineGroupSchema) builder) {
+    final Queue<ParseHandler> rules = Queue();
+    final group = VineGroupSchema(rules);
+
+    builder(group);
+    return group;
   }
 
   VineString string({String? message}) {

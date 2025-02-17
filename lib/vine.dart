@@ -20,7 +20,7 @@ export 'package:vine/src/schema/array_schema.dart';
 export 'package:vine/src/schema/boolean_schema.dart';
 export 'package:vine/src/schema/enum_schema.dart';
 export 'package:vine/src/schema/number_schema.dart';
-export 'package:vine/src/schema/object_schema.dart';
+export 'package:vine/src/schema/object/object_schema.dart';
 export 'package:vine/src/schema/string_schema.dart';
 export 'package:vine/src/schema/union_schema.dart';
 export 'package:vine/src/vine.dart';
