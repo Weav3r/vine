@@ -395,8 +395,28 @@ abstract interface class VineObject implements VineSchema, BasicSchema<VineObjec
 }
 
 abstract interface class VineGroup implements VineSchema {
+  /// Check if the object matches the condition [fn] the condition to check [object] the object schema to apply
+  /// ```dart
+  /// vine.group((group) {
+  ///   group.when((data) => data['type'] == 'admin', {
+  ///     'name': vine.string().required(),
+  ///     'email': vine.string().required().email(),
+  ///   });
+  /// });
   VineGroup when(bool Function(Map<String, dynamic> data) fn, Map<String, VineSchema> object);
 
+  /// Apply the schema if the condition is not met [fn] the schema to apply
+  /// ```dart
+  /// vine
+  ///   .group((group) {
+  ///     group.when((data) => data['type'] == 'admin', {
+  ///       'name': vine.string().required(),
+  ///       'email': vine.string().required().email(),
+  ///     })
+  ///   })
+  ///   .otherwise((ctx, field) {
+  ///      field.customKeys.add(field.name);
+  ///   });
   VineGroup otherwise(Function(VineValidationContext, FieldContext) fn);
 }
 

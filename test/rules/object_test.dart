@@ -191,10 +191,10 @@ void main() {
           group.when((data) => data.containsKey('hasField'), {
             'firstname': vine.string(),
             'lastname': vine.string(),
-          }).otherwise((ctx, field) {
-            ctx.errorReporter.report('foo', field.customKeys, 'Unknown error');
           });
-        }),
+        }).otherwise((ctx, field) {
+          ctx.errorReporter.report('foo', field.customKeys, 'Unknown error');
+        })
       }));
 
       expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
