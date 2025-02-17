@@ -3,6 +3,7 @@ import 'package:vine/src/schema/object/object_schema.dart';
 
 abstract interface class VineSchema<T extends ErrorReporter> {
   void parse(VineValidationContext ctx, FieldContext field);
+
   VineSchema clone();
 }
 
@@ -46,50 +47,251 @@ abstract interface class BasicSchema<T extends VineSchema> {
 }
 
 abstract interface class VineString implements VineSchema, BasicSchema<VineString> {
+  /// Check if the string has a minimum length [value] the minimum length [message] the error message to display
+  /// ```dart
+  /// vine.string().minLength(5);
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.string().minLength(5, message: 'The value must be at least 5 characters long');
+  /// ```
   VineString minLength(int value, {String? message});
 
+  /// Check if the string has a maximum length [value] the maximum length [message] the error message to display
+  /// ```dart
+  /// vine.string().maxLength(5);
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.string().maxLength(5, message: 'The value must be at most 5 characters long');
+  /// ```
   VineString maxLength(int value, {String? message});
 
+  /// Check if the string has a fixed length [value] the fixed length [message] the error message to display
+  /// ```dart
+  /// vine.string().fixedLength(5);
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.string().fixedLength(5, message: 'The value must be exactly 5 characters long');
+  /// ```
   VineString fixedLength(int value, {String? message});
 
+  /// Check if the string is an email [message] the error message to display
+  /// ```dart
+  /// vine.string().email();
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.string().email(message: 'The value must be a valid email address');
+  /// ```
   VineString email({String? message});
 
+  /// Check if the string is a phone number [message] the error message to display
+  /// ```dart
+  /// vine.string().phone();
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.string().phone(message: 'The value must be a valid phone number');
+  /// ```
   VineString phone({String? message});
 
+  /// Check if the string is an IP address [version] the IP address version [message] the error message to display
+  /// ```dart
+  /// vine.string().ipAddress();
+  /// ```
+  /// By default it will check for both IPv4 and IPv6 addresses
+  /// You can specify the IP address version
+  /// ```dart
+  /// vine.string().ipAddress(version: IpAddressVersion.v4);
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.string().ipAddress(message: 'The value must be a valid IP address');
+  /// ```
   VineString ipAddress({IpAddressVersion? version, String? message});
 
+  /// Check if the string is a URL [message] the error message to display
+  /// ```dart
+  /// vine.string().url();
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.string().url(message: 'The value must be a valid URL');
+  /// ```
   VineString url({String? message});
 
+  /// Check if the string contains only alphabetic characters [message] the error message to display
+  /// ```dart
+  /// vine.string().alpha();
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.string().alpha(
+  ///   message: 'The value must contain only alphabetic characters');
+  /// ```
   VineString alpha({String? message});
 
+  /// Check if the string contains only alphabetic and numeric characters [message] the error message to display
+  /// ```dart
+  /// vine.string().alphaNumeric();
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.string().alphaNumeric(
+  ///   message: 'The value must contain only alphabetic and numeric characters');
+  /// ```
   VineString alphaNumeric({String? message});
 
+  /// Check if the string matches a regular expression [regex] the regular expression [message] the error message to display
+  /// ```dart
+  /// vine.string().startsWith('Hello');
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.string().startsWith('Hello',
+  ///   message: 'The value must start with Hello');
+  /// ```
   VineString startsWith(String value, {String? message});
 
+  /// Check if the string ends with a specific value [value] the value to check [message] the error message to display
+  /// ```dart
+  /// vine.string().endsWith('World');
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.string().endsWith('World',
+  ///   message: 'The value must end with World');
+  /// ```
   VineString endsWith(String value, {String? message});
 
+  /// Check if the string as another field named field_confirmation, [message] the error message to display
+  /// ```dart
+  /// vine.string().confirmed();
+  /// ```
+  /// The default related field is the field name suffixed with _confirmation
+  /// You can specify a custom related field
+  /// ```dart
+  /// vine.string().confirmed(property: 'password');
+  /// ```
+  /// By default, the confirmation field will be removed from the data object
+  ///
+  /// If you want to keep the confirmation field in the data object, you can set [include] to true
+  /// ```dart
+  /// vine.string().confirmed(include: true);
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.string().confirmed(
+  ///   message: 'The value must be confirmed');
+  /// ```
   VineString confirmed({String? property, bool include = false, String? message});
 
+  /// Remove leading and trailing whitespace from the string
+  /// ```dart
+  /// vine.string().trim();
+  /// ```
   VineString trim();
 
+  /// Normalize the email address by removing leading and trailing whitespace and converting the domain part to lowercase
+  /// ```dart
+  /// vine.string().normalizeEmail();
+  /// ```
+  /// By default, the domain part will be converted to lowercase
+  /// You can disable this by setting [lowercase] to false
+  /// ```dart
+  /// vine.string().normalizeEmail(lowercase: false);
+  /// ```
   VineString normalizeEmail({bool lowercase = true});
 
+  /// Convert the string to uppercase
+  /// ```dart
+  /// vine.string().toUpperCase();
+  /// ```
   VineString toUpperCase();
 
+  /// Convert the string to lowercase
+  /// ```dart
+  /// vine.string().toLowerCase();
+  /// ```
   VineString toLowerCase();
 
+  /// Convert the string to camel case
+  /// ```dart
+  /// vine.string().toCamelCase();
+  /// ```
   VineString toCamelCase();
 
+  /// Check if the string is a UUID [version] the UUID version [message] the error message to display
+  /// ```dart
+  /// vine.string().uuid();
+  /// ```
+  /// By default, it will check for any UUID version
+  /// You can specify the UUID version
+  /// ```dart
+  /// vine.string().uuid(version: UuidVersion.v4);
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.string().uuid(
+  ///   message: 'The value must be a valid UUID');
+  /// ```
   VineString uuid({UuidVersion? version, String? message});
 
+  /// Check if the string is a credit card number [message] the error message to display
+  /// ```dart
+  /// vine.string().isCreditCard();
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.string().isCreditCard(
+  ///   message: 'The value must be a valid credit card number');
+  /// ```
   VineString isCreditCard({String? message});
 
+  /// Check if the string is the same as another field [value] the field name [message] the error message to display
+  /// ```dart
+  /// vine.string().sameAs('password');
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.string().sameAs('password',
+  ///   message: 'The value must be the same as the password');
+  /// ```
   VineString sameAs(String value, {String? message});
 
+  /// Check if the string is not the same as another field [value] the field name [message] the error message to display
+  /// ```dart
+  /// vine.string().notSameAs('password');
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.string().notSameAs('password',
+  ///   message: 'The value must not be the same as the password');
+  /// ```
   VineString notSameAs(String value, {String? message});
 
+  /// Check if the string is in a list of values [values] the list of values [message] the error message to display
+  /// ```dart
+  /// vine.string().inList(['admin', 'user']);
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.string().inList(['admin', 'user'],
+  ///   message: 'The value must be one of admin or user');
+  /// ```
   VineString inList(List<String> values, {String? message});
 
+  /// Check if the string is not in a list of values [values] the list of values [message] the error message to display
+  /// ```dart
+  /// vine.string().notInList(['admin', 'user']);
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.string().notInList(['admin', 'user'],
+  ///   message: 'The value must not be one of admin or user');
+  /// ```
   VineString notInList(List<String> values, {String? message});
 }
 
@@ -113,9 +315,7 @@ abstract interface class VineBoolean implements VineSchema, BasicSchema<VineBool
 
 abstract interface class VineAny implements VineSchema, BasicSchema<VineAny> {}
 
-
-abstract interface class VineEnum implements VineSchema, BasicSchema<VineEnum> {
-}
+abstract interface class VineEnum implements VineSchema, BasicSchema<VineEnum> {}
 
 abstract interface class VineObject implements VineSchema, BasicSchema<VineObject> {
   Map<String, VineSchema> get properties;
@@ -125,6 +325,7 @@ abstract interface class VineObject implements VineSchema, BasicSchema<VineObjec
 
 abstract interface class VineGroup implements VineSchema {
   VineGroup when(bool Function(Map<String, dynamic> data) fn, Map<String, VineSchema> object);
+
   VineGroup otherwise(Function(VineValidationContext, FieldContext) fn);
 }
 
@@ -135,7 +336,6 @@ abstract interface class VineArray implements VineSchema, BasicSchema<VineArray>
 
   VineArray fixedLength(int value, {String? message});
 }
-
 
 abstract interface class VineUnion implements VineSchema, BasicSchema<VineUnion> {}
 
