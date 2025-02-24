@@ -1,5 +1,7 @@
+import 'package:vine/src/contracts/rule.dart';
 import 'package:vine/src/contracts/vine.dart';
 
-void anyRuleHandler(VineValidationContext ctx, FieldContext field) {
-
+final class VineAnyRule implements VineRule {
+  @override
+  void handle(VineValidationContext ctx, FieldContext field) {}
 }

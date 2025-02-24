@@ -1,64 +1,119 @@
+import 'package:vine/src/contracts/rule.dart';
 import 'package:vine/src/contracts/schema.dart';
 import 'package:vine/src/contracts/vine.dart';
 import 'package:vine/src/field_pool.dart';
 import 'package:vine/src/rule_parser.dart';
 
-void arrayRuleHandler(VineValidationContext ctx, FieldContext field, VineSchema schema) {
-  final copy = field.customKeys;
+final class VineArrayRule implements VineRule {
+  final VineSchema schema;
 
-  if (field.value case List values) {
-    final currentSchema = schema as RuleParser;
-    final copyRules = currentSchema.rules.toList();
+  const VineArrayRule(this.schema);
 
-    for (int i = 0; i < values.length; i++) {
-      final currentField = FieldPool.acquire(field.name, values[i]);
+  @override
+  void handle(VineValidationContext ctx, FieldContext field) {
+    final copy = field.customKeys;
 
-      currentSchema.rules.clear();
-      currentSchema.rules.addAll(copyRules);
+    if (field.value case List values) {
+      final currentSchema = schema as RuleParser;
+      final copyRules = currentSchema.rules.toList();
 
-      currentField.customKeys.add(i.toString());
-      schema.parse(ctx, currentField);
+      for (int i = 0; i < values.length; i++) {
+        final currentField = FieldPool.acquire(field.name, values[i]);
 
-      currentField.customKeys
-        ..clear()
-        ..addAll(copy);
+        currentSchema.rules.clear();
+        currentSchema.rules.addAll(copyRules);
 
-      currentField.mutate([...field.value, currentField.value]);
-      FieldPool.release(currentField);
+        currentField.customKeys.add(i.toString());
+        schema.parse(ctx, currentField);
+
+        currentField.customKeys
+          ..clear()
+          ..addAll(copy);
+
+        currentField.mutate([...field.value, currentField.value]);
+        FieldPool.release(currentField);
+      }
+
+      return;
     }
 
-    return;
-  }
-
-  final error = ctx.errorReporter.format('array', field, null, {});
-  ctx.errorReporter.report('array', [...field.customKeys, field.name], error);
-}
-
-void arrayMinLengthRuleHandler(VineValidationContext ctx, FieldContext field, int minValue, String? message) {
-  if ((field.value as List).length < minValue) {
-    final error = ctx.errorReporter.format('array.minLength', field, message, {
-      'min': minValue,
-    });
-
-    ctx.errorReporter.report('array.minLength', [...field.customKeys, field.name], error);
+    final error = ctx.errorReporter.format('array', field, null, {});
+    ctx.errorReporter.report('array', [...field.customKeys, field.name], error);
   }
 }
 
-void arrayMaxLengthRuleHandler(VineValidationContext ctx, FieldContext field, int maxValue, String? message) {
-  if ((field.value as List).length > maxValue) {
-    final error = ctx.errorReporter.format('array.maxLength', field, message, {
-      'max': maxValue,
-    });
+final class VineArrayUniqueRule implements VineRule {
+  final String? message;
 
-    ctx.errorReporter.report('array.maxLength', [...field.customKeys, field.name], error);
+  const VineArrayUniqueRule(this.message);
+
+  @override
+  void handle(VineValidationContext ctx, FieldContext field) {
+    if (field.value is! List) {
+      final error = ctx.errorReporter.format('array.unique', field, message, {});
+      ctx.errorReporter.report('array.unique', [...field.customKeys, field.name], error);
+      return;
+    }
+
+    final values = field.value as List;
+    final unique = values.toSet().toList();
+
+    if (values.length != unique.length) {
+      final error = ctx.errorReporter.format('array.unique', field, message, {});
+      ctx.errorReporter.report('array.unique', [...field.customKeys, field.name], error);
+    }
   }
 }
 
-void arrayFixedLengthRuleHandler(VineValidationContext ctx, FieldContext field, int count, String? message) {
-  if ((field.value as List).length != count) {
-    final error = ctx.errorReporter.format('array.fixedLength', field, message, {
-      'length': count,
-    });
-    ctx.errorReporter.report('array.fixedLength', [...field.customKeys, field.name], error);
+final class VineArrayMinLengthRule implements VineRule {
+  final int minValue;
+  final String? message;
+
+  const VineArrayMinLengthRule(this.minValue, this.message);
+
+  @override
+  void handle(VineValidationContext ctx, FieldContext field) {
+    if ((field.value as List).length < minValue) {
+      final error = ctx.errorReporter.format('array.minLength', field, message, {
+        'min': minValue,
+      });
+
+      ctx.errorReporter.report('array.minLength', [...field.customKeys, field.name], error);
+    }
+  }
+}
+
+final class VineArrayMaxLengthRule implements VineRule {
+  final int maxValue;
+  final String? message;
+
+  const VineArrayMaxLengthRule(this.maxValue, this.message);
+
+  @override
+  void handle(VineValidationContext ctx, FieldContext field) {
+    if ((field.value as List).length > maxValue) {
+      final error = ctx.errorReporter.format('array.maxLength', field, message, {
+        'max': maxValue,
+      });
+
+      ctx.errorReporter.report('array.maxLength', [...field.customKeys, field.name], error);
+    }
+  }
+}
+
+final class VineArrayFixedLengthRule implements VineRule {
+  final int count;
+  final String? message;
+
+  const VineArrayFixedLengthRule(this.count, this.message);
+
+  @override
+  void handle(VineValidationContext ctx, FieldContext field) {
+    if ((field.value as List).length != count) {
+      final error = ctx.errorReporter.format('array.fixedLength', field, message, {
+        'length': count,
+      });
+      ctx.errorReporter.report('array.fixedLength', [...field.customKeys, field.name], error);
+    }
   }
 }

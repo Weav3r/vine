@@ -1,3 +1,4 @@
+import 'package:vine/src/contracts/rule.dart';
 import 'package:vine/src/contracts/vine.dart';
 
 void handleNumberConversionError (VineValidationContext ctx, FieldContext field, String? message) {
@@ -9,77 +10,135 @@ void handleNumberConversionError (VineValidationContext ctx, FieldContext field,
   ctx.errorReporter.report('number', [...field.customKeys, field.name], error);
 }
 
-void numberRuleHandler(VineValidationContext ctx, FieldContext field, String? message) {
-  final value = field.value;
-  if (value is num) return;
-  if (value is! String) {
-    handleNumberConversionError(ctx, field, message);
-    return;
-  }
+final class VineNumberRule implements VineRule {
+  final String? message;
+  const VineNumberRule(this.message);
 
-  final parsed = num.tryParse(value);
-  if (parsed == null) {
-    handleNumberConversionError(ctx, field, message);
-    return;
-  }
-  field.mutate(parsed);
-}
+  @override
+  void handle(VineValidationContext ctx, FieldContext field) {
+    final value = field.value;
+    if (value is num) return;
+    if (value is! String) {
+      handleNumberConversionError(ctx, field, message);
+      return;
+    }
 
-void minRuleHandler(VineValidationContext ctx, FieldContext field, num minValue, String? message) {
-  if (field.value case num value when value.isNegative || value < minValue) {
-    final error = ctx.errorReporter.format('min', field, message, {
-      'min': minValue,
-    });
+    final parsed = num.tryParse(value);
+    if (parsed == null) {
+      handleNumberConversionError(ctx, field, message);
+      return;
+    }
 
-    ctx.errorReporter.report('min', [...field.customKeys, field.name], error);
+    field.mutate(parsed);
   }
 }
 
-void maxRuleHandler(VineValidationContext ctx, FieldContext field, num maxValue, String? message) {
-  if (field.value case num value when value.isNegative || value > maxValue) {
-    final error = ctx.errorReporter.format('max', field, message, {
-      'max': maxValue,
-    });
+final class VineMinRule implements VineRule {
+  final num minValue;
+  final String? message;
 
-    ctx.errorReporter.report('max', [...field.customKeys, field.name], error);
+  const VineMinRule(this.minValue, this.message);
+
+  @override
+  void handle(VineValidationContext ctx, FieldContext field) {
+    if (field.value case num value when value.isNegative || value < minValue) {
+      final error = ctx.errorReporter.format('min', field, message, {
+        'min': minValue,
+      });
+
+      ctx.errorReporter.report('min', [...field.customKeys, field.name], error);
+    }
   }
 }
 
-void rangeRuleHandler(VineValidationContext ctx, FieldContext field, List<num> values, String? message) {
-  if (!values.contains((field.value as num))) {
-    final error = ctx.errorReporter.format('range', field, message, {
-      'values': values,
-    });
+final class VineMaxRule implements VineRule {
+  final num maxValue;
+  final String? message;
 
-    ctx.errorReporter.report('range', [...field.customKeys, field.name], error);
+  const VineMaxRule(this.maxValue, this.message);
+
+  @override
+  void handle(VineValidationContext ctx, FieldContext field) {
+    if (field.value case num value when value.isNegative || value > maxValue) {
+      final error = ctx.errorReporter.format('max', field, message, {
+        'max': maxValue,
+      });
+
+      ctx.errorReporter.report('max', [...field.customKeys, field.name], error);
+    }
   }
 }
 
-void negativeRuleHandler(VineValidationContext ctx, FieldContext field, String? message) {
-  if (field.value case num value when !value.isNegative) {
-    final error = ctx.errorReporter.format('negative', field, message, {});
-    ctx.errorReporter.report('negative', [...field.customKeys, field.name], error);
+final class VineRangeRule implements VineRule {
+  final List<num> values;
+  final String? message;
+
+  const VineRangeRule(this.values, this.message);
+
+  @override
+  void handle(VineValidationContext ctx, FieldContext field) {
+    if (!values.contains((field.value as num))) {
+      final error = ctx.errorReporter.format('range', field, message, {
+        'values': values,
+      });
+
+      ctx.errorReporter.report('range', [...field.customKeys, field.name], error);
+    }
   }
 }
 
-void positiveRuleHandler(VineValidationContext ctx, FieldContext field, String? message) {
-  if (field.value case num value when value.isNegative) {
-    final error = ctx.errorReporter.format('positive', field, message, {});
-    ctx.errorReporter.report('positive', [...field.customKeys, field.name], error);
+final class VineNegativeRule implements VineRule {
+  final String? message;
+
+  const VineNegativeRule(this.message);
+
+  @override
+  void handle(VineValidationContext ctx, FieldContext field) {
+    if (field.value case num value when !value.isNegative) {
+      final error = ctx.errorReporter.format('negative', field, message, {});
+      ctx.errorReporter.report('negative', [...field.customKeys, field.name], error);
+    }
   }
 }
 
-void doubleRuleHandler(VineValidationContext ctx, FieldContext field, String? message) {
+final class VinePositiveRule implements VineRule {
+  final String? message;
 
-  if (field.value case num value when value is! double) {
-    final error = ctx.errorReporter.format('double', field, message, {});
-    ctx.errorReporter.report('double', [...field.customKeys, field.name], error);
+  const VinePositiveRule(this.message);
+
+  @override
+  void handle(VineValidationContext ctx, FieldContext field) {
+    if (field.value case num value when value.isNegative) {
+      final error = ctx.errorReporter.format('positive', field, message, {});
+      ctx.errorReporter.report('positive', [...field.customKeys, field.name], error);
+    }
   }
 }
 
-void integerRuleHandler(VineValidationContext ctx, FieldContext field, String? message) {
-  if (field.value case num value when value is! int) {
-    final error = ctx.errorReporter.format('integer', field, message, {});
-    ctx.errorReporter.report('integer', [...field.customKeys, field.name], error);
+final class VineDoubleRule implements VineRule {
+  final String? message;
+
+  const VineDoubleRule(this.message);
+
+  @override
+  void handle(VineValidationContext ctx, FieldContext field) {
+    if (field.value case num value when value is! double) {
+      final error = ctx.errorReporter.format('double', field, message, {});
+      ctx.errorReporter.report('double', [...field.customKeys, field.name], error);
+    }
+  }
+}
+
+final class VineIntegerRule implements VineRule {
+  final String? message;
+
+  const VineIntegerRule(this.message);
+
+  @override
+  void handle(VineValidationContext ctx, FieldContext field) {
+    if (field.value case num value when value is! int) {
+      final error = ctx.errorReporter.format('integer', field, message, {});
+      ctx.errorReporter.report('integer', [...field.customKeys, field.name], error);
+    }
   }
 }

@@ -2,15 +2,16 @@ import 'dart:collection';
 
 import 'package:vine/src/contracts/vine.dart';
 import 'package:vine/src/rules/basic_rule.dart';
+import 'package:vine/vine.dart';
 
 abstract interface class RuleParserContract {
-  Queue<ParseHandler> get rules;
-  void addRule(ParseHandler rule, {bool positioned = false});
+  Queue<VineRule> get rules;
+  void addRule(VineRule rule, {bool positioned = false});
 }
 
 class RuleParser implements RuleParserContract {
   @override
-  Queue<ParseHandler> rules;
+  Queue<VineRule> rules;
 
   bool isNullable = false;
   bool isOptional = false;
@@ -18,7 +19,7 @@ class RuleParser implements RuleParserContract {
   RuleParser(this.rules);
 
   @override
-  void addRule(ParseHandler rule, {bool positioned = false}) {
+  void addRule(VineRule rule, {bool positioned = false}) {
     if (positioned) {
       rules.addFirst(rule);
       return;
@@ -29,16 +30,16 @@ class RuleParser implements RuleParserContract {
 
   FieldContext parse(VineValidationContext ctx, FieldContext field) {
     if (isNullable) {
-      addRule(nullableRuleHandler, positioned: true);
+      addRule(VineNullableRule(), positioned: true);
     }
 
     if (isOptional) {
-      addRule(optionalRuleHandler, positioned: true);
+      addRule(VineOptionalRule(), positioned: true);
     }
 
     while(rules.isNotEmpty) {
       final rule = rules.removeFirst();
-      rule(ctx, field);
+      rule.handle(ctx, field);
 
       if (!field.canBeContinue) break;
       if (ctx.errorReporter.hasErrorForField(field.name)) break;

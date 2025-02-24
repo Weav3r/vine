@@ -4,7 +4,7 @@ import 'package:vine/vine.dart';
 
 class FieldPool {
   static final _pool = Queue<Field>();
-  static final int _maxSize = 100;
+  static final int _maxSize = 1000;
 
   static Field acquire(String name, dynamic value) {
     if (_pool.isEmpty) return Field(name, value);

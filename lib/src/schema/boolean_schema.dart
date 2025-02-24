@@ -9,32 +9,32 @@ final class VineBooleanSchema extends RuleParser implements VineBoolean {
   VineBooleanSchema(super._rules);
 
   @override
+  VineBoolean transform(Function(VineValidationContext, FieldContext) fn) {
+    super.addRule(VineTransformRule(fn));
+    return this;
+  }
+
+  @override
   VineBoolean requiredIfExist(List<String> values) {
-    super.addRule((ctx, field) => requiredIfExistsRuleHandler(ctx, field, values), positioned: true);
+    super.addRule(VineRequiredIfExistRule(values), positioned: true);
     return this;
   }
 
   @override
   VineBoolean requiredIfAnyExist(List<String> values) {
-    super.addRule((ctx, field) => requiredIfAnyExistsRuleHandler(ctx, field, values), positioned: true);
+    super.addRule(VineRequiredIfAnyExistRule(values), positioned: true);
     return this;
   }
 
   @override
   VineBoolean requiredIfMissing(List<String> values) {
-    super.addRule((ctx, field) => requiredIfMissingRuleHandler(ctx, field, values), positioned: true);
+    super.addRule(VineRequiredIfMissingRule(values), positioned: true);
     return this;
   }
 
   @override
   VineBoolean requiredIfAnyMissing(List<String> values) {
-    super.addRule((ctx, field) => requiredIfAnyMissingRuleHandler(ctx, field, values), positioned: true);
-    return this;
-  }
-
-  @override
-  VineBoolean transform(Function(VineValidationContext, FieldContext) fn) {
-    super.addRule((ctx, field) => transformRuleHandler(ctx, field, fn));
+    super.addRule(VineRequiredIfAnyMissingRule(values), positioned: true);
     return this;
   }
 

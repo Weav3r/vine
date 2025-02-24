@@ -10,31 +10,31 @@ final class VineEnumSchema extends RuleParser implements VineEnum {
 
   @override
   VineEnum requiredIfExist(List<String> values) {
-    super.addRule((ctx, field) => requiredIfExistsRuleHandler(ctx, field, values), positioned: true);
+    super.addRule(VineRequiredIfExistRule(values), positioned: true);
     return this;
   }
 
   @override
   VineEnum requiredIfAnyExist(List<String> values) {
-    super.addRule((ctx, field) => requiredIfAnyExistsRuleHandler(ctx, field, values), positioned: true);
+    super.addRule(VineRequiredIfAnyExistRule(values), positioned: true);
     return this;
   }
 
   @override
   VineEnum requiredIfMissing(List<String> values) {
-    super.addRule((ctx, field) => requiredIfMissingRuleHandler(ctx, field, values), positioned: true);
+    super.addRule(VineRequiredIfMissingRule(values), positioned: true);
     return this;
   }
 
   @override
   VineEnum requiredIfAnyMissing(List<String> values) {
-    super.addRule((ctx, field) => requiredIfAnyMissingRuleHandler(ctx, field, values), positioned: true);
+    super.addRule(VineRequiredIfAnyMissingRule(values), positioned: true);
     return this;
   }
 
   @override
   VineEnum transform(Function(VineValidationContext, FieldContext) fn) {
-    super.addRule((ctx, field) => transformRuleHandler(ctx, field, fn));
+    super.addRule(VineTransformRule(fn));
     return this;
   }
 

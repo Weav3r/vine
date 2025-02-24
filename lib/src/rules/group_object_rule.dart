@@ -1,11 +1,29 @@
+import 'package:vine/src/contracts/rule.dart';
 import 'package:vine/src/contracts/schema.dart';
 import 'package:vine/src/contracts/vine.dart';
 import 'package:vine/src/rules/object_rule.dart';
 
-void groupObjectRuleHandler(VineValidationContext ctx, FieldContext field,
-    bool Function(Map<String, dynamic> data) fn, Map<String, VineSchema> object) {
-  if (fn(ctx.data as Map<String, dynamic>)) {
-    field.customKeys.add(field.name);
-    objectRuleHandler(ctx, field, object, null);
+final class VineObjectGroupRule implements VineRule {
+  final bool Function(Map<String, dynamic> data) fn;
+  final Map<String, VineSchema> object;
+
+  const VineObjectGroupRule(this.fn, this.object);
+
+  @override
+  void handle(VineValidationContext ctx, FieldContext field) {
+    if (fn(ctx.data as Map<String, dynamic>)) {
+      field.customKeys.add(field.name);
+      VineObjectRule(object, null).handle(ctx, field);
+    }
+  }
+}
+
+final class VineObjectOtherwiseRule implements VineRule {
+  final Function(VineValidationContext, FieldContext) fn;
+  const VineObjectOtherwiseRule(this.fn);
+
+  @override
+  void handle(VineValidationContext ctx, FieldContext field) {
+    fn(ctx, field);
   }
 }

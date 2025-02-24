@@ -1,3 +1,5 @@
-abstract interface class VineRuleValidator<T extends Object> {
-  void handle(T value);
+import 'package:vine/src/contracts/vine.dart';
+
+abstract interface class VineRule {
+  void handle(VineValidationContext ctx, FieldContext field);
 }

@@ -450,6 +450,16 @@ abstract interface class VineArray implements VineSchema, BasicSchema<VineArray>
   /// vine.array().fixedLength(5, message: 'The value must have exactly 5 items');
   /// ```
   VineArray fixedLength(int value, {String? message});
+
+  /// Check if values in the array are unique [message] the error message to display
+  /// ```dart
+  /// vine.array().unique();
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.array().unique(message: 'The values must be unique');
+  /// ```
+  VineArray unique({String? message});
 }
 
 abstract interface class VineUnion implements VineSchema, BasicSchema<VineUnion> {}

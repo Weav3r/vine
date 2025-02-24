@@ -143,8 +143,8 @@ void main() {
 
     test('should be valid when value is after the target field', () {
       final payload = {
-        'date': DateTime.now().add(Duration(days: 1)).toIso8601String(),
-        'currentDate': DateTime.now().toIso8601String(),
+        'date': DateTime.now().toIso8601String(),
+        'currentDate': DateTime.now().add(Duration(days: 1)).toIso8601String(),
       };
 
       final validator = vine.compile(vine.object({
@@ -156,8 +156,8 @@ void main() {
 
     test('cannot be valid when value is before the target field', () {
       final payload = <String, dynamic>{
-        'date': DateTime.now().subtract(Duration(days: 1)).toIso8601String(),
-        'currentDate': DateTime.now().toIso8601String(),
+        'date': DateTime.now().toIso8601String(),
+        'currentDate': DateTime.now().subtract(Duration(days: 1)).toIso8601String(),
       };
 
       final validator = vine.compile(vine.object({

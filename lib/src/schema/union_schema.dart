@@ -10,31 +10,31 @@ final class VineUnionSchema extends RuleParser implements VineUnion {
 
   @override
   VineUnion requiredIfExist(List<String> values) {
-    super.addRule((ctx, field) => requiredIfExistsRuleHandler(ctx, field, values), positioned: true);
+    super.addRule(VineRequiredIfExistRule(values), positioned: true);
     return this;
   }
 
   @override
   VineUnion requiredIfAnyExist(List<String> values) {
-    super.addRule((ctx, field) => requiredIfAnyExistsRuleHandler(ctx, field, values), positioned: true);
+    super.addRule(VineRequiredIfAnyExistRule(values), positioned: true);
     return this;
   }
 
   @override
   VineUnion requiredIfMissing(List<String> values) {
-    super.addRule((ctx, field) => requiredIfMissingRuleHandler(ctx, field, values), positioned: true);
+    super.addRule(VineRequiredIfMissingRule(values), positioned: true);
     return this;
   }
 
   @override
   VineUnion requiredIfAnyMissing(List<String> values) {
-    super.addRule((ctx, field) => requiredIfAnyMissingRuleHandler(ctx, field, values), positioned: true);
+    super.addRule(VineRequiredIfAnyMissingRule(values), positioned: true);
     return this;
   }
 
   @override
   VineUnion transform(Function(VineValidationContext, FieldContext) fn) {
-    super.addRule((ctx, field) => transformRuleHandler(ctx, field, fn));
+    super.addRule(VineTransformRule(fn));
     return this;
   }
 

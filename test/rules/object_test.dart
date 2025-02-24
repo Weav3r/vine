@@ -148,7 +148,7 @@ void main() {
           group.when((data) => data.containsKey('hasField'), {
             'firstname': vine.string(),
             'lastname': vine.string(),
-            'email': vine.string().email(),
+            'emaila': vine.string().email(),
           });
         }),
       }));

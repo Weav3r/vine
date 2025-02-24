@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:vine/src/contracts/rule.dart';
 import 'package:vine/src/contracts/schema.dart';
 import 'package:vine/src/contracts/vine.dart';
 import 'package:vine/src/error_reporter.dart';
@@ -29,13 +30,13 @@ final class Vine {
   ErrorReporter Function(Map<String, String> errors) errorReporter = SimpleErrorReporter.new;
 
   VineObject object(Map<String, VineSchema> payload, {String? message}) {
-    final Queue<ParseHandler> rules = Queue();
-    rules.add((ctx, field) => objectRuleHandler(ctx, field, payload, message));
+    final Queue<VineRule> rules = Queue();
+    rules.add(VineObjectRule(payload, message));
     return VineObjectSchema(payload, rules);
   }
 
   VineGroup group(Function(VineGroupSchema) builder) {
-    final Queue<ParseHandler> rules = Queue();
+    final Queue<VineRule> rules = Queue();
     final group = VineGroupSchema(rules);
 
     builder(group);
@@ -43,57 +44,58 @@ final class Vine {
   }
 
   VineString string({String? message}) {
-    final Queue<ParseHandler> rules = Queue();
-    rules.add((ctx, field) => stringRuleHandler(ctx, field, message));
+    final Queue<VineRule> rules = Queue();
+    rules.add(VineStringRule(message));
+
     return VineStringSchema(rules);
   }
 
   VineNumber number({String? message}) {
-    final Queue<ParseHandler> rules = Queue();
+    final Queue<VineRule> rules = Queue();
+    rules.add(VineNumberRule(message));
 
-    rules.add((ctx, field) => numberRuleHandler(ctx, field, message));
     return VineNumberSchema(rules);
   }
 
   VineBoolean boolean({bool includeLiteral = false, String? message}) {
-    final Queue<ParseHandler> rules = Queue();
+    final Queue<VineRule> rules = Queue();
 
-    rules.add((ctx, field) => booleanRuleHandler(ctx, field, includeLiteral, message));
+    rules.add(VineBooleanRule(includeLiteral, message));
     return VineBooleanSchema(rules);
   }
 
   VineAny any() {
-    final Queue<ParseHandler> rules = Queue();
+    final Queue<VineRule> rules = Queue();
 
-    rules.add(anyRuleHandler);
+    rules.add(VineAnyRule());
     return VineAnySchema(rules);
   }
 
   VineEnum enumerate<T extends VineEnumerable>(List<T> source) {
-    final Queue<ParseHandler> rules = Queue();
+    final Queue<VineRule> rules = Queue();
 
-    rules.add((ctx, field) => enumRuleHandler<T>(ctx, field, source));
+    rules.add(VineEnumRule<T>(source));
     return VineEnumSchema(rules);
   }
 
   VineArray array(VineSchema schema) {
-    final Queue<ParseHandler> rules = Queue();
+    final Queue<VineRule> rules = Queue();
 
-    rules.add((ctx, field) => arrayRuleHandler(ctx, field, schema));
+    rules.add(VineArrayRule(schema));
     return VineArraySchema(rules);
   }
 
   VineUnion union(List<VineSchema> schemas) {
-    final Queue<ParseHandler> rules = Queue();
+    final Queue<VineRule> rules = Queue();
+    rules.add(VineUnionRule(schemas));
 
-    rules.add((ctx, field) => unionRuleHandler(ctx, field, rules, schemas));
     return VineUnionSchema(rules);
   }
 
   VineDate date({String? message}) {
-    final Queue<ParseHandler> rules = Queue();
+    final Queue<VineRule> rules = Queue();
 
-    rules.add((ctx, field) => dateRuleHandler(ctx, field, message));
+    rules.add(VineDateRule(message));
     return VineDateSchema(rules);
   }
 

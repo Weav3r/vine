@@ -1,31 +1,38 @@
+import 'package:vine/src/contracts/rule.dart';
 import 'package:vine/src/contracts/vine.dart';
 
-void booleanRuleHandler(
-    VineValidationContext ctx, FieldContext field, bool literal, String? message) {
-  final bool? content = !literal
-      ? switch (field.value) {
-          String() => bool.tryParse(field.value.toString()),
-          bool() => field.value,
-          _ => null
-        }
-      : switch (field.value) {
-          '1' => true,
-          '0' => false,
-          String() => bool.tryParse(field.value),
-          1 => true,
-          0 => false,
-          bool() => field.value,
-          _ => null,
-        };
+final class VineBooleanRule implements VineRule {
+  final bool literal;
+  final String? message;
 
-  if (content == null) {
-    if (field.isUnion) {
-      throw Exception('Union type is not supported for boolean type');
+  const VineBooleanRule(this.literal, this.message);
+
+  @override
+  void handle(VineValidationContext ctx, FieldContext field) {
+
+    final bool? content = !literal
+        ? switch (field.value) {
+            String() => bool.tryParse(field.value.toString()),
+            bool() => field.value,
+            _ => null
+          }
+        : switch (field.value) {
+            '0' || 0 => false,
+            '1' || 1 => true,
+            String() => bool.tryParse(field.value),
+            bool() => field.value,
+            _ => null,
+          };
+
+    if (content == null) {
+      if (field.isUnion) {
+        throw Exception('Union type is not supported for boolean type');
+      }
+
+      final error = ctx.errorReporter.format('boolean', field, message, {});
+      ctx.errorReporter.report('boolean', [...field.customKeys, field.name], error);
+    } else {
+      field.mutate(content);
     }
-
-    final error = ctx.errorReporter.format('boolean', field, message, {});
-    ctx.errorReporter.report('boolean', [...field.customKeys, field.name], error);
-  } else {
-    field.mutate(content);
   }
 }

@@ -8,13 +8,13 @@ final class VineGroupSchema extends RuleParser implements VineGroup {
 
   @override
   VineGroup when(bool Function(Map<String, dynamic> data) fn, Map<String, VineSchema> object) {
-    super.addRule((ctx, field) => groupObjectRuleHandler(ctx, field, fn, object));
+    super.addRule(VineObjectGroupRule(fn, object));
     return this;
   }
 
   @override
   VineGroup otherwise(Function(VineValidationContext, FieldContext) fn) {
-    super.addRule(fn);
+    super.addRule(VineObjectOtherwiseRule(fn));
     return this;
   }
 

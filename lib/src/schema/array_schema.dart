@@ -11,49 +11,55 @@ final class VineArraySchema extends RuleParser implements VineArray {
 
   @override
   VineArray minLength(int value, {String? message}) {
-    super.addRule((ctx, field) => arrayMinLengthRuleHandler(ctx, field, value, message));
+    super.addRule(VineArrayMinLengthRule(value, message));
     return this;
   }
 
   @override
   VineArray maxLength(int value, {String? message}) {
-    super.addRule((ctx, field) => arrayMaxLengthRuleHandler(ctx, field, value, message));
+    super.addRule(VineArrayMaxLengthRule(value, message));
     return this;
   }
 
   @override
   VineArray fixedLength(int value, {String? message}) {
-    super.addRule((ctx, field) => arrayFixedLengthRuleHandler(ctx, field, value, message));
+    super.addRule(VineArrayFixedLengthRule(value, message));
     return this;
   }
 
   @override
-  VineArray requiredIfExist(List<String> values) {
-    super.addRule((ctx, field) => requiredIfExistsRuleHandler(ctx, field, values), positioned: true);
-    return this;
-  }
-
-  @override
-  VineArray requiredIfAnyExist(List<String> values) {
-    super.addRule((ctx, field) => requiredIfAnyExistsRuleHandler(ctx, field, values), positioned: true);
-    return this;
-  }
-
-  @override
-  VineArray requiredIfMissing(List<String> values) {
-    super.addRule((ctx, field) => requiredIfMissingRuleHandler(ctx, field, values), positioned: true);
-    return this;
-  }
-
-  @override
-  VineArray requiredIfAnyMissing(List<String> values) {
-    super.addRule((ctx, field) => requiredIfAnyMissingRuleHandler(ctx, field, values), positioned: true);
+  VineArray unique({String? message}) {
+    super.addRule(VineArrayUniqueRule(message));
     return this;
   }
 
   @override
   VineArray transform(Function(VineValidationContext, FieldContext) fn) {
-    super.addRule((ctx, field) => transformRuleHandler(ctx, field, fn));
+    super.addRule(VineTransformRule(fn));
+    return this;
+  }
+
+  @override
+  VineArray requiredIfExist(List<String> values) {
+    super.addRule(VineRequiredIfExistRule(values), positioned: true);
+    return this;
+  }
+
+  @override
+  VineArray requiredIfAnyExist(List<String> values) {
+    super.addRule(VineRequiredIfAnyExistRule(values), positioned: true);
+    return this;
+  }
+
+  @override
+  VineArray requiredIfMissing(List<String> values) {
+    super.addRule(VineRequiredIfMissingRule(values), positioned: true);
+    return this;
+  }
+
+  @override
+  VineArray requiredIfAnyMissing(List<String> values) {
+    super.addRule(VineRequiredIfAnyMissingRule(values), positioned: true);
     return this;
   }
 

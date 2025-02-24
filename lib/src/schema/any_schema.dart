@@ -9,32 +9,32 @@ final class VineAnySchema extends RuleParser implements VineAny {
   VineAnySchema(super._rules);
 
   @override
+  VineAny transform(Function(VineValidationContext, FieldContext) fn) {
+    super.addRule(VineTransformRule(fn));
+    return this;
+  }
+
+  @override
   VineAny requiredIfExist(List<String> values) {
-    super.addRule((ctx, field) => requiredIfExistsRuleHandler(ctx, field, values), positioned: true);
+    super.addRule(VineRequiredIfExistRule(values), positioned: true);
     return this;
   }
 
   @override
   VineAny requiredIfAnyExist(List<String> values) {
-    super.addRule((ctx, field) => requiredIfAnyExistsRuleHandler(ctx, field, values), positioned: true);
+    super.addRule(VineRequiredIfAnyExistRule(values), positioned: true);
     return this;
   }
 
   @override
   VineAny requiredIfMissing(List<String> values) {
-    super.addRule((ctx, field) => requiredIfMissingRuleHandler(ctx, field, values), positioned: true);
+    super.addRule(VineRequiredIfMissingRule(values), positioned: true);
     return this;
   }
 
   @override
   VineAny requiredIfAnyMissing(List<String> values) {
-    super.addRule((ctx, field) => requiredIfAnyMissingRuleHandler(ctx, field, values), positioned: true);
-    return this;
-  }
-
-  @override
-  VineAny transform(Function(VineValidationContext, FieldContext) fn) {
-    super.addRule((ctx, field) => transformRuleHandler(ctx, field, fn));
+    super.addRule(VineRequiredIfAnyMissingRule(values), positioned: true);
     return this;
   }
 
