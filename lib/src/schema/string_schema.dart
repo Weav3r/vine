@@ -1,9 +1,5 @@
 import 'dart:collection';
 
-import 'package:vine/src/contracts/schema.dart';
-import 'package:vine/src/rule_parser.dart';
-import 'package:vine/src/rules/basic_rule.dart';
-import 'package:vine/src/rules/string_rule.dart';
 import 'package:vine/vine.dart';
 
 final class VineStringSchema extends RuleParser implements VineString {
@@ -196,5 +192,45 @@ final class VineStringSchema extends RuleParser implements VineString {
   @override
   VineString clone() {
     return VineStringSchema(Queue.of(rules));
+  }
+
+  @override
+  Map<String, dynamic> introspect({String? name}) {
+    final validations = <String, dynamic>{};
+    String? format;
+    String example = 'foo';
+    List<String>? enums;
+
+    for (final rule in rules) {
+      if (rule is VineEmailRule) {
+        format = 'email';
+        example = 'user@example.com';
+        continue;
+      }
+
+      if (rule is VineUuidRule) {
+        format = 'uuid';
+        example = '550e8400-e29b-41d4-a716-446655440000';
+        continue;
+      }
+
+      if (rule is VineMinLengthRule) {
+        validations['minLength'] = rule.minValue;
+        continue;
+      }
+
+      if (rule is VineEnumRule) {
+        enums = rule.source.map((e) => e.value.toString()).toList();
+      }
+    }
+
+    return {
+      'type': 'string',
+      'format': format,
+      'required': !isOptional,
+      'example': example,
+      'enum': enums,
+      ...validations,
+    }..removeWhere((_, v) => v == null);
   }
 }

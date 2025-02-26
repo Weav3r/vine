@@ -1,3 +1,7 @@
+## 1.2.0
+- Move rules from handlers to dedicated classes
+- Implement OpenAPI reporter
+
 ## 1.1.0
 - Implement `VineBasics` validation rules
 - Implement `VineGroup` validation rules

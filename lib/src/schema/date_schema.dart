@@ -91,4 +91,14 @@ final class VineDateSchema extends RuleParser implements VineDate {
   VineDate clone() {
     return VineDateSchema(Queue.of(rules));
   }
+
+  @override
+  Map<String, dynamic> introspect({String? name}) {
+    return {
+      'type': 'string',
+      'format': 'date-time',
+      'required': !isOptional,
+      'example': DateTime.now().toIso8601String(),
+    };
+  }
 }

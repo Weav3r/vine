@@ -21,13 +21,13 @@ ensuring that data complies with an expected format before it is used, which red
 | 🚧 Null Safety            | Full support for nullable and optional fields                |
 | ⚙️ Composable             | Compiled and reusable schemas                                |
 | ⚡ Fast Performance        | ~ 29 000 000 ops/s                                           |
-| 📦 Extremely small size   | Package size `< 20kb`                                        |
+| 📦 Extremely small size   | Package size `< 21kb`                                        |
+| 🚀 OpenApi reporter       | Export your schemas as OpenApi spec                          |
 
 ## 🚀 Usage
 
 Vine is a data structure validation library for Dart. You may use it to validate the HTTP request body or any data in
-your
-backend applications.
+your backend applications.
 
 ### Built for validating form data and JSON payloads
 
@@ -57,13 +57,13 @@ import 'package:vine/vine.dart';
 
 void main() {
   final validator = vine.compile(
-      vine.object({
-        'username': vine.string().minLength(3).maxLength(20),
-        'email': vine.string().email(),
-        'age': vine.number().min(18).optional(),
-        'isAdmin': vine.boolean(),
-        'features': vine.array(vine.string()),
-      }));
+    vine.object({
+      'username': vine.string().minLength(3).maxLength(20),
+      'email': vine.string().email(),
+      'age': vine.number().min(18).optional(),
+      'isAdmin': vine.boolean(),
+      'features': vine.array(vine.string()),
+    }));
 
   try {
     final payload = {
@@ -80,6 +80,29 @@ void main() {
     print('Validation error: ${e.message}');
   }
 }
+```
+
+### OpenAPI reporter
+
+Vine can generate an OpenAPI schema from your validation schemas. 
+This feature is useful when you want to document your API
+
+```dart
+final schema = vine.object({
+  'stringField': vine.string().minLength(3).maxLength(20),
+  'emailField': vine.string().email(),
+  'numberField': vine.number().min(18).max(100),
+  'booleanField': vine.boolean(),
+  'enumField': vine.enumerate(MyEnum.values),
+  'arrayField': vine.array(vine.string().minLength(3).maxLength(20)).minLength(1),
+  'unionField': vine.union([
+    vine.string().minLength(3).maxLength(20),
+    vine.number().min(10).max(20),
+  ]),
+});
+
+final reporter = vine.openApi.report(schemas: {'MySchema': schema});
+print(reporter);
 ```
 
 ## ❤️ Credit

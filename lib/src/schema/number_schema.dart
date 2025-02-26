@@ -97,4 +97,61 @@ final class VineNumberSchema extends RuleParser implements VineNumber {
   VineNumber clone() {
     return VineNumberSchema(Queue.of(rules));
   }
+
+  @override
+  Map<String, dynamic> introspect({String? name}) {
+    final validations = <String, dynamic>{};
+    bool isInteger = false;
+    bool isDouble = false;
+    List<num>? enums;
+    num example = 0;
+
+    // Analyse des règles
+    for (final rule in rules) {
+      switch (rule) {
+        case VineIntegerRule():
+          isInteger = true;
+          example = 42;
+        case VineDoubleRule():
+          isDouble = true;
+          example = 3.14;
+        case VineMinRule(:final minValue):
+          validations['minimum'] = minValue;
+          example = minValue + (isInteger ? 1 : 0.5);
+        case VineMaxRule(:final maxValue):
+          validations['maximum'] = maxValue;
+          example = maxValue - (isInteger ? 1 : 0.5);
+        case VineRangeRule(:final values):
+          enums = values;
+          example = values.firstOrNull ?? example;
+        case VinePositiveRule():
+          validations['exclusiveMinimum'] = 0;
+          example = 1;
+        case VineNegativeRule():
+          validations['exclusiveMaximum'] = 0;
+          example = -1;
+      }
+    }
+
+    // Détermination du type
+    final type = isInteger ? 'integer' : isDouble ? 'number' : 'number';
+
+    // Validation de l'exemple
+    if (validations.containsKey('minimum') || validations.containsKey('maximum')) {
+      example = example.clamp(
+        validations['minimum'] ?? '-Infinity',
+        validations['maximum'] ?? 'Infinity',
+      );
+    }
+
+    // Construction du schéma
+    return {
+      if (name != null) 'title': name,
+      'type': type,
+      'required': !isOptional,
+      if (enums != null) 'enum': enums,
+      'example': example,
+      ...validations,
+    }..removeWhere((_, v) => v == null);
+  }
 }

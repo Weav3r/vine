@@ -65,4 +65,32 @@ final class VineObjectSchema extends RuleParser implements VineObject {
   VineObject clone() {
     return VineObjectSchema({..._properties}, Queue.of(rules));
   }
+
+  @override
+  Map<String, dynamic> introspect({String? name}) {
+    final Map<String, dynamic> properties = {};
+    final List<String> requiredFields = [];
+    final Map<String, dynamic> example = {};
+
+    for (final entry in _properties.entries) {
+      final schema = entry.value.introspect();
+      properties[entry.key] = schema;
+
+      if (schema['required'] ?? false) {
+        requiredFields.add(entry.key);
+        schema.remove('required');
+      }
+
+      example[entry.key] = schema['example'] ?? (schema['examples'] as List).firstOrNull;
+    }
+
+    return {
+      if (name != null) 'title': name,
+      'type': 'object',
+      'properties': properties,
+      if (requiredFields.isNotEmpty) 'required': requiredFields,
+      'additionalProperties': false,
+      'example': example,
+    };
+  }
 }

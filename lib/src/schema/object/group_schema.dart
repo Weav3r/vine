@@ -22,4 +22,9 @@ final class VineGroupSchema extends RuleParser implements VineGroup {
   VineGroup clone() {
     return VineGroupSchema(Queue.of(rules));
   }
+
+  @override
+  Map<String, dynamic> introspect({String? name}) {
+    return {};
+  }
 }

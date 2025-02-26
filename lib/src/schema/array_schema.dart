@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:vine/src/contracts/rule.dart';
 import 'package:vine/src/contracts/schema.dart';
 import 'package:vine/src/contracts/vine.dart';
 import 'package:vine/src/rule_parser.dart';
@@ -78,5 +79,36 @@ final class VineArraySchema extends RuleParser implements VineArray {
   @override
   VineArray clone() {
     return VineArraySchema(Queue.of(rules));
+  }
+
+  int? _getRuleValue<T extends VineRule>() {
+    return switch (rules.whereType<T>().firstOrNull) {
+      VineArrayMinLengthRule rule => rule.minValue,
+      VineArrayFixedLengthRule rule => rule.count,
+      _ => null,
+    };
+  }
+
+  @override
+  Map<String, dynamic> introspect({String? name}) {
+    final itemsSchema = rules.whereType<VineArrayRule>().firstOrNull?.schema.introspect();
+    itemsSchema?.remove('required');
+    final example = itemsSchema?['example'];
+    itemsSchema?.remove('example');
+
+
+    final minValue = _getRuleValue<VineArrayMinLengthRule>();
+    final maxValue = _getRuleValue<VineArrayMaxLengthRule>();
+    final isUnique = rules.whereType<VineArrayUniqueRule>().isNotEmpty;
+
+    return {
+      'type': 'array',
+      'items': itemsSchema ?? {'type': 'any'},
+      if (minValue != null) 'minItems': minValue,
+      if (maxValue != null) 'maxItems': maxValue,
+      if (isUnique) 'uniqueItems': isUnique,
+      'required': !isOptional,
+      'example': [example],
+    };
   }
 }

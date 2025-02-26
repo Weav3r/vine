@@ -54,4 +54,13 @@ final class VineBooleanSchema extends RuleParser implements VineBoolean {
   VineBoolean clone() {
     return VineBooleanSchema(Queue.of(rules));
   }
+
+  @override
+  Map<String, dynamic> introspect({String? name}) {
+    return {
+      'type': 'boolean',
+      'required': !isOptional,
+      'example': true,
+    };
+  }
 }

@@ -54,4 +54,11 @@ final class VineAnySchema extends RuleParser implements VineAny {
   VineAny clone() {
     return VineAnySchema(Queue.of(rules));
   }
+
+  @override
+  Map<String, dynamic> introspect({String? name}) {
+    return {
+      'required': !isOptional,
+    };
+  }
 }

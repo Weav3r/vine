@@ -5,8 +5,9 @@ import 'package:vine/src/rule_parser.dart';
 import 'package:vine/src/rules/basic_rule.dart';
 import 'package:vine/vine.dart';
 
-final class VineEnumSchema extends RuleParser implements VineEnum {
-  VineEnumSchema(super._rules);
+final class VineEnumSchema<T extends VineEnumerable> extends RuleParser implements VineEnum {
+  final List<T> _source;
+  VineEnumSchema(super._rules, this._source);
 
   @override
   VineEnum requiredIfExist(List<String> values) {
@@ -52,6 +53,16 @@ final class VineEnumSchema extends RuleParser implements VineEnum {
 
   @override
   VineEnum clone() {
-    return VineEnumSchema(Queue.of(rules));
+    return VineEnumSchema(Queue.of(rules), _source.toList());
+  }
+
+  @override
+  Map<String, dynamic> introspect({String? name}) {
+    return {
+      'type': 'string', // Adapt selon le type des valeurs
+      'enum': _source.map((e) => e.value).toList(),
+      'required': !isOptional,
+      'example': _source.firstOrNull?.value,
+    };
   }
 }

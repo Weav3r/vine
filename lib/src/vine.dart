@@ -6,6 +6,7 @@ import 'package:vine/src/contracts/vine.dart';
 import 'package:vine/src/error_reporter.dart';
 import 'package:vine/src/exceptions/validation_exception.dart';
 import 'package:vine/src/field.dart';
+import 'package:vine/src/introspection.dart';
 import 'package:vine/src/rules/any_rule.dart';
 import 'package:vine/src/rules/array_rule.dart';
 import 'package:vine/src/rules/boolean_rule.dart';
@@ -75,7 +76,7 @@ final class Vine {
     final Queue<VineRule> rules = Queue();
 
     rules.add(VineEnumRule<T>(source));
-    return VineEnumSchema(rules);
+    return VineEnumSchema<T>(rules, source);
   }
 
   VineArray array(VineSchema schema) {
@@ -89,7 +90,7 @@ final class Vine {
     final Queue<VineRule> rules = Queue();
     rules.add(VineUnionRule(schemas));
 
-    return VineUnionSchema(rules);
+    return VineUnionSchema(rules, schemas);
   }
 
   VineDate date({String? message}) {
@@ -102,7 +103,6 @@ final class Vine {
   Validator compile(VineSchema schema, {Map<String, String> errors = const {}}) {
     return Validator(schema.clone(), errors);
   }
-
 
   Map<String, dynamic> validate(Map<String, dynamic> data, VineSchema schema) {
     final reporter = errorReporter({});
@@ -117,6 +117,8 @@ final class Vine {
 
     return field.value;
   }
+
+  OpenApiReporter get openApi => OpenApiReporter();
 }
 
 final class Validator implements ValidatorContract {

@@ -6,7 +6,8 @@ import 'package:vine/src/rules/basic_rule.dart';
 import 'package:vine/vine.dart';
 
 final class VineUnionSchema extends RuleParser implements VineUnion {
-  VineUnionSchema(super._rules);
+  final List<VineSchema> _schemas;
+  VineUnionSchema(super._rules, this._schemas);
 
   @override
   VineUnion requiredIfExist(List<String> values) {
@@ -52,6 +53,29 @@ final class VineUnionSchema extends RuleParser implements VineUnion {
 
   @override
   VineUnion clone() {
-    return VineUnionSchema(Queue.of(rules));
+    return VineUnionSchema(Queue.of(rules), _schemas.toList());
+  }
+
+  @override
+  Map<String, dynamic> introspect({String? name}) {
+    return {
+      'oneOf': _schemas.map((element) {
+        final schema = element.introspect();
+
+        schema.remove('required');
+        schema['title'] = switch(element) {
+          VineString() => 'StringRule',
+          VineNumber() => 'NumberRule',
+          VineBoolean() => 'BooleanRule',
+          VineArray() => 'ArrayRule',
+          VineObject() => 'ObjectRule',
+          VineUnion() => 'UnionRule',
+          _ => 'AnyRule',
+        };
+
+        return schema;
+      }).toList(),
+      'examples': _schemas.map((e) => e.introspect()['example']).toList(),
+    };
   }
 }
