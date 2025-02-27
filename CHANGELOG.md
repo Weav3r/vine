@@ -1,3 +1,8 @@
+## 1.3.0
+- Add missing `VineNotSameAsRule` implementation
+- Implement `VineRegexRule` validation rule
+- Add related [Dev.to](https://dev.to/baptiste_parmantier/validate-your-data-structures-with-vine-in-your-dart-projects-111p) article
+
 ## 1.2.0
 - Move rules from handlers to dedicated classes
 - Implement OpenAPI reporter

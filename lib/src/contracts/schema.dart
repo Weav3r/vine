@@ -310,6 +310,17 @@ abstract interface class VineString implements VineSchema, BasicSchema<VineStrin
   ///   message: 'The value must not be one of admin or user');
   /// ```
   VineString notInList(List<String> values, {String? message});
+
+  /// Check if the string is a valid regular [RegExp] [expression] the regular expression [message] the error message to display
+  /// ```dart
+  /// vine.string().regexp(RegExp(r'^[a-zA-Z]+$'));
+  /// ```
+  /// You can specify a custom error message
+  /// ```dart
+  /// vine.string().regexp(RegExp(r'^[a-zA-Z]+$'),
+  ///   message: 'The value must contain only alphabetic characters');
+  /// ```
+  VineString regex(RegExp expression, {String? message});
 }
 
 abstract interface class VineNumber implements VineSchema, BasicSchema<VineNumber> {

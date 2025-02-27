@@ -29,6 +29,8 @@ ensuring that data complies with an expected format before it is used, which red
 Vine is a data structure validation library for Dart. You may use it to validate the HTTP request body or any data in
 your backend applications.
 
+> See related [article](https://dev.to/baptiste_parmantier/validate-your-data-structures-with-vine-in-your-dart-projects-111p) in `Dev.to` to discover how to use Vine in your Dart projects.
+
 ### Built for validating form data and JSON payloads
 
 Serializing an HTML form to FormData or a JSON object comes with its own set of quirks.

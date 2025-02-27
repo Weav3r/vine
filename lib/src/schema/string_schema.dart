@@ -83,6 +83,12 @@ final class VineStringSchema extends RuleParser implements VineString {
   }
 
   @override
+  VineString regex(RegExp expression, {String? message}) {
+    super.addRule(VineRegexRule(expression, message));
+    return this;
+  }
+
+  @override
   VineString trim() {
     super.addRule(VineTrimRule());
     return this;
@@ -132,6 +138,7 @@ final class VineStringSchema extends RuleParser implements VineString {
 
   @override
   VineString notSameAs(String value, {String? message}) {
+    super.addRule(VineNotSameAsRule(value, message));
     return this;
   }
 
