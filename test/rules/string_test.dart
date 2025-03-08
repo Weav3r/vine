@@ -94,6 +94,15 @@ void main() {
       expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
     });
 
+    test('valid custom phone regexp', () {
+      final payload = {'phone': '1230025900'};
+      final validator = vine.compile(vine.object({
+        'phone': vine.string().phone(match: RegExp(r'^\d{10}$')),
+      }));
+
+      expect(() => validator.validate(payload), returnsNormally);
+    });
+
     test('valid ipAddress IPv4', () {
       final payload = {'ip': '192.168.1.1'};
       final validator = vine.compile(vine.object({

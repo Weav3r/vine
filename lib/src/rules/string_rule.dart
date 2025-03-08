@@ -4,7 +4,7 @@ import 'package:vine/src/contracts/schema.dart';
 import 'package:vine/src/contracts/vine.dart';
 import 'package:vine/src/helper.dart';
 
-final regex = RegExp(r'^\+?[0-9]{1,4}[-.\s]?[0-9]{1,4}[-.\s]?[0-9]{4,10}$');
+final europeanPhoneRegex = RegExp(r'^\+?[0-9]{1,4}[-.\s]?[0-9]{1,4}[-.\s]?[0-9]{4,10}$');
 
 final class VineStringRule implements VineRule {
   final String? message;
@@ -93,13 +93,15 @@ final class VineEmailRule implements VineRule {
 }
 
 final class VinePhoneRule implements VineRule {
+  final RegExp? regex;
   final String? message;
 
-  const VinePhoneRule(this.message);
+  const VinePhoneRule(this.regex, this.message);
 
   @override
   void handle(VineValidationContext ctx, FieldContext field) {
-    if (field.value case String value when !regex.hasMatch(value)) {
+    final currentRegexp = regex ?? europeanPhoneRegex;
+    if (field.value case String value when !currentRegexp.hasMatch(value)) {
       final error = ctx.errorReporter.format('phone', field, message, {});
       ctx.errorReporter.report('phone', [...field.customKeys, field.name], error);
     }
@@ -161,16 +163,18 @@ final class VineUrlRule implements VineRule {
   final bool allowUnderscores;
   final String? message;
 
-  const VineUrlRule(this.protocols, this.requireTld, this.requireProtocol, this.allowUnderscores, this.message);
+  const VineUrlRule(
+      this.protocols, this.requireTld, this.requireProtocol, this.allowUnderscores, this.message);
 
   @override
   void handle(VineValidationContext ctx, FieldContext field) {
-    if (field.value case String value when !value.isURL({
-      'protocols': protocols,
-      'requireTld': requireTld,
-      'requireProtocol': requireProtocol,
-      'allowUnderscores': allowUnderscores,
-    })) {
+    if (field.value case String value
+        when !value.isURL({
+          'protocols': protocols,
+          'requireTld': requireTld,
+          'requireProtocol': requireProtocol,
+          'allowUnderscores': allowUnderscores,
+        })) {
       final error = ctx.errorReporter.format('url', field, message, {});
       ctx.errorReporter.report('url', [...field.customKeys, field.name], error);
     }
@@ -214,7 +218,8 @@ final class VineStartWithRule implements VineRule {
   @override
   void handle(VineValidationContext ctx, FieldContext field) {
     if (field.value case String value when !value.startsWith(attemptedValue)) {
-      final error = ctx.errorReporter.format('startWith', field, message, {'value': attemptedValue});
+      final error =
+          ctx.errorReporter.format('startWith', field, message, {'value': attemptedValue});
       ctx.errorReporter.report('startWith', [...field.customKeys, field.name], error);
     }
   }
@@ -248,13 +253,15 @@ final class VineConfirmedRule implements VineRule {
     final hasKey = ctx.data.containsKey(confirmedKey);
 
     if (!hasKey) {
-      final error = ctx.errorReporter.format('missingProperty', field, message, {'field': confirmedKey});
+      final error =
+          ctx.errorReporter.format('missingProperty', field, message, {'field': confirmedKey});
       ctx.errorReporter.report('missingProperty', [...field.customKeys, field.name], error);
     }
 
     final currentValue = ctx.data[confirmedKey];
     if ((field.value as String) != currentValue) {
-      final error = ctx.errorReporter.format('confirmed', field, message, {'attemptedName': confirmedKey});
+      final error =
+          ctx.errorReporter.format('confirmed', field, message, {'attemptedName': confirmedKey});
       ctx.errorReporter.report('confirmed', [...field.customKeys, field.name], error);
     }
 

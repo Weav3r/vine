@@ -1,3 +1,6 @@
+## 1.4.0
+- Add `RegExp` property in phone validation rule
+
 ## 1.3.0
 - Add missing `VineNotSameAsRule` implementation
 - Implement `VineRegexRule` validation rule

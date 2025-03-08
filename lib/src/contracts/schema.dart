@@ -112,7 +112,7 @@ abstract interface class VineString implements VineSchema, BasicSchema<VineStrin
   /// ```dart
   /// vine.string().phone(message: 'The value must be a valid phone number');
   /// ```
-  VineString phone({String? message});
+  VineString phone({RegExp? match, String? message});
 
   /// Check if the string is an IP address [version] the IP address version [message] the error message to display
   /// ```dart

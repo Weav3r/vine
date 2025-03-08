@@ -30,8 +30,8 @@ final class VineStringSchema extends RuleParser implements VineString {
   }
 
   @override
-  VineString phone({String? message}) {
-    super.addRule(VinePhoneRule(message));
+  VineString phone({RegExp? match, String? message}) {
+    super.addRule(VinePhoneRule(match, message));
     return this;
   }
 
