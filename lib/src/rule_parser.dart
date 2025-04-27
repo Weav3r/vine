@@ -1,7 +1,5 @@
 import 'dart:collection';
 
-import 'package:vine/src/contracts/vine.dart';
-import 'package:vine/src/rules/basic_rule.dart';
 import 'package:vine/vine.dart';
 
 abstract interface class RuleParserContract {
@@ -37,7 +35,7 @@ class RuleParser implements RuleParserContract {
       addRule(VineOptionalRule(), positioned: true);
     }
 
-    while(rules.isNotEmpty) {
+    while (rules.isNotEmpty) {
       final rule = rules.removeFirst();
       rule.handle(ctx, field);
 

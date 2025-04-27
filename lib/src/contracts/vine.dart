@@ -5,7 +5,8 @@ abstract interface class ErrorReporter {
 
   bool hasErrorForField(String fieldName);
 
-  String format(String rule, FieldContext field, String? message, Map<String, dynamic> options);
+  String format(String rule, FieldContext field, String? message,
+      Map<String, dynamic> options);
 
   void report(String rule, List<String> keys, String message);
 
@@ -14,13 +15,12 @@ abstract interface class ErrorReporter {
   void clear();
 }
 
-abstract interface class ValidatorContract {
-}
+abstract interface class ValidatorContract {}
 
 abstract interface class VineValidationContext<T extends ErrorReporter> {
   T get errorReporter;
 
-  Map get data;
+  dynamic get data;
 
   Map<String, dynamic> getFieldContext(List<String> keys);
 }

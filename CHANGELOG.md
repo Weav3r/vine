@@ -1,3 +1,7 @@
+## 1.5.0
+- Added support for all schemas as a high-level entry schema
+- Add benchmarks in [`Dartmark`](https://dartmark.dev) website
+
 ## 1.4.0
 - Add `RegExp` property in phone validation rule
 

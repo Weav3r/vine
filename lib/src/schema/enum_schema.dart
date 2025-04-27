@@ -1,11 +1,9 @@
 import 'dart:collection';
 
-import 'package:vine/src/contracts/schema.dart';
-import 'package:vine/src/rule_parser.dart';
-import 'package:vine/src/rules/basic_rule.dart';
 import 'package:vine/vine.dart';
 
-final class VineEnumSchema<T extends VineEnumerable> extends RuleParser implements VineEnum {
+final class VineEnumSchema<T extends VineEnumerable> extends RuleParser
+    implements VineEnum {
   final List<T> _source;
   VineEnumSchema(super._rules, this._source);
 

@@ -28,7 +28,8 @@ import 'package:vine/src/schema/string_schema.dart';
 import 'package:vine/src/schema/union_schema.dart';
 
 final class Vine {
-  ErrorReporter Function(Map<String, String> errors) errorReporter = SimpleErrorReporter.new;
+  ErrorReporter Function(Map<String, String> errors) errorReporter =
+      SimpleErrorReporter.new;
 
   VineObject object(Map<String, VineSchema> payload, {String? message}) {
     final Queue<VineRule> rules = Queue();
@@ -100,7 +101,8 @@ final class Vine {
     return VineDateSchema(rules);
   }
 
-  Validator compile(VineSchema schema, {Map<String, String> errors = const {}}) {
+  Validator compile(VineSchema schema,
+      {Map<String, String> errors = const {}}) {
     return Validator(schema.clone(), errors);
   }
 
@@ -128,7 +130,8 @@ final class Validator implements ValidatorContract {
 
   Validator(this._schema, this.errors);
 
-  (ValidationException?, Map<String, dynamic>?) tryValidate(Map<String, dynamic> data) {
+  (ValidationException?, Map<String, dynamic>?) tryValidate(
+      Map<String, dynamic> data) {
     try {
       final result = validate(data);
       return (null, result);
@@ -137,7 +140,7 @@ final class Validator implements ValidatorContract {
     }
   }
 
-  Map<String, dynamic> validate(Map<String, dynamic> data) {
+  T validate<T>(dynamic data) {
     final validatorContext = ValidatorContext(reporter, data);
     final field = Field('', data);
     _schema.parse(validatorContext, field);

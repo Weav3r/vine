@@ -3,6 +3,11 @@ import 'package:test/scaffolding.dart';
 import 'package:vine/vine.dart';
 
 void main() {
+  test('is support string validation on top level', () {
+    final validator = vine.compile(vine.string());
+    expect(() => validator.validate('foo'), returnsNormally);
+  });
+
   group('String validation', () {
     test('valid minLength', () {
       final payload = {'username': 'john'};
@@ -19,7 +24,8 @@ void main() {
         'username': vine.string().minLength(5),
       }));
 
-      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload),
+          throwsA(isA<ValidationException>()));
     });
 
     test('valid maxLength', () {
@@ -37,7 +43,8 @@ void main() {
         'username': vine.string().maxLength(3),
       }));
 
-      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload),
+          throwsA(isA<ValidationException>()));
     });
 
     test('valid fixedLength', () {
@@ -55,7 +62,8 @@ void main() {
         'username': vine.string().fixedLength(5),
       }));
 
-      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload),
+          throwsA(isA<ValidationException>()));
     });
 
     test('valid email', () {
@@ -73,7 +81,8 @@ void main() {
         'email': vine.string().email(),
       }));
 
-      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload),
+          throwsA(isA<ValidationException>()));
     });
 
     test('valid phone', () {
@@ -91,7 +100,8 @@ void main() {
         'phone': vine.string().phone(),
       }));
 
-      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload),
+          throwsA(isA<ValidationException>()));
     });
 
     test('valid custom phone regexp', () {
@@ -118,7 +128,8 @@ void main() {
         'ip': vine.string().ipAddress(version: IpAddressVersion.v4),
       }));
 
-      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload),
+          throwsA(isA<ValidationException>()));
     });
 
     test('valid url', () {
@@ -136,7 +147,8 @@ void main() {
         'url': vine.string().url(),
       }));
 
-      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload),
+          throwsA(isA<ValidationException>()));
     });
 
     test('valid alpha', () {
@@ -154,7 +166,8 @@ void main() {
         'name': vine.string().alpha(),
       }));
 
-      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload),
+          throwsA(isA<ValidationException>()));
     });
 
     test('valid alphaNumeric', () {
@@ -172,7 +185,8 @@ void main() {
         'username': vine.string().alphaNumeric(),
       }));
 
-      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload),
+          throwsA(isA<ValidationException>()));
     });
 
     test('valid startsWith', () {
@@ -193,7 +207,8 @@ void main() {
         'code': '123ABC',
       };
 
-      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload),
+          throwsA(isA<ValidationException>()));
     });
 
     test('valid endsWith', () {
@@ -214,7 +229,8 @@ void main() {
         'code': vine.string().endsWith('XYZ'),
       }));
 
-      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload),
+          throwsA(isA<ValidationException>()));
     });
 
     group('confirmed', () {
@@ -225,23 +241,28 @@ void main() {
         };
 
         final validator = vine.compile(vine.object({
-          'password': vine.string().confirmed(property: 'password_confirmation'),
+          'password':
+              vine.string().confirmed(property: 'password_confirmation'),
         }));
 
         expect(() => validator.validate(payload), returnsNormally);
       });
 
-      test('cannot be valid when confirmation is not the same as original property', () {
+      test(
+          'cannot be valid when confirmation is not the same as original property',
+          () {
         final payload = {
           'password': 'password123',
           'password_confirmation': 'password456',
         };
 
         final validator = vine.compile(vine.object({
-          'password': vine.string().confirmed(property: 'password_confirmation'),
+          'password':
+              vine.string().confirmed(property: 'password_confirmation'),
         }));
 
-        expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+        expect(() => validator.validate(payload),
+            throwsA(isA<ValidationException>()));
       });
     });
 
@@ -329,7 +350,8 @@ void main() {
           'uuid': vine.string().uuid(version: UuidVersion.v4),
         }));
 
-        expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+        expect(() => validator.validate(payload),
+            throwsA(isA<ValidationException>()));
       });
     });
 
@@ -349,7 +371,8 @@ void main() {
           'card': vine.string().isCreditCard(),
         }));
 
-        expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+        expect(() => validator.validate(payload),
+            throwsA(isA<ValidationException>()));
       });
     });
 
@@ -368,7 +391,8 @@ void main() {
         'name': vine.string(),
       }));
 
-      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload),
+          throwsA(isA<ValidationException>()));
     });
 
     test('can be optional', () {
@@ -386,7 +410,8 @@ void main() {
         'name': vine.string(),
       }));
 
-      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload),
+          throwsA(isA<ValidationException>()));
     });
   });
 
@@ -406,7 +431,8 @@ void main() {
         'email': vine.string().email().minLength(20).maxLength(50),
       }));
 
-      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload),
+          throwsA(isA<ValidationException>()));
     });
 
     test('cannot be too long with [email, minLength, maxLength] rules', () {
@@ -415,35 +441,45 @@ void main() {
         'email': vine.string().email().minLength(10).maxLength(20),
       }));
 
-      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload),
+          throwsA(isA<ValidationException>()));
     });
 
     group('alphaNumeric', () {
       test('can be valid with [alphaNumeric, startsWith, endsWith] rules', () {
         final payload = {'code': 'ABC123XYZ'};
         final validator = vine.compile(vine.object({
-          'code': vine.string().alphaNumeric().startsWith('ABC').endsWith('XYZ'),
+          'code':
+              vine.string().alphaNumeric().startsWith('ABC').endsWith('XYZ'),
         }));
 
         expect(() => validator.validate(payload), returnsNormally);
       });
 
-      test('cannot have a wrong start with [alphaNumeric, startsWith, endsWith] rules', () {
+      test(
+          'cannot have a wrong start with [alphaNumeric, startsWith, endsWith] rules',
+          () {
         final payload = {'code': '123ABCXYZ'};
         final validator = vine.compile(vine.object({
-          'code': vine.string().alphaNumeric().startsWith('ABC').endsWith('XYZ'),
+          'code':
+              vine.string().alphaNumeric().startsWith('ABC').endsWith('XYZ'),
         }));
 
-        expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+        expect(() => validator.validate(payload),
+            throwsA(isA<ValidationException>()));
       });
 
-      test('cannot have a wrong end with [alphaNumeric, startsWith, endsWith] rules', () {
+      test(
+          'cannot have a wrong end with [alphaNumeric, startsWith, endsWith] rules',
+          () {
         final payload = {'code': 'ABC123123'};
         final validator = vine.compile(vine.object({
-          'code': vine.string().alphaNumeric().startsWith('ABC').endsWith('XYZ'),
+          'code':
+              vine.string().alphaNumeric().startsWith('ABC').endsWith('XYZ'),
         }));
 
-        expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+        expect(() => validator.validate(payload),
+            throwsA(isA<ValidationException>()));
       });
     });
 
@@ -487,32 +523,45 @@ void main() {
       expect(data['username'], 'johndoe');
     });
 
-    test('is too short after trim with [trim, toLowerCase, minlength] rules', () {
+    test('is too short after trim with [trim, toLowerCase, minlength] rules',
+        () {
       final payload = {'username': '  John  '};
       final validator = vine.compile(vine.object({
         'username': vine.string().trim().toLowerCase().minLength(10),
       }));
 
-      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload),
+          throwsA(isA<ValidationException>()));
     });
 
     group('uuid', () {
       test('can be valid with [uuid, fixedLength, nullable] rules', () {
         final payload = {'uuid': '123e4567-e89b-12d3-a456-426614174000'};
         final validator = vine.compile(vine.object({
-          'uuid': vine.string().uuid(version: UuidVersion.v4).fixedLength(36).nullable(),
+          'uuid': vine
+              .string()
+              .uuid(version: UuidVersion.v4)
+              .fixedLength(36)
+              .nullable(),
         }));
 
         expect(() => validator.validate(payload), returnsNormally);
       });
 
-      test('cannot have a wrong length with [uuid, fixedLength, nullable] rules', () {
+      test(
+          'cannot have a wrong length with [uuid, fixedLength, nullable] rules',
+          () {
         final payload = {'uuid': '123e4567-e89b-12d3-a456-42661417400'};
         final validator = vine.compile(vine.object({
-          'uuid': vine.string().uuid(version: UuidVersion.v4).fixedLength(36).nullable(),
+          'uuid': vine
+              .string()
+              .uuid(version: UuidVersion.v4)
+              .fixedLength(36)
+              .nullable(),
         }));
 
-        expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+        expect(() => validator.validate(payload),
+            throwsA(isA<ValidationException>()));
       });
     });
 
@@ -527,13 +576,15 @@ void main() {
         expect(data['card'], '4111111111111111');
       });
 
-      test('cannot be invalid card with [trim, isCreditCard, optional] rules', () {
+      test('cannot be invalid card with [trim, isCreditCard, optional] rules',
+          () {
         final payload = {'card': ' 1234567890123456 '};
         final validator = vine.compile(vine.object({
           'card': vine.string().trim().isCreditCard().optional(),
         }));
 
-        expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+        expect(() => validator.validate(payload),
+            throwsA(isA<ValidationException>()));
       });
     });
 
@@ -545,8 +596,11 @@ void main() {
         };
 
         final validator = vine.compile(vine.object({
-          'password':
-              vine.string().trim().toLowerCase().confirmed(property: 'password_confirmation'),
+          'password': vine
+              .string()
+              .trim()
+              .toLowerCase()
+              .confirmed(property: 'password_confirmation'),
         }));
 
         final data = validator.validate(payload);
@@ -602,7 +656,8 @@ void main() {
           }),
         }));
 
-        expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+        expect(() => validator.validate(payload),
+            throwsA(isA<ValidationException>()));
       });
     });
 
@@ -626,7 +681,8 @@ void main() {
           'field': vine.string().inList(['foo', 'bar', 'baz']),
         }));
 
-        expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+        expect(() => validator.validate(payload),
+            throwsA(isA<ValidationException>()));
       });
     });
 
@@ -655,10 +711,12 @@ void main() {
           'other_field': vine.string().requiredIfExist(['field']),
         }));
 
-        expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+        expect(() => validator.validate(payload),
+            throwsA(isA<ValidationException>()));
       });
 
-      test('should be valid when field does not exist but value is provided', () {
+      test('should be valid when field does not exist but value is provided',
+          () {
         final payload = <String, dynamic>{
           'other_field': 'bar',
         };
@@ -679,14 +737,18 @@ void main() {
           'other_field': vine.string().minLength(1).requiredIfExist(['field']),
         }));
 
-        expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+        expect(() => validator.validate(payload),
+            throwsA(isA<ValidationException>()));
       });
 
       test('can be optional when required fields has one or many missing', () {
         final payload = <String, dynamic>{};
 
         final validator = vine.compile(vine.object({
-          'field': vine.string().optional().requiredIfExist(['firstField', 'secondField']),
+          'field': vine
+              .string()
+              .optional()
+              .requiredIfExist(['firstField', 'secondField']),
         }));
 
         expect(() => validator.validate(payload), returnsNormally);
@@ -702,7 +764,8 @@ void main() {
           'field': vine.string().requiredIfExist(['firstField', 'secondField']),
         }));
 
-        expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+        expect(() => validator.validate(payload),
+            throwsA(isA<ValidationException>()));
       });
 
       //
@@ -729,28 +792,32 @@ void main() {
           'other_field': vine.string().requiredIfMissing(['field']),
         }));
 
-        expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+        expect(() => validator.validate(payload),
+            throwsA(isA<ValidationException>()));
       });
 
       test('can be optional when required fields has one or many exists', () {
         final payload = <String, dynamic>{};
 
         final validator = vine.compile(vine.object({
-          'field': vine.string().optional().requiredIfAnyMissing(['firstField', 'secondField']),
+          'field': vine
+              .string()
+              .optional()
+              .requiredIfAnyMissing(['firstField', 'secondField']),
         }));
 
         expect(() => validator.validate(payload), returnsNormally);
       });
 
       test('cannot be optional when required fields are missing', () {
-        final payload = <String, dynamic>{
-        };
+        final payload = <String, dynamic>{};
 
         final validator = vine.compile(vine.object({
           'field': vine.string().requiredIfExist(['firstField', 'secondField']),
         }));
 
-        expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+        expect(() => validator.validate(payload),
+            throwsA(isA<ValidationException>()));
       });
     });
   });

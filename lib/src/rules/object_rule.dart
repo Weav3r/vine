@@ -12,7 +12,7 @@ final class VineObjectRule implements VineRule {
   @override
   void handle(VineValidationContext ctx, FieldContext field) {
     final fieldValue = field.value;
-    if (fieldValue is! Map<String, dynamic>) {
+    if (fieldValue is! Map) {
       final error = ctx.errorReporter.format('object', field, message, {});
       ctx.errorReporter.report('object', field.customKeys, error);
 
@@ -28,8 +28,8 @@ final class VineObjectRule implements VineRule {
       final key = entry.key;
       final schema = entry.value;
 
-      final currentField =
-      FieldPool.acquire(key, fieldValue.containsKey(key) ? field.value[key] : MissingValue())
+      final currentField = FieldPool.acquire(
+          key, fieldValue.containsKey(key) ? field.value[key] : MissingValue())
         ..customKeys.addAll(List.of(field.customKeys, growable: false));
 
       switch (schema) {
@@ -37,7 +37,8 @@ final class VineObjectRule implements VineRule {
           field.customKeys.add(key);
         case VineObject():
           if (!fieldValue.containsKey(key)) {
-            final error = ctx.errorReporter.format('object', field, message, {});
+            final error =
+                ctx.errorReporter.format('object', field, message, {});
             ctx.errorReporter.report('object', field.customKeys, error);
           }
           currentField.customKeys.add(key);

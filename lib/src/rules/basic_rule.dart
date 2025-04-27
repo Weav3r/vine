@@ -35,7 +35,8 @@ final class VineRequiredIfExistRule implements VineRule {
     }
 
     if (!matchs.contains(false) && field.value == null) {
-      final error = ctx.errorReporter.format('requiredIfExists', field, null, {});
+      final error =
+          ctx.errorReporter.format('requiredIfExists', field, null, {});
       ctx.errorReporter.report('requiredIfExists', field.customKeys, error);
 
       field.canBeContinue = false;
@@ -61,7 +62,8 @@ final class VineRequiredIfAnyExistRule implements VineRule {
     }
 
     if (hasMatch && field.value == null) {
-      final error = ctx.errorReporter.format('requiredIfExistsAny', field, null, {});
+      final error =
+          ctx.errorReporter.format('requiredIfExistsAny', field, null, {});
       ctx.errorReporter.report('requiredIfExistsAny', field.customKeys, error);
 
       field.canBeContinue = false;
@@ -84,7 +86,8 @@ final class VineRequiredIfMissingRule implements VineRule {
     }
 
     if (!matchs.contains(true) && field.value == null) {
-      final error = ctx.errorReporter.format('requiredIfMissing', field, null, {});
+      final error =
+          ctx.errorReporter.format('requiredIfMissing', field, null, {});
       ctx.errorReporter.report('requiredIfMissing', field.customKeys, error);
 
       field.canBeContinue = false;
@@ -110,7 +113,8 @@ final class VineRequiredIfAnyMissingRule implements VineRule {
     }
 
     if (!hasMatch && field.value == null) {
-      final error = ctx.errorReporter.format('requiredIfMissingAny', field, null, {});
+      final error =
+          ctx.errorReporter.format('requiredIfMissingAny', field, null, {});
       ctx.errorReporter.report('requiredIfMissingAny', field.customKeys, error);
 
       field.canBeContinue = false;

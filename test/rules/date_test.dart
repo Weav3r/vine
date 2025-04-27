@@ -3,6 +3,11 @@ import 'package:test/scaffolding.dart';
 import 'package:vine/vine.dart';
 
 void main() {
+  test('is support date validation on top level', () {
+    final validator = vine.compile(vine.date());
+    expect(() => validator.validate(DateTime.now()), returnsNormally);
+  });
+
   test('should be valid when value is a string date', () {
     final payload = {'date': '2021-01-01'};
     final validator = vine.compile(vine.object({
@@ -21,7 +26,8 @@ void main() {
     expect(() => validator.validate(payload), returnsNormally);
   });
 
-  test('should be valid when value was not provided but rule allow optional', () {
+  test('should be valid when value was not provided but rule allow optional',
+      () {
     final payload = <String, dynamic>{};
     final validator = vine.compile(vine.object({
       'date': vine.date().optional(),
@@ -45,7 +51,8 @@ void main() {
       'date': vine.date(),
     }));
 
-    expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+    expect(
+        () => validator.validate(payload), throwsA(isA<ValidationException>()));
   });
 
   test('should be valid when value is between dates', () {
@@ -63,7 +70,8 @@ void main() {
       'date': vine.date().between(DateTime(2022), DateTime(2023)),
     }));
 
-    expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+    expect(
+        () => validator.validate(payload), throwsA(isA<ValidationException>()));
   });
 
   group('Date rules', () {
@@ -88,7 +96,8 @@ void main() {
         'date': vine.date().before(DateTime.now()),
       }));
 
-      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload),
+          throwsA(isA<ValidationException>()));
     });
 
     test('should be valid when value is after the target date', () {
@@ -112,13 +121,15 @@ void main() {
         'date': vine.date().after(DateTime.now()),
       }));
 
-      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload),
+          throwsA(isA<ValidationException>()));
     });
 
     test('should be valid when value is before the target field', () {
       final payload = {
         'date': DateTime.now().toIso8601String(),
-        'currentDate': DateTime.now().subtract(Duration(days: 1)).toIso8601String(),
+        'currentDate':
+            DateTime.now().subtract(Duration(days: 1)).toIso8601String(),
       };
 
       final validator = vine.compile(vine.object({
@@ -138,7 +149,8 @@ void main() {
         'currentDate': vine.date().beforeField('date'),
       }));
 
-      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload),
+          throwsA(isA<ValidationException>()));
     });
 
     test('should be valid when value is after the target field', () {
@@ -157,19 +169,22 @@ void main() {
     test('cannot be valid when value is before the target field', () {
       final payload = <String, dynamic>{
         'date': DateTime.now().toIso8601String(),
-        'currentDate': DateTime.now().subtract(Duration(days: 1)).toIso8601String(),
+        'currentDate':
+            DateTime.now().subtract(Duration(days: 1)).toIso8601String(),
       };
 
       final validator = vine.compile(vine.object({
         'currentDate': vine.date().afterField('date'),
       }));
 
-      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload),
+          throwsA(isA<ValidationException>()));
     });
 
     test('should be valid when value is between date fields', () {
       final payload = {
-        'startDate': DateTime.now().subtract(Duration(days: 1)).toIso8601String(),
+        'startDate':
+            DateTime.now().subtract(Duration(days: 1)).toIso8601String(),
         'endDate': DateTime.now().add(Duration(days: 1)).toIso8601String(),
         'currentDate': DateTime.now().toIso8601String(),
       };
@@ -183,45 +198,58 @@ void main() {
 
     test('cannot be valid when value is not between date fields', () {
       final payload = {
-        'startDate': DateTime.now().subtract(Duration(days: 1)).toIso8601String(),
+        'startDate':
+            DateTime.now().subtract(Duration(days: 1)).toIso8601String(),
         'endDate': DateTime.now().add(Duration(days: 1)).toIso8601String(),
-        'currentDate': DateTime.now().subtract(Duration(days: 5)).toIso8601String(),
+        'currentDate':
+            DateTime.now().subtract(Duration(days: 5)).toIso8601String(),
       };
 
       final validator = vine.compile(vine.object({
         'currentDate': vine.date().betweenFields('startDate', 'endDate'),
       }));
 
-      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload),
+          throwsA(isA<ValidationException>()));
     });
 
-    test('cannot be valid when value is not between date fields but startDate is missing', () {
+    test(
+        'cannot be valid when value is not between date fields but startDate is missing',
+        () {
       final payload = {
         'endDate': DateTime.now().add(Duration(days: 1)).toIso8601String(),
-        'currentDate': DateTime.now().subtract(Duration(days: 5)).toIso8601String(),
+        'currentDate':
+            DateTime.now().subtract(Duration(days: 5)).toIso8601String(),
       };
 
       final validator = vine.compile(vine.object({
         'currentDate': vine.date().betweenFields('startDate', 'endDate'),
       }));
 
-      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload),
+          throwsA(isA<ValidationException>()));
     });
 
-    test('cannot be valid when value is not between date fields but endField is missing', () {
+    test(
+        'cannot be valid when value is not between date fields but endField is missing',
+        () {
       final payload = {
-        'startDate': DateTime.now().subtract(Duration(days: 1)).toIso8601String(),
-        'currentDate': DateTime.now().subtract(Duration(days: 5)).toIso8601String(),
+        'startDate':
+            DateTime.now().subtract(Duration(days: 1)).toIso8601String(),
+        'currentDate':
+            DateTime.now().subtract(Duration(days: 5)).toIso8601String(),
       };
 
       final validator = vine.compile(vine.object({
         'currentDate': vine.date().betweenFields('startDate', 'endDate'),
       }));
 
-      expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+      expect(() => validator.validate(payload),
+          throwsA(isA<ValidationException>()));
     });
 
-    test('should be valid when value has attempted value after transformation', () {
+    test('should be valid when value has attempted value after transformation',
+        () {
       final now = DateTime.now();
       final payload = {'date': now};
 

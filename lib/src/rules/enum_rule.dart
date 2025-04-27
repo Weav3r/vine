@@ -20,7 +20,8 @@ final class VineEnumRule<T> implements VineRule {
         'values': source.map((e) => e.value).toList(),
       });
 
-      ctx.errorReporter.report('enum', [...field.customKeys, field.name], error);
+      ctx.errorReporter
+          .report('enum', [...field.customKeys, field.name], error);
     }
   }
 }

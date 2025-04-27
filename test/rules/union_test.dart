@@ -3,6 +3,16 @@ import 'package:test/scaffolding.dart';
 import 'package:vine/vine.dart';
 
 void main() {
+  test('is support union validation on top level', () {
+    final validator = vine.compile(vine.union([
+      vine.string(),
+      vine.number(),
+    ]));
+
+    expect(() => validator.validate('foo'), returnsNormally);
+    expect(() => validator.validate(10), returnsNormally);
+  });
+
   group('Union validation', () {
     test('is valid when value is string', () {
       final payload = {'value': 'foo'};
@@ -38,6 +48,7 @@ void main() {
       ]),
     }));
 
-    expect(() => validator.validate(payload), throwsA(isA<ValidationException>()));
+    expect(
+        () => validator.validate(payload), throwsA(isA<ValidationException>()));
   });
 }

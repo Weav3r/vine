@@ -1,11 +1,12 @@
 import 'package:vine/src/contracts/vine.dart';
 
-final class ValidatorContext<T extends ErrorReporter> implements VineValidationContext<T> {
+final class ValidatorContext<T extends ErrorReporter>
+    implements VineValidationContext<T> {
   @override
   final T errorReporter;
 
   @override
-  final Map<String, dynamic> data;
+  final dynamic data;
 
   @override
   Map<String, dynamic> getFieldContext(List<String> keys) {
@@ -19,7 +20,6 @@ final class ValidatorContext<T extends ErrorReporter> implements VineValidationC
 
     return data;
   }
-
 
   ValidatorContext(this.errorReporter, this.data);
 }
