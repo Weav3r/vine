@@ -1,3 +1,6 @@
+## 1.5.1
+- Change `Map<String, dynamic>` entry data to `dynamic` in `tryValidate`
+
 ## 1.5.0
 - Added support for all schemas as a high-level entry schema
 - Add benchmarks in [`Dartmark`](https://dartmark.dev) website

@@ -130,8 +130,7 @@ final class Validator implements ValidatorContract {
 
   Validator(this._schema, this.errors);
 
-  (ValidationException?, Map<String, dynamic>?) tryValidate(
-      Map<String, dynamic> data) {
+  (ValidationException?, T?) tryValidate<T>(dynamic data) {
     try {
       final result = validate(data);
       return (null, result);
