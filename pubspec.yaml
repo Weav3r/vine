@@ -16,7 +16,7 @@ topics:
   - data
 
 environment:
-  sdk: ^3.5.3
+  sdk: ^3.5.2
 
 dependencies:
   string_validator: ^1.1.0
